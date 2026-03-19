@@ -46,7 +46,12 @@ class Simulator:
         3. 执行任务
         4. 充电调度
         5. 更新状态
+        
+        Returns:
+            float: 本步消耗的总能耗
         """
+        total_energy = 0
+        
         for uav in self.uavs:
             
             # 移动
@@ -58,6 +63,7 @@ class Simulator:
                 # 能耗
                 cost = self.energy_model.compute(uav)
                 uav.update_battery(-cost)
+                total_energy += cost
                 
                 # 打印电量
                 print(f"UAV {uav.id} 电量: {uav.battery}")
@@ -70,3 +76,4 @@ class Simulator:
                 print(f"UAV {uav.id} 充电后电量: {uav.battery}")
         
         self.time_step += 1
+        return total_energy
