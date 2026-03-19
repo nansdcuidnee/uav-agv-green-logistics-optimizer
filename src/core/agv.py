@@ -36,8 +36,7 @@ class AGV:
         Args:
             new_position: 新位置 (x, y)
         """
-        # 实现位置更新逻辑
-        pass
+        self.position = new_position
     
     def update_status(self, new_status):
         """更新状态
@@ -45,8 +44,7 @@ class AGV:
         Args:
             new_status: 新状态
         """
-        # 实现状态更新逻辑
-        pass
+        self.status = new_status
     
     def update_battery(self, amount):
         """更新电量
@@ -63,5 +61,4 @@ class AGV:
         Args:
             uav: 无人机对象
         """
-        # 实现为无人机充电的逻辑
-        pass
+        uav.update_battery(self.charging_capacity)

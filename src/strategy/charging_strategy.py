@@ -4,9 +4,13 @@ class ChargingStrategy:
     包含三种充电方法：固定、移动和预测性
     """
     
-    def __init__(self):
-        """初始化充电策略"""
-        pass
+    def __init__(self, mode="mobile"):
+        """初始化充电策略
+        
+        Args:
+            mode: 充电模式，可选值："fixed", "mobile", "smart"
+        """
+        self.mode = mode
     
     def fixed_charging(self, uavs, charging_stations):
         """固定充电策略
@@ -38,3 +42,27 @@ class ChargingStrategy:
         """
         # 实现预测性充电策略逻辑
         pass
+    
+    def charge(self, uav, agv):
+        """执行充电
+        
+        Args:
+            uav: 无人机对象
+            agv: AGV对象
+        """
+        if self.mode == "fixed":
+            # 固定充电策略：使用固定充电站
+            print(f"使用固定充电策略为 UAV {uav.id} 充电")
+            agv.charge_uav(uav)
+        elif self.mode == "mobile":
+            # 移动充电策略：使用AGV移动充电
+            print(f"使用移动充电策略为 UAV {uav.id} 充电")
+            agv.charge_uav(uav)
+        elif self.mode == "smart":
+            # 智能充电策略：根据电量和任务情况优化充电
+            print(f"使用智能充电策略为 UAV {uav.id} 充电")
+            # 智能充电逻辑可以在这里实现
+            agv.charge_uav(uav)
+        else:
+            # 默认使用移动充电策略
+            agv.charge_uav(uav)
