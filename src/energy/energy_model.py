@@ -48,3 +48,14 @@ class EnergyModel:
         """
         # 实现AGV能耗计算逻辑
         pass
+    
+    def compute(self, uav):
+        """计算无人机能耗
+        
+        Args:
+            uav: 无人机对象
+            
+        Returns:
+            float: 能耗值
+        """
+        return 5  # 固定能耗（先简单）

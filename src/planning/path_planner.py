@@ -18,8 +18,7 @@ class PathPlanner:
         Returns:
             list: 规划后的路径点列表
         """
-        # 实现最近邻算法逻辑
-        pass
+        return points  # 先简单返回
     
     def plan_path(self, start_point, end_point, obstacles=None):
         """规划从起点到终点的路径
@@ -49,3 +48,19 @@ class PathPlanner:
         """
         # 实现多 stops 路径规划逻辑
         pass
+    
+    def plan(self, points):
+        """规划路径
+        
+        Args:
+            points: 目标点列表
+            
+        Returns:
+            list: 规划后的路径点列表
+        """
+        # 实现路径规划逻辑
+        # 这里使用最近邻算法作为默认实现
+        if not points:
+            return []
+        start_point = points[0]
+        return self.nearest_neighbor(start_point, points[1:])

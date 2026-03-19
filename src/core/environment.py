@@ -25,8 +25,7 @@ class Environment:
         Args:
             point: 配送点位置 (x, y)
         """
-        # 实现添加配送点逻辑
-        pass
+        self.delivery_points.append(point)
     
     def add_obstacle(self, obstacle):
         """添加障碍物

@@ -59,8 +59,21 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
     charging_strategy = ChargingStrategy()
     visualizer = Visualizer()
     
+    # 为每个UAV初始化路径
+    for uav in uavs:
+        uav.path = path_planner.plan(environment.delivery_points)
+    
     # 6. 创建模拟器
-    simulator = Simulator(environment, uavs, agvs, tasks, scheduler, charging_strategy)
+    simulator = Simulator(
+        environment,
+        uavs,
+        agvs,
+        tasks,
+        scheduler,
+        charging_strategy,
+        energy_model,
+        path_planner
+    )
     
     # 7. 运行模拟
     for i in range(max_steps):

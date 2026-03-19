@@ -26,6 +26,7 @@ class UAV:
         self.position = position
         self.battery = battery
         self.task = None
+        self.path = []
         self.max_battery = max_battery
         self.payload_capacity = payload_capacity
         self.speed = speed
@@ -36,8 +37,7 @@ class UAV:
         Args:
             new_position: 新位置 (x, y)
         """
-        # 实现位置更新逻辑
-        pass
+        self.position = new_position
     
     def update_battery(self, amount):
         """更新电量
@@ -45,8 +45,7 @@ class UAV:
         Args:
             amount: 电量变化值（正数为充电，负数为耗电）
         """
-        # 实现电量更新逻辑
-        pass
+        self.battery = max(0, min(self.max_battery, self.battery + amount))
     
     def assign_task(self, task):
         """分配任务
@@ -68,5 +67,4 @@ class UAV:
         Returns:
             bool: 是否需要充电
         """
-        # 实现充电需求判断逻辑
-        pass
+        return self.battery < 30

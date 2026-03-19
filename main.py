@@ -23,8 +23,8 @@ def main():
     
     # 2. 创建无人机
     uavs = [
-        UAV(1, (0, 0), battery=UAV_MAX_BATTERY),
-        UAV(2, (200, 200), battery=UAV_MAX_BATTERY)
+        UAV(1, (0, 0), battery=40),
+        UAV(2, (200, 200), battery=40)
     ]
     
     # 3. 创建AGV
@@ -47,8 +47,21 @@ def main():
     charging_strategy = ChargingStrategy()
     visualizer = Visualizer()
     
+    # 为每个UAV初始化路径
+    for uav in uavs:
+        uav.path = path_planner.plan(environment.delivery_points)
+    
     # 6. 创建模拟器
-    simulator = Simulator(environment, uavs, agvs, tasks, scheduler, charging_strategy)
+    simulator = Simulator(
+        environment,
+        uavs,
+        agvs,
+        tasks,
+        scheduler,
+        charging_strategy,
+        energy_model,
+        path_planner
+    )
     
     # 7. 运行模拟
     for i in range(50):  # 运行50个时间步

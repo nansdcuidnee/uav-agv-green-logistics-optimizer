@@ -38,3 +38,12 @@ class ChargingStrategy:
         """
         # 实现预测性充电策略逻辑
         pass
+    
+    def charge(self, uav, agv):
+        """执行充电
+        
+        Args:
+            uav: 无人机对象
+            agv: AGV对象
+        """
+        agv.charge_uav(uav)

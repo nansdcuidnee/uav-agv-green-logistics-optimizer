@@ -44,3 +44,15 @@ class Scheduler:
         """
         # 实现充电调度逻辑
         pass
+    
+    def select_agv(self, uav, agvs):
+        """选择AGV为无人机充电
+        
+        Args:
+            uav: 无人机对象
+            agvs: AGV列表
+            
+        Returns:
+            AGV: 选中的AGV
+        """
+        return agvs[0]
