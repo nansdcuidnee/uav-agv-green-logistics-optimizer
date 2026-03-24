@@ -19,7 +19,7 @@ class ChargingStrategy:
             uavs: 无人机列表
             charging_stations: 固定充电站列表
         """
-        # 实现固定充电策略逻辑
+        # 子类实现具体的固定充电策略逻辑
         pass
     
     def mobile_charging(self, uavs, agvs):
@@ -29,7 +29,7 @@ class ChargingStrategy:
             uavs: 无人机列表
             agvs: AGV列表
         """
-        # 实现移动充电策略逻辑
+        # 子类实现具体的移动充电策略逻辑
         pass
     
     def predictive_charging(self, uavs, agvs, tasks):
@@ -40,7 +40,7 @@ class ChargingStrategy:
             agvs: AGV列表
             tasks: 任务列表
         """
-        # 实现预测性充电策略逻辑
+        # 子类实现具体的预测性充电策略逻辑
         pass
     
     def charge(self, uav, agv):
@@ -50,19 +50,18 @@ class ChargingStrategy:
             uav: 无人机对象
             agv: AGV对象
         """
+        # 根据模式选择充电策略
         if self.mode == "fixed":
-            # 固定充电策略：使用固定充电站
             print(f"使用固定充电策略为 UAV {uav.id} 充电")
-            agv.charge_uav(uav)
+            # 子类实现具体的固定充电逻辑
         elif self.mode == "mobile":
-            # 移动充电策略：使用AGV移动充电
             print(f"使用移动充电策略为 UAV {uav.id} 充电")
-            agv.charge_uav(uav)
+            # 子类实现具体的移动充电逻辑
         elif self.mode == "smart":
-            # 智能充电策略：根据电量和任务情况优化充电
             print(f"使用智能充电策略为 UAV {uav.id} 充电")
-            # 智能充电逻辑可以在这里实现
-            agv.charge_uav(uav)
+            # 子类实现具体的智能充电逻辑
         else:
-            # 默认使用移动充电策略
-            agv.charge_uav(uav)
+            print(f"使用默认充电策略为 UAV {uav.id} 充电")
+        
+        # 调用AGV充电
+        agv.charge(uav)
