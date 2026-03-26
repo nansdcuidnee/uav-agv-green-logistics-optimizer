@@ -22,7 +22,7 @@ class Scheduler:
         Returns:
             float: 评分值
         """
-        # 实现任务评分逻辑
+        # 子类实现具体的任务评分逻辑
         pass
     
     def assign_tasks(self, tasks, uavs):
@@ -32,7 +32,7 @@ class Scheduler:
             tasks: 任务列表
             uavs: 无人机列表
         """
-        # 实现任务分配逻辑
+        # 子类实现具体的任务分配逻辑
         pass
     
     def schedule_charging(self, uavs, agvs):
@@ -42,5 +42,19 @@ class Scheduler:
             uavs: 无人机列表
             agvs: AGV列表
         """
-        # 实现充电调度逻辑
+        # 子类实现具体的充电调度逻辑
         pass
+    
+    def select_agv(self, uav, agvs):
+        """选择AGV为无人机充电
+        
+        Args:
+            uav: 无人机对象
+            agvs: AGV列表
+            
+        Returns:
+            AGV: 选中的AGV
+        """
+        # 子类实现具体的AGV选择逻辑
+        # 临时返回第一个AGV，实际项目中需要根据具体算法选择
+        return agvs[0]

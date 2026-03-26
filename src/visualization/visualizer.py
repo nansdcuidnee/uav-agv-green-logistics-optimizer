@@ -28,13 +28,10 @@ class Visualizer:
         self.ax.set_ylim(0, map_height)
         
         # 绘制配送点
-        for point in environment.delivery_points:
-            self.ax.plot(point[0], point[1], 'ro', markersize=8)
+        # 子类实现具体的配送点绘制逻辑
         
         # 绘制障碍物
-        for obstacle in environment.obstacles:
-            # 假设障碍物是圆形，需要根据实际障碍物类型调整
-            pass
+        # 子类实现具体的障碍物绘制逻辑
         
         # 绘制无人机
         for uav in uavs:
@@ -54,19 +51,19 @@ class Visualizer:
         
         # 绘制任务
         for task in tasks:
-            if task.status == "pending":
+            if task['status'] == 'pending':
                 color = 'y'
-            elif task.status == "in_progress":
+            elif task['status'] == 'in_progress':
                 color = 'c'
             else:
                 color = 'g'
             
             # 绘制任务起点和终点
-            self.ax.plot(task.start_point[0], task.start_point[1], f'{color}o', markersize=6)
-            self.ax.plot(task.end_point[0], task.end_point[1], f'{color}x', markersize=6)
+            self.ax.plot(task['start'][0], task['start'][1], f'{color}o', markersize=6)
+            self.ax.plot(task['end'][0], task['end'][1], f'{color}x', markersize=6)
             # 绘制任务路径
-            self.ax.plot([task.start_point[0], task.end_point[0]], 
-                        [task.start_point[1], task.end_point[1]], 
+            self.ax.plot([task['start'][0], task['end'][0]], 
+                        [task['start'][1], task['end'][1]], 
                         f'{color}--', linewidth=1)
         
         # 设置标题和标签

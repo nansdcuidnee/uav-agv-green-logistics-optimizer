@@ -1,63 +1,63 @@
+from src.simulation.environment import Environment
 from src.core.uav import UAV
 from src.core.agv import AGV
-from src.core.task import Task
-from src.core.environment import Environment
 from src.energy.energy_model import EnergyModel
 from src.planning.path_planner import PathPlanner
 from src.scheduling.scheduler import Scheduler
 from src.strategy.charging_strategy import ChargingStrategy
 from src.simulation.simulator import Simulator
-from src.visualization.visualizer import Visualizer
-from config.config import MAP_SIZE, UAV_MAX_BATTERY, AGV_MAX_BATTERY
 
 
 def main():
-    """主函数，展示系统使用示例"""
+    """主函数，运行整个仿真系统"""
     # 1. 创建环境
-    environment = Environment(map_size=MAP_SIZE)
+    environment = Environment()
     
-    # 添加配送点
-    delivery_points = [(50, 50), (100, 100), (150, 50), (50, 150), (150, 150)]
-    for point in delivery_points:
-        environment.add_delivery_point(point)
+    # 2. 创建 UAV
+    num_uavs = 2
+    for i in range(num_uavs):
+        # UAV初始位置设置在地图中心附近
+        position = (500, 500)
+        uav = UAV(i + 1, position)
+        environment.uavs.append(uav)
     
-    # 2. 创建无人机
-    uavs = [
-        UAV(1, (0, 0), battery=UAV_MAX_BATTERY),
-        UAV(2, (200, 200), battery=UAV_MAX_BATTERY)
-    ]
+    # 3. 创建 AGV
+    num_agvs = 1
+    for i in range(num_agvs):
+        # AGV初始位置设置在地图中心
+        position = (500, 500)
+        agv = AGV(i + 1, position)
+        environment.agvs.append(agv)
     
-    # 3. 创建AGV
-    agvs = [
-        AGV(1, (100, 0), battery=AGV_MAX_BATTERY),
-        AGV(2, (0, 100), battery=AGV_MAX_BATTERY)
-    ]
+    # 4. 生成任务
+    num_tasks = 5
+    environment.generate_tasks(num_tasks)
+    print(f"生成了 {num_tasks} 个任务")
     
-    # 4. 创建任务
-    tasks = [
-        Task(1, (0, 0), (100, 100), payload=2, priority=1),
-        Task(2, (200, 200), (50, 50), payload=1, priority=2),
-        Task(3, (100, 0), (150, 150), payload=3, priority=1)
-    ]
-    
-    # 5. 初始化各个模块
+    # 5. 初始化能耗模型
     energy_model = EnergyModel()
+    
+    # 6. 初始化路径规划
     path_planner = PathPlanner()
+    
+    # 7. 初始化调度器
     scheduler = Scheduler()
-    charging_strategy = ChargingStrategy()
-    visualizer = Visualizer()
     
-    # 6. 创建模拟器
-    simulator = Simulator(environment, uavs, agvs, tasks, scheduler, charging_strategy)
+    # 8. 初始化充电策略
+    charging_strategy = ChargingStrategy(mode="mobile")
     
-    # 7. 运行模拟
-    for i in range(50):  # 运行50个时间步
-        simulator.step()
-        # 可视化当前状态
-        visualizer.plot_system(environment, uavs, agvs, tasks)
+    # 9. 创建 Simulator
+    simulator = Simulator(
+        environment,
+        energy_model,
+        path_planner,
+        scheduler,
+        charging_strategy
+    )
     
-    # 8. 显示最终结果
-    visualizer.show()
+    # 10. 运行仿真
+    max_steps = 500
+    simulator.run(max_steps=max_steps)
 
 
 if __name__ == "__main__":
