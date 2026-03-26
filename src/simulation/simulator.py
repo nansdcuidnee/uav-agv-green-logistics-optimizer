@@ -78,7 +78,7 @@ class Simulator:
             # 4. 如果有任务且没有路径，规划路径
             if uav.task and not uav.path:
                 # 调用路径规划模块
-                uav.path = self.path_planner.plan_path(uav.position, uav.task['end'])
+                uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point)
                 print(f"为 UAV {uav.id} 规划路径")
             
             # 5. UAV按路径移动
@@ -97,7 +97,7 @@ class Simulator:
                 
                 # 7. 检查任务是否完成
                 if not uav.path and uav.task:
-                    task_id = uav.task['id']
+                    task_id = uav.task.id
                     uav.complete_task()
                     self.completed_tasks += 1
                     print(f"UAV {uav.id} 完成任务 {task_id}")
@@ -124,7 +124,7 @@ class Simulator:
             tasks: 任务列表
         """
         # 找出未分配的任务
-        pending_tasks = [task for task in tasks if task['status'] == 'pending']
+        pending_tasks = [task for task in tasks if task.status == 'pending']
         
         # 找出空闲的无人机
         idle_uavs = [uav for uav in self.environment.uavs if not uav.task]
@@ -135,8 +135,8 @@ class Simulator:
                 # 简单的任务分配策略：按顺序分配
                 uav = idle_uavs.pop(0)
                 uav.assign_task(task)
-                task['status'] = 'in_progress'
-                print(f"分配任务 {task['id']} 给 UAV {uav.id}")
+                task.status = 'in_progress'
+                print(f"分配任务 {task.id} 给 UAV {uav.id}")
     
     def print_results(self):
         """输出实验结果"""
