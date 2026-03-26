@@ -1,9 +1,3 @@
-import sys
-import os
-
-# 添加项目根目录到Python路径
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from src.core.uav import UAV
 from src.core.agv import AGV
 from src.core.task import Task
@@ -13,7 +7,7 @@ from src.planning.path_planner import PathPlanner
 from src.scheduling.scheduler import Scheduler
 from src.strategy.charging_strategy import ChargingStrategy
 from src.simulation.simulator import Simulator
-# from src.visualization.visualizer import Visualizer
+from src.visualization.visualizer import Visualizer
 from config.config import MAP_SIZE, UAV_MAX_BATTERY, AGV_MAX_BATTERY
 
 
@@ -39,7 +33,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        uavs.append(UAV(i+1, position))
+        uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
     
     # 3. 创建AGV
     agvs = []
@@ -47,7 +41,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        agvs.append(AGV(i+1, position))
+        agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
     
     # 4. 创建任务
     tasks = []
@@ -63,34 +57,32 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
     path_planner = PathPlanner()
     scheduler = Scheduler()
     charging_strategy = ChargingStrategy()
-    # visualizer = Visualizer()
+    visualizer = Visualizer()
     
     # 为每个UAV初始化路径
     for uav in uavs:
         uav.path = path_planner.plan(environment.delivery_points)
     
-    # 将uavs、agvs和tasks添加到environment对象中
-    environment.uavs = uavs
-    environment.agvs = agvs
-    environment.tasks = tasks
-    
     # 6. 创建模拟器
     simulator = Simulator(
         environment,
-        energy_model,
-        path_planner,
+        uavs,
+        agvs,
+        tasks,
         scheduler,
-        charging_strategy
+        charging_strategy,
+        energy_model,
+        path_planner
     )
     
     # 7. 运行模拟
     for i in range(max_steps):
         simulator.step()
-        # 可视化当前状态（已注释，避免缺少matplotlib模块的错误）
-        # visualizer.plot_system(environment, uavs, agvs, tasks)
+        # 可视化当前状态
+        visualizer.plot_system(environment, uavs, agvs, tasks)
     
-    # 8. 显示最终结果（已注释，避免缺少matplotlib模块的错误）
-    # visualizer.show()
+    # 8. 显示最终结果
+    visualizer.show()
     
     print(f"Experiment {experiment_name} completed")
 
