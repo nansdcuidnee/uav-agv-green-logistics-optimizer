@@ -33,7 +33,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        uavs.append(UAV(i+1, position, battery=UAV_MAX_BATTERY))
+        uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
     
     # 3. 创建AGV
     agvs = []
@@ -41,7 +41,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        agvs.append(AGV(i+1, position, battery=AGV_MAX_BATTERY))
+        agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
     
     # 4. 创建任务
     tasks = []
