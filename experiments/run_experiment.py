@@ -1,7 +1,7 @@
 from src.core.uav import UAV
 from src.core.agv import AGV
 from src.core.task import Task
-from src.core.environment import Environment
+from src.simulation.environment import Environment
 from src.energy.energy_model import EnergyModel
 from src.planning.path_planner import PathPlanner
 from src.scheduling.scheduler import Scheduler
@@ -33,7 +33,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
+        uavs.append(UAV(i+1, position))
     
     # 3. 创建AGV
     agvs = []
@@ -41,7 +41,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
+        agvs.append(AGV(i+1, position))
     
     # 4. 创建任务
     tasks = []
@@ -56,23 +56,25 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
     energy_model = EnergyModel()
     path_planner = PathPlanner()
     scheduler = Scheduler()
-    charging_strategy = ChargingStrategy()
+    charging_strategy = ChargingStrategy(enable_visualization=True)
     visualizer = Visualizer()
     
     # 为每个UAV初始化路径
     for uav in uavs:
         uav.path = path_planner.plan(environment.delivery_points)
     
+    # 将UAVs、AGVs和Tasks添加到环境中
+    environment.uavs = uavs
+    environment.agvs = agvs
+    environment.tasks = tasks
+    
     # 6. 创建模拟器
     simulator = Simulator(
         environment,
-        uavs,
-        agvs,
-        tasks,
-        scheduler,
-        charging_strategy,
         energy_model,
-        path_planner
+        path_planner,
+        scheduler,
+        charging_strategy
     )
     
     # 7. 运行模拟

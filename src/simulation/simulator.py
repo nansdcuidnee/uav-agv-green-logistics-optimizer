@@ -98,10 +98,10 @@ class Simulator:
                 # 7. 检查任务是否完成
                 if not uav.path and uav.task:
                     task_id = uav.task['id']
-                    uav.complete_task()
+                    uav.task['status'] = 'completed'
                     self.completed_tasks += 1
+                    uav.complete_task()
                     print(f"UAV {uav.id} 完成任务 {task_id}")
-                    uav.task = None
             
             # 8. 判断电量是否低于阈值
             if uav.needs_charging():
@@ -109,7 +109,7 @@ class Simulator:
                 # 9. 调用调度器选择AGV
                 agv = self.scheduler.select_agv(uav, self.environment.agvs)
                 # 10. 调用充电策略执行充电
-                self.charging_strategy.charge(uav, agv)
+                self.charging_strategy.charge(uav, agv, self.environment.uavs, self.environment.agvs)
                 self.charging_count += 1
                 print(f"UAV {uav.id} 充电后电量: {uav.battery}")
         

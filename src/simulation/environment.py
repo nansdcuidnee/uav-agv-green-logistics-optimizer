@@ -6,12 +6,17 @@ class Environment:
     包含地图信息、任务点、UAV和AGV的初始位置
     """
     
-    def __init__(self):
-        """初始化环境"""
-        self.map_size = (1000, 1000)  # 地图大小
+    def __init__(self, map_size=(1000, 1000)):
+        """初始化环境
+        
+        Args:
+            map_size: 地图大小，默认值为(1000, 1000)
+        """
+        self.map_size = map_size  # 地图大小
         self.tasks = []  # 配送任务列表
         self.uavs = []  # UAV列表
         self.agvs = []  # AGV列表
+        self.delivery_points = []  # 配送点列表
     
     def generate_tasks(self, num_tasks):
         """生成指定数量的配送任务
