@@ -1,17 +1,20 @@
+import random
 from src.simulation.environment import Environment
 from src.core.uav import UAV
 from src.core.agv import AGV
 from src.energy.energy_model import EnergyModel
 from src.planning.path_planner import PathPlanner
 from src.scheduling.scheduler import Scheduler
-from src.strategy.charging_strategy import ChargingStrategy
 from src.simulation.simulator import Simulator
 
 
 def main():
     """主函数，运行整个仿真系统"""
+    # 设置随机种子，保证可复现性
+    random.seed(42)
+    
     # 1. 创建环境
-    environment = Environment()
+    environment = Environment(map_size=(1000, 1000))
     
     # 2. 创建 UAV
     num_uavs = 2
@@ -43,8 +46,8 @@ def main():
     # 7. 初始化调度器
     scheduler = Scheduler()
     
-    # 8. 初始化充电策略
-    charging_strategy = ChargingStrategy(mode="mobile")
+    # 8. 策略类型
+    strategy_type = "baseline_direct"  # 可选值："baseline_direct", "relay_coop", "energy_priority"
     
     # 9. 创建 Simulator
     simulator = Simulator(
@@ -52,12 +55,13 @@ def main():
         energy_model,
         path_planner,
         scheduler,
-        charging_strategy
+        strategy_type=strategy_type
     )
     
     # 10. 运行仿真
     max_steps = 500
-    simulator.run(max_steps=max_steps)
+    output_dir = simulator.run(max_steps=max_steps, experiment_name="main_experiment")
+    print(f"实验结果保存在: {output_dir}")
 
 
 if __name__ == "__main__":
