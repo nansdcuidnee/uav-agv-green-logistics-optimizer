@@ -57,3 +57,11 @@ class UAV:
     def complete_task(self):
         """完成当前任务"""
         self.task = None
+    
+    def is_idle(self):
+        """判断无人机是否空闲
+        
+        Returns:
+            bool: 是否空闲
+        """
+        return self.task is None and len(self.path) == 0
