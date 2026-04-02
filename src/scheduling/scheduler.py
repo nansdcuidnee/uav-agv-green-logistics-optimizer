@@ -73,42 +73,12 @@ class Scheduler:
         Returns:
             float: 评分值 (0-1之间，越高越适合)
         """
-        # 0. 任务可行性检查：如果电量不足，直接返回最低分
-        if not self.can_complete_task(uav, task):
-            return 0.0
 
-        # 1. 距离评分：计算无人机当前位置到任务起点的距离
-        distance = calculate_distance(uav.position, task.start_point)
-        distance_score = 1 - min(distance / self.max_distance, 1.0)
 
-        # 2. 电量评分：电量越高的无人机越适合
-        battery_score = uav.battery / 100.0
 
-        # 3. 负载评分：无人机负载能力大于任务需求得高分
-        if uav.payload_capacity >= task.payload:
-            load_score = 1.0
-        else:
-            # 负载不足时，得分为负载能力与需求的比例
-            load_score = uav.payload_capacity / task.payload if task.payload > 0 else 0
-
-        # 4. 优先级评分：优先级越高，任务越紧急
-        # 从配置读取默认优先级进行归一化
-        max_priority = 5  # 假设最大优先级为5
-        priority_score = min(task.priority / max_priority, 1.0)
-
-        # 5. 能效评分：执行任务后的剩余电量比例（越高越好）
-        energy_needed = self.calculate_energy_consumption(uav, task)
-        remaining_battery = uav.battery - energy_needed
-        efficiency_score = max(remaining_battery / 100.0, 0)
-
-        # 加权计算总分（加入额外的能效权重）
-        total_score = (alpha * distance_score +
-                       beta * battery_score +
-                       gamma * load_score +
-                       delta * priority_score +
-                       0.1 * efficiency_score)
-
-        return total_score
+        # 子类实现具体的任务评分逻辑
+        pass
+    
 
     def assign_tasks(self, tasks, uavs):
         """分配任务给无人机
@@ -125,90 +95,10 @@ class Scheduler:
                    分配结果列表每个元素为 (task, uav) 元组
                    未分配任务列表为无法分配的任务列表
         """
-        # 过滤出待分配的任务和空闲的无人机
-        pending_tasks = [t for t in tasks if t.status == "pending" and t.assigned_uav is None]
-        idle_uavs = [u for u in uavs if u.task is None]
 
-        # 按优先级降序排序（优先分配高优先级任务）
-        pending_tasks.sort(key=lambda t: t.priority, reverse=True)
-
-        assignments = []
-        unassigned_tasks = []
-
-        for task in pending_tasks:
-            best_uav = None
-            best_score = -1
-
-            for uav in idle_uavs:
-                # 跳过正在执行任务的无人机
-                if uav.task is not None:
-                    continue
-
-                # 预先检查任务可行性
-                if not self.can_complete_task(uav, task):
-                    continue
-
-                # 计算评分
-                score = self.score_task(
-                    task, uav,
-                    alpha=ALPHA, beta=BETA, gamma=GAMMA, delta=DELTA
-                )
-
-                if score > best_score:
-                    best_score = score
-                    best_uav = uav
-
-            # 如果找到合适的无人机，则分配任务
-            if best_uav is not None and best_score > 0:
-                # 分配任务给无人机
-                best_uav.assign_task(task)
-                task.assign_to_uav(best_uav)
-                assignments.append((task, best_uav))
-
-                # 从空闲列表中移除
-                idle_uavs.remove(best_uav)
-            else:
-                # 无法分配的任务记录下来
-                unassigned_tasks.append(task)
-
-        return assignments, unassigned_tasks
-
-    def estimate_charging_time(self, uav, agv):
-        """估算AGV到达无人机位置并充满电所需时间
-
-        Args:
-            uav: 无人机对象
-            agv: AGV对象
-
-        Returns:
-            float: 预计充电所需时间步数
-        """
-        # 计算AGV到达无人机位置的距离和时间
-        distance = calculate_distance(agv.position, uav.position)
-        travel_time = distance / AGV_SPEED
-
-        # 计算需要充入的电量
-        energy_to_charge = 100 - uav.battery
-        # 充电时间 = 需要充入的电量 / 充电能力
-        charging_time = max(energy_to_charge / AGV_CHARGING_CAPACITY, 0)
-
-        return travel_time + charging_time
-
-    def can_agv_reach_uav(self, agv, uav):
-        """检查AGV是否有足够电量到达无人机位置
-
-        Args:
-            agv: AGV对象
-            uav: 无人机对象
-
-        Returns:
-            bool: 是否可以到达
-        """
-        distance = calculate_distance(agv.position, uav.position)
-        # 假设AGV基础能耗与速度相关
-        energy_needed = distance / AGV_SPEED * 0.5
-        return agv.battery >= energy_needed
-
+        # 子类实现具体的任务分配逻辑
+        pass
+    
     def schedule_charging(self, uavs, agvs):
         """调度充电
 
@@ -223,51 +113,21 @@ class Scheduler:
             tuple: (充电调度结果列表, 未能调度的无人机列表)
                    调度结果每个元素为 (agv, uav, estimated_time) 元组
         """
-        # 找出需要充电的无人机（电量低于阈值且没有正在执行任务）
-        uavs_needing_charge = [
-            u for u in uavs
-            if u.battery < UAV_CHARGE_THRESHOLD and u.task is None
-        ]
 
-        # 按电量升序排序（优先给电量最低的无人机充电）
-        uavs_needing_charge.sort(key=lambda u: u.battery)
+        # 子类实现具体的充电调度逻辑
+        pass
+    
+    def select_agv(self, uav, agvs):
+        """选择AGV为无人机充电
+        
+        Args:
+            uav: 无人机对象
+            agvs: AGV列表
+            
+        Returns:
+            AGV: 选中的AGV
+        """
+        # 子类实现具体的AGV选择逻辑
+        # 临时返回第一个AGV，实际项目中需要根据具体算法选择
+        return agvs[0]
 
-        # 找出空闲的AGV
-        idle_agvs = [a for a in agvs if a.status == "idle"]
-
-        charging_assignments = []
-        unassigned_uavs = []
-
-        for uav in uavs_needing_charge:
-            if not idle_agvs:
-                unassigned_uavs.append(uav)
-                continue
-
-            # 选择距离最近的可用AGV（且电量足够到达）
-            best_agv = None
-            min_distance = float('inf')
-
-            for agv in idle_agvs:
-                # 检查AGV是否有足够电量到达无人机位置
-                if not self.can_agv_reach_uav(agv, uav):
-                    continue
-
-                dist = calculate_distance(agv.position, uav.position)
-                if dist < min_distance:
-                    min_distance = dist
-                    best_agv = agv
-
-            if best_agv is not None:
-                # 估算充电所需时间
-                estimated_time = self.estimate_charging_time(best_agv, uav)
-
-                # 调度AGV前往无人机位置
-                best_agv.update_status("transporting")
-                best_agv.charge_uav(uav)
-
-                charging_assignments.append((best_agv, uav, estimated_time))
-                idle_agvs.remove(best_agv)
-            else:
-                unassigned_uavs.append(uav)
-
-        return charging_assignments, unassigned_uavs

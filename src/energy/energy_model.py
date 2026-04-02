@@ -19,7 +19,7 @@ class EnergyModel:
         Returns:
             float: 能耗值
         """
-        # 实现能耗计算逻辑
+        # 子类实现具体的能耗计算逻辑
         pass
     
     def calculate_energy_uav(self, uav, path, wind):
@@ -33,7 +33,7 @@ class EnergyModel:
         Returns:
             float: 能耗值
         """
-        # 实现无人机能耗计算逻辑
+        # 子类实现具体的能耗计算逻辑
         pass
     
     def calculate_energy_agv(self, agv, path):
@@ -46,5 +46,18 @@ class EnergyModel:
         Returns:
             float: 能耗值
         """
-        # 实现AGV能耗计算逻辑
+        # 子类实现具体的能耗计算逻辑
         pass
+    
+    def compute(self, uav):
+        """计算无人机能耗
+        
+        Args:
+            uav: 无人机对象
+            
+        Returns:
+            float: 能耗值
+        """
+        # 子类实现具体的能耗计算逻辑
+        # 临时返回固定值，实际项目中需要根据具体算法计算
+        return 5

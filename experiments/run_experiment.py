@@ -1,11 +1,10 @@
+import random
 from src.core.uav import UAV
 from src.core.agv import AGV
-from src.core.task import Task
-from src.core.environment import Environment
+from src.simulation.environment import Environment
 from src.energy.energy_model import EnergyModel
 from src.planning.path_planner import PathPlanner
 from src.scheduling.scheduler import Scheduler
-from src.strategy.charging_strategy import ChargingStrategy
 from src.simulation.simulator import Simulator
 from src.visualization.visualizer import Visualizer
 from config.config import MAP_SIZE, UAV_MAX_BATTERY, AGV_MAX_BATTERY
@@ -28,50 +27,61 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
     environment = Environment(map_size=MAP_SIZE)
     
     # 2. 创建无人机
-    uavs = []
     for i in range(num_uavs):
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        uavs.append(UAV(i+1, position, battery=UAV_MAX_BATTERY))
+<<<<<<< HEAD
+        uav = UAV(i+1, position)
+        uav.battery = UAV_MAX_BATTERY  # 设置初始电量
+        environment.uavs.append(uav)
+=======
+        uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
+>>>>>>> origin/dev
     
     # 3. 创建AGV
-    agvs = []
     for i in range(num_agvs):
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-        agvs.append(AGV(i+1, position, battery=AGV_MAX_BATTERY))
+<<<<<<< HEAD
+        agv = AGV(i+1, position)
+        environment.agvs.append(agv)
+=======
+        agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
+>>>>>>> origin/dev
     
-    # 4. 创建任务
-    tasks = []
-    for i in range(num_tasks):
-        # 随机起点和终点
-        from src.utils.math_utils import generate_random_point
-        start_point = generate_random_point(MAP_SIZE)
-        end_point = generate_random_point(MAP_SIZE)
-        tasks.append(Task(i+1, start_point, end_point, payload=1, priority=1))
+    # 4. 生成任务
+    environment.generate_tasks(num_tasks)
     
     # 5. 初始化各个模块
     energy_model = EnergyModel()
     path_planner = PathPlanner()
     scheduler = Scheduler()
-    charging_strategy = ChargingStrategy()
+    strategy_type = "baseline_direct"  # 可选值："baseline_direct", "relay_coop", "energy_priority"
     visualizer = Visualizer()
     
+    # 为每个UAV初始化路径
+    for uav in environment.uavs:
+        uav.path = path_planner.plan(environment.delivery_points)
+    
     # 6. 创建模拟器
-    simulator = Simulator(environment, uavs, agvs, tasks, scheduler, charging_strategy)
+    simulator = Simulator(
+        environment,
+        energy_model,
+        path_planner,
+        scheduler,
+        strategy_type=strategy_type
+    )
     
     # 7. 运行模拟
-    for i in range(max_steps):
-        simulator.step()
-        # 可视化当前状态
-        visualizer.plot_system(environment, uavs, agvs, tasks)
+    output_dir = simulator.run(max_steps=max_steps, experiment_name=experiment_name)
     
     # 8. 显示最终结果
     visualizer.show()
     
     print(f"Experiment {experiment_name} completed")
+    print(f"实验结果保存在: {output_dir}")
 
 
 if __name__ == "__main__":
