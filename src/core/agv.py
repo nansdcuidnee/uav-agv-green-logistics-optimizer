@@ -17,6 +17,7 @@ class AGV:
         self.id = agv_id
         self.position = position
         self.status = "idle"  # idle, transporting, charging
+        self.charging_power = 200  # default charging power (W)
     
     def move_to(self, target_position):
         """移动到目标位置
