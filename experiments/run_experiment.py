@@ -1,10 +1,6 @@
 import random
 from src.core.uav import UAV
 from src.core.agv import AGV
-<<<<<<< HEAD
-from src.core.task import Task
-=======
->>>>>>> dev
 from src.simulation.environment import Environment
 from src.energy.energy_model import EnergyModel
 from src.planning.path_planner import PathPlanner
@@ -35,33 +31,20 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-<<<<<<< HEAD
-        uavs.append(UAV(i+1, position))
-=======
-<<<<<<< HEAD
         uav = UAV(i+1, position)
         uav.battery = UAV_MAX_BATTERY  # 设置初始电量
         environment.uavs.append(uav)
-=======
+        uavs.append(UAV(i+1, position))
+        uavs = []
         uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
->>>>>>> origin/dev
->>>>>>> dev
     
     # 3. 创建AGV
     for i in range(num_agvs):
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
-<<<<<<< HEAD
-        agvs.append(AGV(i+1, position))
-=======
-<<<<<<< HEAD
-        agv = AGV(i+1, position)
-        environment.agvs.append(agv)
-=======
         agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
->>>>>>> origin/dev
->>>>>>> dev
+
     
     # 4. 生成任务
     environment.generate_tasks(num_tasks)
@@ -70,11 +53,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
     energy_model = EnergyModel()
     path_planner = PathPlanner()
     scheduler = Scheduler()
-<<<<<<< HEAD
-    charging_strategy = ChargingStrategy(enable_visualization=True)
-=======
     strategy_type = "baseline_direct"  # 可选值："baseline_direct", "relay_coop", "energy_priority"
->>>>>>> dev
     visualizer = Visualizer()
     
     # 为每个UAV初始化路径
@@ -92,11 +71,7 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         energy_model,
         path_planner,
         scheduler,
-<<<<<<< HEAD
-        charging_strategy
-=======
         strategy_type=strategy_type
->>>>>>> dev
     )
     
     # 7. 运行模拟
