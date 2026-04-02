@@ -31,17 +31,25 @@ def run_experiment(experiment_name, num_uavs=2, num_agvs=2, num_tasks=3, max_ste
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
+<<<<<<< HEAD
         uav = UAV(i+1, position)
         uav.battery = UAV_MAX_BATTERY  # 设置初始电量
         environment.uavs.append(uav)
+=======
+        uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
+>>>>>>> origin/dev
     
     # 3. 创建AGV
     for i in range(num_agvs):
         # 随机初始位置
         from src.utils.math_utils import generate_random_point
         position = generate_random_point(MAP_SIZE)
+<<<<<<< HEAD
         agv = AGV(i+1, position)
         environment.agvs.append(agv)
+=======
+        agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
+>>>>>>> origin/dev
     
     # 4. 生成任务
     environment.generate_tasks(num_tasks)
