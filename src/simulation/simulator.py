@@ -109,7 +109,7 @@ class Simulator:
                 # 9. 调用调度器选择AGV
                 agv = self.scheduler.select_agv(uav, self.environment.agvs)
                 # 10. 调用充电策略执行充电
-                self.charging_strategy.charge(uav, agv, self.environment.uavs, self.environment.agvs)
+                self.charging_strategy.charge(uav, agv)
                 self.charging_count += 1
                 print(f"UAV {uav.id} 充电后电量: {uav.battery}")
         
