@@ -47,14 +47,16 @@ class Scheduler:
     
     def select_agv(self, uav, agvs):
         """选择AGV为无人机充电
-        
+
         Args:
             uav: 无人机对象
             agvs: AGV列表
-            
+
         Returns:
-            AGV: 选中的AGV
+            AGV: 选中的AGV，若没有AGV则返回None
         """
         # 子类实现具体的AGV选择逻辑
         # 临时返回第一个AGV，实际项目中需要根据具体算法选择
+        if not agvs:
+            return None
         return agvs[0]
