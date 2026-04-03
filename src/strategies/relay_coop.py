@@ -6,7 +6,7 @@ from .base import BaseStrategy
 
 
 class RelayCoopStrategy(BaseStrategy):
-    """Assign nearest AGV-assisted tasks and prefer paired AGV for charging."""
+    """Assign nearest-AGV-assisted tasks and prefer paired AGV for charging."""
 
     def __init__(self, relay_distance: float = 200.0):
         super().__init__("relay_coop")
@@ -17,8 +17,11 @@ class RelayCoopStrategy(BaseStrategy):
         pending_tasks = self.get_pending_tasks(environment)
 
         assignments = []
+
         for task in pending_tasks:
             if not idle_uavs:
+                break
+            if not environment.agvs:
                 break
 
             nearest_agv = min(
@@ -58,7 +61,7 @@ class RelayCoopStrategy(BaseStrategy):
             "assigned_count": len(assignments),
         }
 
-    def select_charging_station(self, uav, environment) -> object:
+    def select_charging_station(self, uav, environment):
         current_task = uav.task
         if current_task and getattr(current_task, "assigned_agv", None):
             if current_task.assigned_agv.status == "idle":

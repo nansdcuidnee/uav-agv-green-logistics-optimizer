@@ -60,4 +60,4 @@ class EnergyModel:
         """
         # 子类实现具体的能耗计算逻辑
         # 临时返回固定值，实际项目中需要根据具体算法计算
-        return 5
+        return 5.0
