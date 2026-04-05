@@ -1,0 +1,198 @@
+[2026-04-03 14:41:24] [INFO] 开始验证模块: all
+[2026-04-03 14:41:24] [INFO] 开始环境检查
+[2026-04-03 14:41:24] [INFO] 检查 Python 版本
+Python 3.13.12
+[2026-04-03 14:41:24] [INFO] 检查 pytest 版本
+pytest 9.0.2
+[2026-04-03 14:41:24] [SUCCESS] 环境检查通过
+[2026-04-03 14:41:24] [INFO] 开始依赖检查
+[2026-04-03 14:41:24] [INFO] 发现 requirements.txt 文件
+No broken requirements found.
+[2026-04-03 14:41:25] [SUCCESS] 依赖检查通过
+[2026-04-03 14:41:25] [INFO] 开始模块测试
+[2026-04-03 14:41:25] [INFO] 测试模块: energy_model
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_energy_model.py::test_energy_model_compute PASSED             [ 50%]
+tests/test_energy_model.py::test_energy_model_compute_with_payload PASSED [100%]
+
+============================== 2 passed in 0.02s ==============================
+[2026-04-03 14:41:26] [SUCCESS] 模块 energy_model 测试通过
+[2026-04-03 14:41:26] [INFO] 测试模块: path_planner
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_path_planner.py::test_path_planner_plan_path PASSED           [ 50%]
+tests/test_path_planner.py::test_path_planner_plan PASSED                [100%]
+
+============================== 2 passed in 0.04s ==============================
+[2026-04-03 14:41:26] [SUCCESS] 模块 path_planner 测试通过
+[2026-04-03 14:41:26] [INFO] 测试模块: scheduler
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_scheduler.py::test_scheduler_select_agv PASSED                [ 50%]
+tests/test_scheduler.py::test_scheduler_select_agv_empty PASSED          [100%]
+
+============================== 2 passed in 0.02s ==============================
+[2026-04-03 14:41:26] [SUCCESS] 模块 scheduler 测试通过
+[2026-04-03 14:41:26] [INFO] 测试模块: strategies
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 4 items
+
+tests/test_strategies.py::test_baseline_direct_strategy_assign_tasks PASSED [ 25%]
+tests/test_strategies.py::test_baseline_direct_strategy_select_charging_station PASSED [ 50%]
+tests/test_strategies.py::test_relay_coop_strategy_assign_tasks PASSED   [ 75%]
+tests/test_strategies.py::test_energy_priority_strategy_assign_tasks PASSED [100%]
+
+============================== 4 passed in 0.03s ==============================
+[2026-04-03 14:41:27] [SUCCESS] 模块 strategies 测试通过
+[2026-04-03 14:41:27] [INFO] 测试模块: visualizer
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_visualizer.py::test_visualizer_initialization PASSED          [ 50%]
+tests/test_visualizer.py::test_visualizer_plot_system PASSED             [100%]
+
+============================= 2 passed in 11.95s ==============================
+[2026-04-03 14:41:39] [SUCCESS] 模块 visualizer 测试通过
+[2026-04-03 14:41:39] [INFO] 测试模块: simulation_framework
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_simulation_framework.py::test_simulator_initialization PASSED [ 50%]
+tests/test_simulation_framework.py::test_simulator_step PASSED           [100%]
+
+============================== 2 passed in 1.16s ==============================
+[2026-04-03 14:41:41] [SUCCESS] 模块 simulation_framework 测试通过
+[2026-04-03 14:41:41] [INFO] 开始冒烟测试
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 4 items
+
+tests/test_smoke.py::test_smoke_flow_and_required_artifacts PASSED       [ 25%]
+tests/test_smoke.py::test_metrics_schema_and_types PASSED                [ 50%]
+tests/test_smoke.py::test_strategy_switching_runs_all_strategies PASSED  [ 75%]
+tests/test_smoke.py::test_reproducibility PASSED                         [100%]
+
+============================== 4 passed in 2.21s ==============================
+[2026-04-03 14:41:44] [SUCCESS] 冒烟测试通过
+[2026-04-03 14:41:44] [INFO] 开始集成检查
+[2026-04-03 14:41:44] [INFO] 集成检查 (策略: baseline_direct)
+开始集成检查: 策略=baseline_direct, 种子=42
+生成了 3 个任务
+Starting simulation, max_steps=100, strategy=baseline_direct
+UAV 2 completed task 2
+AGV 1 charged UAV 1: 15.0% -> 35.0%
+AGV 1 charged UAV 2: 15.0% -> 35.0%
+UAV 1 completed task 1
+AGV 1 charged UAV 1: 15.0% -> 35.0%
+AGV 1 charged UAV 2: 15.0% -> 35.0%
+UAV 2 completed task 3
+All tasks completed, stopping early.
+
+=== Results ===
+total_energy: 215.0
+total_time: 22
+task_completion_rate: 100.00%
+completed_tasks: 3/3
+charging_count: 4
+
+集成检查结果:
+总能耗: 215.0
+任务完成率: 100.00%
+完成任务数: 3/3
+充电次数: 4
+结果保存到: results\self_check_baseline_direct\20260403_144148
+
+集成检查通过！
+[2026-04-03 14:41:48] [SUCCESS] 集成检查 (策略: baseline_direct) 通过
+[2026-04-03 14:41:48] [INFO] 集成检查 (策略: relay_coop)
+开始集成检查: 策略=relay_coop, 种子=42
+生成了 3 个任务
+Starting simulation, max_steps=100, strategy=relay_coop
+UAV 2 completed task 2
+AGV 2 charged UAV 1: 15.0% -> 35.0%
+AGV 2 charged UAV 2: 15.0% -> 35.0%
+UAV 1 completed task 1
+AGV 2 charged UAV 1: 15.0% -> 35.0%
+AGV 2 charged UAV 2: 15.0% -> 35.0%
+UAV 2 completed task 3
+All tasks completed, stopping early.
+
+=== Results ===
+total_energy: 215.0
+total_time: 22
+task_completion_rate: 100.00%
+completed_tasks: 3/3
+charging_count: 4
+
+集成检查结果:
+总能耗: 215.0
+任务完成率: 100.00%
+完成任务数: 3/3
+充电次数: 4
+结果保存到: results\self_check_relay_coop\20260403_144153
+
+集成检查通过！
+[2026-04-03 14:41:54] [SUCCESS] 集成检查 (策略: relay_coop) 通过
+[2026-04-03 14:41:54] [INFO] 集成检查 (策略: energy_priority)
+开始集成检查: 策略=energy_priority, 种子=42
+生成了 3 个任务
+Starting simulation, max_steps=100, strategy=energy_priority
+UAV 1 completed task 2
+AGV 2 charged UAV 1: 15.0% -> 35.0%
+AGV 2 charged UAV 2: 15.0% -> 35.0%
+AGV 2 charged UAV 1: 15.0% -> 35.0%
+UAV 2 completed task 1
+AGV 2 charged UAV 2: 15.0% -> 35.0%
+AGV 2 charged UAV 1: 15.0% -> 35.0%
+UAV 1 completed task 3
+All tasks completed, stopping early.
+
+=== Results ===
+total_energy: 235.0
+total_time: 26
+task_completion_rate: 100.00%
+completed_tasks: 3/3
+charging_count: 5
+
+集成检查结果:
+总能耗: 235.0
+任务完成率: 100.00%
+完成任务数: 3/3
+充电次数: 5
+结果保存到: results\self_check_energy_priority\20260403_144200
+
+集成检查通过！
+[2026-04-03 14:42:01] [SUCCESS] 集成检查 (策略: energy_priority) 通过
+[2026-04-03 14:42:01] [INFO] 验证结果汇总
+[2026-04-03 14:42:01] [SUCCESS] 验证成功: 所有测试通过
