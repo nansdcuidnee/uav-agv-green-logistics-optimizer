@@ -32,7 +32,8 @@ class AGV:
     turning_radius: float = field(default=2.0)
     charging_power: float = field(default=200.0)
     status: str = field(default="idle")  # idle, transporting, charging
-    path: List[Tuple[float, float]] = field(default_factory=list)
+    path: List[Tuple[float, float]] = field(default_factory=list)  # 剩余路径
+    path_history: List[Tuple[float, float]] = field(default_factory=list)  # 历史轨迹
     task: Optional[object] = field(default=None)
     
     def __post_init__(self):
@@ -65,7 +66,7 @@ class AGV:
             target_position: 目标位置 (x, y)
         """
         self.position = target_position
-        self.path.append(target_position)
+        self.path_history.append(target_position)
     
     def charge(self, uav):
         """为无人机充电

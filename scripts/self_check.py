@@ -10,10 +10,6 @@ import random
 import sys
 from pathlib import Path
 
-# 添加项目根目录到 Python 路径
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.simulation.environment import Environment
 from src.core.uav import UAV
@@ -40,10 +36,10 @@ def run_self_check(strategy_type, seed):
     environment = Environment()
     
     # 添加 UAV 和 AGV
-    uav1 = UAV(uav_id=1, position=(0, 0))
-    uav2 = UAV(uav_id=2, position=(100, 100))
-    agv1 = AGV(agv_id=1, position=(50, 50))
-    agv2 = AGV(agv_id=2, position=(150, 150))
+    uav1 = UAV(id=1, position=(0, 0))
+    uav2 = UAV(id=2, position=(100, 100))
+    agv1 = AGV(id=1, position=(50, 50))
+    agv2 = AGV(id=2, position=(150, 150))
     environment.uavs = [uav1, uav2]
     environment.agvs = [agv1, agv2]
     

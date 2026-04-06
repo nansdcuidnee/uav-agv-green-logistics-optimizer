@@ -5,8 +5,6 @@ import os
 import sys
 from typing import Dict, List, Any
 
-# 添加项目根目录到 Python 路径
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 # 设置Matplotlib中文字体支持
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 使用黑体
@@ -113,14 +111,19 @@ class ResultGenerator:
                 path_distance = 0.0
                 if task.assigned_uav:
                     uav = task.assigned_uav
-                    if uav.path:
-                        for i in range(1, len(uav.path)):
-                            x1, y1 = uav.path[i-1]
-                            x2, y2 = uav.path[i]
+                    if uav.path_history:
+                        for i in range(1, len(uav.path_history)):
+                            x1, y1 = uav.path_history[i-1]
+                            x2, y2 = uav.path_history[i]
                             path_distance += ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
                 elif task.assigned_agv:
                     agv = task.assigned_agv
-                    if agv.path:
+                    if hasattr(agv, 'path_history') and agv.path_history:
+                        for i in range(1, len(agv.path_history)):
+                            x1, y1 = agv.path_history[i-1]
+                            x2, y2 = agv.path_history[i]
+                            path_distance += ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
+                    elif agv.path:
                         for i in range(1, len(agv.path)):
                             x1, y1 = agv.path[i-1]
                             x2, y2 = agv.path[i]

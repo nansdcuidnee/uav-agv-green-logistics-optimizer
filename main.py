@@ -1,9 +1,5 @@
 import yaml
 import os
-import sys
-
-# 添加项目根目录到 Python 路径
-sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 
 from src.simulation.environment import Environment
 from src.utils.result_generator import ResultGenerator

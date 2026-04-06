@@ -1,10 +1,10 @@
-﻿# UAV-AGV Mobile Charging 项目全景与协作约定
+# &#x20;项目全景与协作约定
 
 本文是给 5 位组员的统一说明，目标是让大家在同一套接口、同一套验收门槛下并行开发，避免“各自理解一套”的返工。
 
 ## 1. 项目目标（我们在解决什么问题）
 
-这是一个 **UAV + AGV 协同配送与移动充电** 的仿真系统。核心流程是：
+这是一个   UAV + AGV 协同配送与移动充电   的仿真系统。核心流程是：
 
 1. 在 `Environment` 中生成任务、放置 UAV/AGV。
 2. `Simulator` 按时间步推进。
@@ -237,34 +237,41 @@ PR 必附：
 复制下面模板到 PR 描述：
 
 ## 变更范围
+
 - 模块：
 - 文件：
 - 是否涉及公共接口变更：是/否
 
 ## 输入参数
+
 - seed:
-- num_uavs:
-- num_agvs:
-- num_tasks:
-- strategy_type:
-- max_steps:
+- num\_uavs:
+- num\_agvs:
+- num\_tasks:
+- strategy\_type:
+- max\_steps:
 
 ## 运行命令
+
 - `python ...`
 
 ## 输出样例
+
 - 关键日志：
 - metrics.json 片段：
 - records.csv 片段：
 
 ## 图表/截图
+
 - [ ] 已附至少 1 张（chart.png 或对比图）
 
 ## 测试
+
 - 新增测试：
 - 结果：
 
 ## 兼容性与迁移（如改接口必填）
+
 - 影响文件：
 - 调用方：
 - 迁移方案：
@@ -283,8 +290,8 @@ PR 必附：
 
 当前仍建议优先处理的事项：
 
-5. `pytest` 会出现 `.pytest_cache` 写入权限 warning（`WinError 5`），建议统一处理目录权限或清理策略。
-6. `src/strategies/` 与 `src/strategy/` 并存，建议在组内明确“新代码只进 `src/strategies/`”。
+1. `pytest` 会出现 `.pytest_cache` 写入权限 warning（`WinError 5`），建议统一处理目录权限或清理策略。
+2. `src/strategies/` 与 `src/strategy/` 并存，建议在组内明确“新代码只进 `src/strategies/`”。
 
 ## 10. 建议的协作节奏（避免互相阻塞）
 
@@ -293,6 +300,6 @@ PR 必附：
 3. 每晚合并前跑一次 smoke + 模块测试，严格卡门槛。
 4. 所有接口变更先 RFC，再开发，再迁移，最后删旧逻辑。
 
----
+***
 
 如果你是新加入同学：先看 `src/simulation/simulator.py`，再看 `src/simulation/environment.py`，最后看你负责模块；不要一上来改策略或指标字段名。
