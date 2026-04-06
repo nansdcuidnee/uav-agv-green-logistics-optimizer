@@ -1,78 +1,90 @@
-import argparse
-import random
+import yaml
+import os
+import sys
 
-from src.core.agv import AGV
-from src.core.uav import UAV
-from src.energy.energy_model import EnergyModel
-from src.planning.path_planner import PathPlanner
-from src.scheduling.scheduler import Scheduler
+# 添加项目根目录到 Python 路径
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 from src.simulation.environment import Environment
-from src.simulation.simulator import Simulator
+from src.utils.result_generator import ResultGenerator
 
 
-def run_once(
-    strategy_type: str = "baseline_direct",
-    seed: int = 42,
-    num_uavs: int = 2,
-    num_agvs: int = 1,
-    num_tasks: int = 5,
-    max_steps: int = 500,
-    experiment_name: str = "main_experiment",
-):
-    """Run one deterministic simulation from the local main entrypoint."""
-    random.seed(seed)
-
-    environment = Environment(map_size=(1000, 1000))
-
-    for i in range(num_uavs):
-        environment.uavs.append(UAV(i + 1, (500, 500)))
-
-    for i in range(num_agvs):
-        environment.agvs.append(AGV(i + 1, (500, 500)))
-
-    environment.generate_tasks(num_tasks, seed=seed)
-    print(f"Generated {num_tasks} tasks.")
-
-    simulator = Simulator(
-        environment=environment,
-        energy_model=EnergyModel(),
-        path_planner=PathPlanner(),
-        scheduler=Scheduler(),
-        strategy_type=strategy_type,
-    )
-
-    output_dir = simulator.run(max_steps=max_steps, experiment_name=experiment_name)
-    print(f"Results saved to: {output_dir}")
-    return output_dir
+def load_config(config_path):
+    """加载场景配置文件
+    
+    Args:
+        config_path: 配置文件路径
+    
+    Returns:
+        dict: 配置信息
+    """
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+    return config
 
 
-def _build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run UAV-AGV simulation once.")
-    parser.add_argument(
-        "--strategy",
-        default="baseline_direct",
-        choices=["baseline_direct", "relay_coop", "energy_priority"],
-    )
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--num-uavs", type=int, default=2)
-    parser.add_argument("--num-agvs", type=int, default=1)
-    parser.add_argument("--num-tasks", type=int, default=5)
-    parser.add_argument("--max-steps", type=int, default=500)
-    parser.add_argument("--experiment-name", default="main_experiment")
-    return parser
+def run_simulation(config):
+    """运行仿真
+    
+    Args:
+        config: 场景配置
+    
+    Returns:
+        Environment: 环境对象
+    """
+    # 初始化环境
+    map_size = (config['map_size']['width'], config['map_size']['height'])
+    env = Environment(map_size=map_size)
+    
+    # 生成场景
+    env.generate_scenario({
+        'num_tasks': config['num_tasks'],
+        'num_uavs': config['num_uavs'],
+        'num_agvs': config['num_agvs'],
+        'num_obstacles': config['obstacles']['num'],
+        'num_no_fly_zones': config.get('num_no_fly_zones', 0),
+        'seed': config.get('seed')
+    })
+    
+    # 运行仿真
+    simulation_time = 600  # 10小时，延长仿真时间以观察任务完成情况
+    time_step = 1.0  # 1分钟
+    
+    for _ in range(int(simulation_time / time_step)):
+        env.update(time_step)
+    
+    return env
 
 
-def main() -> None:
-    args = _build_arg_parser().parse_args()
-    run_once(
-        strategy_type=args.strategy,
-        seed=args.seed,
-        num_uavs=args.num_uavs,
-        num_agvs=args.num_agvs,
-        num_tasks=args.num_tasks,
-        max_steps=args.max_steps,
-        experiment_name=args.experiment_name,
-    )
+def main():
+    """主函数"""
+    # 场景配置文件路径
+    config_file = 'configs/scene_large.yaml'  # 只运行一个场景
+    
+    if os.path.exists(config_file):
+        print(f"运行场景: {config_file}")
+        # 加载配置
+        config = load_config(config_file)
+        
+        # 运行仿真
+        env = run_simulation(config)
+        
+        # 生成结果
+        print("正在生成可视化结果...")
+        result_generator = ResultGenerator(env)
+        result_paths = result_generator.generate_all()
+        
+        print(f"场景 {config_file} 运行完成")
+        print("生成的文件:")
+        for key, path in result_paths.items():
+            if isinstance(path, list):
+                for i, p in enumerate(path):
+                    print(f"  - {key} {i+1}: {p}")
+            else:
+                print(f"  - {key}: {path}")
+        print()
+    else:
+        print(f"配置文件不存在: {config_file}")
 
 
 if __name__ == "__main__":

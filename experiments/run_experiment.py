@@ -24,9 +24,63 @@ def run_experiment(
     random.seed(seed)
 
     print(f"Running experiment: {experiment_name}")
+<<<<<<< HEAD
+    print(f"UAVs: {num_uavs}, AGVs: {num_agvs}, Tasks: {num_tasks}")
+    
+    # 1. 创建环境
+    environment = Environment(map_size=MAP_SIZE)
+    
+    # 2. 创建无人机
+    for i in range(num_uavs):
+        # 随机初始位置
+        from src.utils.math_utils import generate_random_point
+        position = generate_random_point(MAP_SIZE)
+        uav = UAV(i+1, position)
+        uav.battery = UAV_MAX_BATTERY  # 设置初始电量
+        environment.uavs.append(uav)
+        uavs.append(UAV(i+1, position))
+        uavs = []
+        uavs.append(UAV(i+1, position, UAV_MAX_BATTERY))
+    
+    # 3. 创建AGV
+    for i in range(num_agvs):
+        # 随机初始位置
+        from src.utils.math_utils import generate_random_point
+        position = generate_random_point(MAP_SIZE)
+        agvs.append(AGV(i+1, position, AGV_MAX_BATTERY))
+
+    
+    # 4. 生成任务
+    environment.generate_tasks(num_tasks)
+    
+    # 5. 初始化各个模块
+    energy_model = EnergyModel()
+    path_planner = PathPlanner()
+    scheduler = Scheduler()
+    strategy_type = "baseline_direct"  # 可选值："baseline_direct", "relay_coop", "energy_priority"
+    visualizer = Visualizer()
+    
+    # 为每个UAV初始化路径
+    for uav in environment.uavs:
+        uav.path = path_planner.plan(environment.delivery_points)
+    
+    # 将UAVs、AGVs和Tasks添加到环境中
+    environment.uavs = uavs
+    environment.agvs = agvs
+    environment.tasks = tasks
+    
+    # 6. 创建模拟器
+    simulator = Simulator(
+        environment,
+        energy_model,
+        path_planner,
+        scheduler,
+        strategy_type=strategy_type
+=======
     print(
         f"strategy={strategy_type}, seed={seed}, "
         f"uavs={num_uavs}, agvs={num_agvs}, tasks={num_tasks}, max_steps={max_steps}"
+>>>>>>> dev
     )
 
     environment = Environment(map_size=MAP_SIZE)
