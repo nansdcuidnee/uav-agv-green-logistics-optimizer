@@ -6,9 +6,6 @@ import random
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.core.agv import AGV
 from src.core.task import Task
@@ -31,8 +28,8 @@ def _build_environment(seed=42):
     environment.agvs.append(agv)
 
     environment.tasks = [
-        Task(task_id=1, start_point=(10, 10), end_point=(20, 20), payload=1, priority=1),
-        Task(task_id=2, start_point=(20, 20), end_point=(30, 30), payload=1, priority=1),
+        Task(id=1, start_point=(10, 10), end_point=(20, 20), payload=1, priority=1),
+        Task(id=2, start_point=(20, 20), end_point=(30, 30), payload=1, priority=1),
     ]
     environment.delivery_points = [task.end_point for task in environment.tasks]
 

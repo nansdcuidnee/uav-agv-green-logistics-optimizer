@@ -30,7 +30,8 @@ class UAV:
     hover_energy_consumption: float = field(default=50.0)
     wind_resistance: float = field(default=10.0)
     battery: float = field(default=100.0)
-    path: List[Tuple[float, float]] = field(default_factory=list)
+    path: List[Tuple[float, float]] = field(default_factory=list)  # 剩余路径
+    path_history: List[Tuple[float, float]] = field(default_factory=list)  # 历史轨迹
     task: Optional[object] = field(default=None)
     status: str = field(default="idle")  # idle, busy, charging
     
@@ -60,7 +61,7 @@ class UAV:
             new_position: 新位置 (x, y)
         """
         self.position = new_position
-        self.path.append(new_position)
+        self.path_history.append(new_position)
     
     def update_battery(self, amount):
         """更新电量

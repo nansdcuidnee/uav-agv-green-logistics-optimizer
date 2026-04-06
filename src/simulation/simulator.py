@@ -79,28 +79,12 @@ class Simulator:
                 step_energy += cost
 
                 if not uav.path and uav.task:
-<<<<<<< HEAD
-                    task_id = uav.task['id']
-                    uav.task['status'] = 'completed'
-=======
                     task = uav.task
                     task.status = "completed"
                     task_id = task.id
                     uav.complete_task()
->>>>>>> dev
                     self.completed_tasks += 1
-<<<<<<< HEAD
-                    uav.complete_task()
-                    print(f"UAV {uav.id} 完成任务 {task_id}")
-<<<<<<< HEAD
-            
-            # 8. 判断电量是否低于阈值
-=======
-=======
                     print(f"UAV {uav.id} completed task {task_id}")
->>>>>>> dev
-
->>>>>>> dev
             if uav.needs_charging():
                 agv = self.strategy.select_charging_station(uav, self.environment)
                 if agv:

@@ -4,10 +4,6 @@ import sys
 import os
 from dataclasses import dataclass, field
 from typing import List, Tuple, Optional, Dict, Any
-from datetime import datetime
-
-# 添加项目根目录到 Python 路径
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from src.core.task import Task
 from src.core.uav import UAV
