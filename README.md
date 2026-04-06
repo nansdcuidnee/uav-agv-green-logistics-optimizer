@@ -46,16 +46,28 @@ uav-agv-green-logistics/
 pip install -r requirements.txt
 ```
 
+### 本地验证
+
+为确保代码质量，每个模块开发者在修改代码后应执行本地验证：
+
+```powershell
+# 验证特定模块
+.\scripts\verify_module.ps1 -Module <module_name>
+
+# 提交前总验收
+.\scripts\verify_module.ps1 -Module all
+```
+
 ### 运行策略对比实验
 
 ```bash
-python -m experiments.runner
+python -m experiments.run_experiment
 ```
 
-### 运行能耗模型标定
+### 运行集成检查
 
 ```bash
-python -m src.calibration.energy_calibrator
+python scripts/self_check.py --strategy baseline_direct --seed 42
 ```
 
 ## 研究流程

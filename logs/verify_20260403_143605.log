@@ -1,0 +1,53 @@
+[2026-04-03 14:36:05] [INFO] 开始验证模块: energy_model
+[2026-04-03 14:36:05] [INFO] 开始环境检查
+[2026-04-03 14:36:05] [INFO] 检查 Python 版本
+Python 3.13.12
+[2026-04-03 14:36:05] [INFO] 检查 pytest 版本
+pytest 9.0.2
+[2026-04-03 14:36:05] [SUCCESS] 环境检查通过
+[2026-04-03 14:36:05] [INFO] 开始依赖检查
+[2026-04-03 14:36:05] [INFO] 发现 requirements.txt 文件
+No broken requirements found.
+[2026-04-03 14:36:06] [SUCCESS] 依赖检查通过
+[2026-04-03 14:36:06] [INFO] 开始模块测试
+[2026-04-03 14:36:06] [INFO] 测试模块: energy_model
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_energy_model.py::test_energy_model_compute PASSED             [ 50%]
+tests/test_energy_model.py::test_energy_model_compute_with_payload PASSED [100%]
+
+============================== 2 passed in 0.02s ==============================
+[2026-04-03 14:36:06] [SUCCESS] 模块 energy_model 测试通过
+[2026-04-03 14:36:06] [INFO] 开始冒烟测试
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 0 items / 1 error
+
+=================================== ERRORS ====================================
+____________________ ERROR collecting tests/test_smoke.py _____________________
+D:\\miniconda3\\Lib\\site-packages\\_pytest\\python.py:507: in importtestmodule\n    mod = import_path(\nD:\\miniconda3\\Lib\\site-packages\\_pytest\\pathlib.py:587: in import_path\n    importlib.import_module(module_name)\nD:\\miniconda3\\Lib\\importlib\\__init__.py:88: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1387: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1360: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:935: in _load_unlocked\n    ???\nD:\\miniconda3\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py:197: in exec_module\n    exec(co, module.__dict__)\ntests\\test_smoke.py:13: in <module>\n    from src.core.agv import AGV\nE     File "D:\\uav-agv-mobile-charging\\src\\core\\agv.py", line 1\nE       \ufeffclass AGV:\nE       ^\nE   SyntaxError: invalid non-printable character U+FEFF
+=========================== short test summary info ===========================
+ERROR tests/test_smoke.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 0.17s ===============================
+[2026-04-03 14:36:07] [ERROR] 冒烟测试失败
+[2026-04-03 14:36:07] [INFO] 开始集成检查
+[2026-04-03 14:36:07] [INFO] 集成检查 (策略: baseline_direct)
+Traceback (most recent call last):
+  File "D:\uav-agv-mobile-charging\scripts\self_check.py", line 20, in <module>
+    from src.core.agv import AGV
+  File "D:\uav-agv-mobile-charging\src\core\agv.py", line 1
+    \ufeffclass AGV:
+    ^
+SyntaxError: invalid non-printable character U+FEFF
+[2026-04-03 14:36:07] [ERROR] 集成检查 (策略: baseline_direct) 失败
+[2026-04-03 14:36:07] [INFO] 验证结果汇总
+[2026-04-03 14:36:07] [ERROR] 验证失败: 部分测试未通过

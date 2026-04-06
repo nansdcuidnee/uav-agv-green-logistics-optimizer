@@ -1,67 +1,90 @@
-import random
+import yaml
+import os
+import sys
+
+# 添加项目根目录到 Python 路径
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 from src.simulation.environment import Environment
-from src.core.uav import UAV
-from src.core.agv import AGV
-from src.energy.energy_model import EnergyModel
-from src.planning.path_planner import PathPlanner
-from src.scheduling.scheduler import Scheduler
-from src.simulation.simulator import Simulator
+from src.utils.result_generator import ResultGenerator
+
+
+def load_config(config_path):
+    """加载场景配置文件
+    
+    Args:
+        config_path: 配置文件路径
+    
+    Returns:
+        dict: 配置信息
+    """
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+    return config
+
+
+def run_simulation(config):
+    """运行仿真
+    
+    Args:
+        config: 场景配置
+    
+    Returns:
+        Environment: 环境对象
+    """
+    # 初始化环境
+    map_size = (config['map_size']['width'], config['map_size']['height'])
+    env = Environment(map_size=map_size)
+    
+    # 生成场景
+    env.generate_scenario({
+        'num_tasks': config['num_tasks'],
+        'num_uavs': config['num_uavs'],
+        'num_agvs': config['num_agvs'],
+        'num_obstacles': config['obstacles']['num'],
+        'num_no_fly_zones': config.get('num_no_fly_zones', 0),
+        'seed': config.get('seed')
+    })
+    
+    # 运行仿真
+    simulation_time = 600  # 10小时，延长仿真时间以观察任务完成情况
+    time_step = 1.0  # 1分钟
+    
+    for _ in range(int(simulation_time / time_step)):
+        env.update(time_step)
+    
+    return env
 
 
 def main():
-    """主函数，运行整个仿真系统"""
-    # 设置随机种子，保证可复现性
-    random.seed(42)
+    """主函数"""
+    # 场景配置文件路径
+    config_file = 'configs/scene_large.yaml'  # 只运行一个场景
     
-    # 1. 创建环境
-    environment = Environment(map_size=(1000, 1000))
-    
-    # 2. 创建 UAV
-    num_uavs = 2
-    for i in range(num_uavs):
-        # UAV初始位置设置在地图中心附近
-        position = (500, 500)
-        uav = UAV(i + 1, position)
-        environment.uavs.append(uav)
-    
-    # 3. 创建 AGV
-    num_agvs = 1
-    for i in range(num_agvs):
-        # AGV初始位置设置在地图中心
-        position = (500, 500)
-        agv = AGV(i + 1, position)
-        environment.agvs.append(agv)
-    
-    # 4. 生成任务
-    num_tasks = 5
-    environment.generate_tasks(num_tasks)
-    print(f"生成了 {num_tasks} 个任务")
-    
-    # 5. 初始化能耗模型
-    energy_model = EnergyModel()
-    
-    # 6. 初始化路径规划
-    path_planner = PathPlanner()
-    
-    # 7. 初始化调度器
-    scheduler = Scheduler()
-    
-    # 8. 策略类型
-    strategy_type = "baseline_direct"  # 可选值："baseline_direct", "relay_coop", "energy_priority"
-    
-    # 9. 创建 Simulator
-    simulator = Simulator(
-        environment,
-        energy_model,
-        path_planner,
-        scheduler,
-        strategy_type=strategy_type
-    )
-    
-    # 10. 运行仿真
-    max_steps = 500
-    output_dir = simulator.run(max_steps=max_steps, experiment_name="main_experiment")
-    print(f"实验结果保存在: {output_dir}")
+    if os.path.exists(config_file):
+        print(f"运行场景: {config_file}")
+        # 加载配置
+        config = load_config(config_file)
+        
+        # 运行仿真
+        env = run_simulation(config)
+        
+        # 生成结果
+        print("正在生成可视化结果...")
+        result_generator = ResultGenerator(env)
+        result_paths = result_generator.generate_all()
+        
+        print(f"场景 {config_file} 运行完成")
+        print("生成的文件:")
+        for key, path in result_paths.items():
+            if isinstance(path, list):
+                for i, p in enumerate(path):
+                    print(f"  - {key} {i+1}: {p}")
+            else:
+                print(f"  - {key}: {path}")
+        print()
+    else:
+        print(f"配置文件不存在: {config_file}")
 
 
 if __name__ == "__main__":
