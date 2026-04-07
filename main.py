@@ -2,7 +2,7 @@ import yaml
 import os
 
 from src.simulation.environment import Environment
-from src.utils.result_generator import ResultGenerator
+from src.utils.result_bundle import ResultGenerator
 
 
 def load_config(config_path):
@@ -67,7 +67,8 @@ def main():
         
         # 生成结果
         print("正在生成可视化结果...")
-        result_generator = ResultGenerator(env)
+        experiment_name = os.path.splitext(os.path.basename(config_file))[0]
+        result_generator = ResultGenerator(env, experiment_name=experiment_name)
         result_paths = result_generator.generate_all()
         
         print(f"场景 {config_file} 运行完成")

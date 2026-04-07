@@ -56,11 +56,16 @@ def _run_once(strategy_type="baseline_direct", seed=42, experiment_name="smoke_t
 
 def test_smoke_flow_and_required_artifacts():
     output_dir, metrics = _run_once(strategy_type="baseline_direct", seed=42, experiment_name="smoke_test")
+    output_path = Path(output_dir)
 
     assert os.path.exists(output_dir), f"result dir does not exist: {output_dir}"
     assert os.path.exists(os.path.join(output_dir, "metrics.json")), "missing metrics.json"
     assert os.path.exists(os.path.join(output_dir, "records.csv")), "missing records.csv"
     assert os.path.exists(os.path.join(output_dir, "chart.png")), "missing chart.png"
+    assert os.path.exists(os.path.join(output_dir, "metadata.json")), "missing metadata.json"
+    assert output_path.parent.name == "smoke_test", f"unexpected experiment dir: {output_path.parent}"
+    assert (output_path / "plots" / "energy_plot.png").exists(), "missing energy plot"
+    assert (output_path / "plots" / "task_plot.png").exists(), "missing task plot"
 
     assert metrics["task_completion_rate"] > 0, "task completion rate should be > 0"
 
