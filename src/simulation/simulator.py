@@ -1,8 +1,5 @@
 ﻿import csv
 import json
-import os
-from datetime import datetime
-
 import matplotlib
 
 matplotlib.use("Agg")
@@ -13,6 +10,7 @@ import numpy as np
 from src.strategies.baseline_direct import BaselineDirectStrategy
 from src.strategies.energy_priority import EnergyPriorityStrategy
 from src.strategies.relay_coop import RelayCoopStrategy
+from src.utils.result_layout import REQUIRED_ARTIFACTS, create_result_layout, write_metadata
 
 
 class Simulator:
@@ -142,17 +140,16 @@ class Simulator:
         }
 
     def save_results(self, experiment_name="default"):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_dir = os.path.join("results", experiment_name, timestamp)
-        os.makedirs(output_dir, exist_ok=True)
+        layout = create_result_layout(experiment_name=experiment_name)
+        output_dir = str(layout.run_dir)
 
         metrics = self.calculate_metrics()
 
-        metrics_file = os.path.join(output_dir, "metrics.json")
+        metrics_file = layout.artifact_path("metrics.json")
         with open(metrics_file, "w", encoding="utf-8") as f:
             json.dump(metrics, f, indent=2, ensure_ascii=False)
 
-        records_file = os.path.join(output_dir, "records.csv")
+        records_file = layout.artifact_path("records.csv")
         with open(records_file, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(["step", "energy", "completed_tasks", "battery_status"])
@@ -161,18 +158,38 @@ class Simulator:
             ):
                 writer.writerow([i, energy, tasks, str(battery)])
 
-        self._generate_plots(output_dir)
+        plot_files = self._generate_plots(layout)
+        write_metadata(
+            layout,
+            {
+                "experiment_name": experiment_name,
+                "timestamp": layout.run_dir.name,
+                "strategy": self.strategy.name,
+                "records_granularity": "step",
+                "required_artifacts": list(REQUIRED_ARTIFACTS),
+                "plots": [str(path.relative_to(layout.run_dir)) for path in plot_files],
+                "summary": {
+                    "initial_task_count": self.initial_task_count,
+                    "completed_tasks": self.completed_tasks,
+                    "time_steps": self.time_step,
+                },
+            },
+        )
         return output_dir
 
-    def _generate_plots(self, output_dir):
+    def _generate_plots(self, layout):
+        plot_files = []
+
         plt.figure(figsize=(10, 6))
         plt.plot(self.energy_history)
         plt.xlabel("Step")
         plt.ylabel("Energy")
         plt.title("Energy Consumption Over Time")
         plt.grid(True)
-        plt.savefig(os.path.join(output_dir, "energy_plot.png"))
+        energy_plot = layout.plot_path("energy_plot.png")
+        plt.savefig(energy_plot)
         plt.close()
+        plot_files.append(energy_plot)
 
         plt.figure(figsize=(10, 6))
         plt.plot(self.task_history)
@@ -180,8 +197,10 @@ class Simulator:
         plt.ylabel("Completed Tasks")
         plt.title("Task Completion Over Time")
         plt.grid(True)
-        plt.savefig(os.path.join(output_dir, "task_plot.png"))
+        task_plot = layout.plot_path("task_plot.png")
+        plt.savefig(task_plot)
         plt.close()
+        plot_files.append(task_plot)
 
         if self.battery_history:
             battery_data = np.array(self.battery_history)
@@ -193,8 +212,10 @@ class Simulator:
             plt.title("Battery Status Over Time")
             plt.legend()
             plt.grid(True)
-            plt.savefig(os.path.join(output_dir, "battery_plot.png"))
+            battery_plot = layout.plot_path("battery_plot.png")
+            plt.savefig(battery_plot)
             plt.close()
+            plot_files.append(battery_plot)
 
         fig, axes = plt.subplots(2, 1, figsize=(10, 8), sharex=True)
         axes[0].plot(self.energy_history, color="tab:blue")
@@ -209,5 +230,6 @@ class Simulator:
         axes[1].grid(True)
 
         fig.tight_layout()
-        fig.savefig(os.path.join(output_dir, "chart.png"))
+        fig.savefig(layout.artifact_path("chart.png"))
         plt.close(fig)
+        return plot_files
