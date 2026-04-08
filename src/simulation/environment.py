@@ -1548,10 +1548,13 @@ class Environment:
             self.add_agv(agv)
         
         # 生成障碍物
-        for i in range(config.get("obstacles", {}).get("num", 0)):
+        obstacles_config = config.get("obstacles", {})
+        # 优先使用 count 字段，回退到 num 字段
+        num_obstacles = obstacles_config.get("count", obstacles_config.get("num", 0))
+        for i in range(num_obstacles):
             position = (random.randint(0, self.map_size[0]), random.randint(0, self.map_size[1]))
             radius = random.uniform(5, 20)
-            obstacle_types = config.get("obstacles", {}).get("types", ["building"])
+            obstacle_types = obstacles_config.get("types", ["building"])
             obstacle_type = random.choice(obstacle_types)
             obstacle = Obstacle(
                 id=i + 1,

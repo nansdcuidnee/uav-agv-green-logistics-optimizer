@@ -1,0 +1,25 @@
+# 任务模板配置
+
+# 任务类型
+# 可选：pickup（取货）、delivery（送货）、inspection（巡检）
+task_type: pickup
+
+# 任务优先级
+# 范围：1-5，1 最高，5 最低
+priority: 2
+
+# 任务负载（公斤）
+# 范围：0.1-10
+payload: 2.5
+
+# 时间窗口（分钟）
+time_window:
+  min: 30
+  max: 120
+
+# 起点和终点
+start_point: (0, 0)
+end_point: (100, 100)
+
+# 任务描述
+description: "标准取货任务"

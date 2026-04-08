@@ -1,0 +1,24 @@
+# 示例地图配置
+# 地图尺寸（单位：米）
+map_size:
+  width: 1000
+  height: 1000
+
+# 障碍物配置
+obstacles:
+  count: 10
+  types:
+    - building
+    - tree
+
+# 禁飞区配置
+no_fly_zones:
+  count: 2
+
+# 充电站配置
+charging_stations:
+  count: 3
+  positions:
+    - (250, 250)
+    - (750, 250)
+    - (500, 750)
