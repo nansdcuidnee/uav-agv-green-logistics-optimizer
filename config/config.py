@@ -3,6 +3,13 @@
 # 环境配置
 MAP_SIZE = (200, 200)  # 地图尺寸
 
+# 实验参数
+NUM_POINTS = 5  # 配送点数量
+NUM_UAV = 2  # 无人机数量
+NUM_AGV = 2  # AGV数量
+INIT_BATTERY = 40  # 初始电量
+SIMULATION_STEPS = 50  # 模拟步数
+
 # UAV配置
 UAV_MAX_BATTERY = 100  # 最大电量
 UAV_PAYLOAD_CAPACITY = 5  # 最大负载能力

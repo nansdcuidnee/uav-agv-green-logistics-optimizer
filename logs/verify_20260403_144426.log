@@ -1,0 +1,91 @@
+[2026-04-03 14:44:26] [INFO] 开始验证模块: all
+[2026-04-03 14:44:26] [INFO] 开始环境检查
+[2026-04-03 14:44:26] [INFO] 检查 Python 版本
+Python 3.13.12
+[2026-04-03 14:44:26] [INFO] 检查 pytest 版本
+pytest 9.0.2
+[2026-04-03 14:44:26] [SUCCESS] 环境检查通过
+[2026-04-03 14:44:26] [INFO] 开始依赖检查
+[2026-04-03 14:44:26] [INFO] 发现 requirements.txt 文件
+No broken requirements found.
+[2026-04-03 14:44:27] [SUCCESS] 依赖检查通过
+[2026-04-03 14:44:27] [INFO] 开始模块测试
+[2026-04-03 14:44:27] [INFO] 测试模块: energy_model
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_energy_model.py::test_energy_model_compute PASSED             [ 50%]
+tests/test_energy_model.py::test_energy_model_compute_with_payload PASSED [100%]
+
+============================== warnings summary ===============================
+..\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475
+  D:\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475: PytestCacheWarning: could not create cache path D:\uav-agv-mobile-charging\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'D:\\uav-agv-mobile-charging\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 2 passed, 1 warning in 0.02s =========================
+[2026-04-03 14:44:27] [SUCCESS] 模块 energy_model 测试通过
+[2026-04-03 14:44:27] [INFO] 测试模块: path_planner
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_path_planner.py::test_path_planner_plan_path PASSED           [ 50%]
+tests/test_path_planner.py::test_path_planner_plan PASSED                [100%]
+
+============================== warnings summary ===============================
+..\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475
+  D:\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475: PytestCacheWarning: could not create cache path D:\uav-agv-mobile-charging\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'D:\\uav-agv-mobile-charging\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 2 passed, 1 warning in 0.04s =========================
+[2026-04-03 14:44:28] [SUCCESS] 模块 path_planner 测试通过
+[2026-04-03 14:44:28] [INFO] 测试模块: scheduler
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 2 items
+
+tests/test_scheduler.py::test_scheduler_select_agv PASSED                [ 50%]
+tests/test_scheduler.py::test_scheduler_select_agv_empty PASSED          [100%]
+
+============================== warnings summary ===============================
+..\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475
+  D:\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475: PytestCacheWarning: could not create cache path D:\uav-agv-mobile-charging\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'D:\\uav-agv-mobile-charging\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 2 passed, 1 warning in 0.03s =========================
+[2026-04-03 14:44:28] [SUCCESS] 模块 scheduler 测试通过
+[2026-04-03 14:44:28] [INFO] 测试模块: strategies
+============================= test session starts =============================
+platform win32 -- Python 3.13.12, pytest-9.0.2, pluggy-1.5.0 -- D:\miniconda3\python.exe
+cachedir: .pytest_cache
+rootdir: D:\uav-agv-mobile-charging
+plugins: anyio-4.10.0
+collecting ... collected 4 items
+
+tests/test_strategies.py::test_baseline_direct_strategy_assign_tasks PASSED [ 25%]
+tests/test_strategies.py::test_baseline_direct_strategy_select_charging_station PASSED [ 50%]
+tests/test_strategies.py::test_relay_coop_strategy_assign_tasks PASSED   [ 75%]
+tests/test_strategies.py::test_energy_priority_strategy_assign_tasks PASSED [100%]
+
+============================== warnings summary ===============================
+..\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475
+  D:\miniconda3\Lib\site-packages\_pytest\cacheprovider.py:475: PytestCacheWarning: could not create cache path D:\uav-agv-mobile-charging\.pytest_cache\v\cache\nodeids: [WinError 5] 拒绝访问。: 'D:\\uav-agv-mobile-charging\\.pytest_cache\\v\\cache'
+    config.cache.set("cache/nodeids", sorted(self.cached_nodeids))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 4 passed, 1 warning in 0.03s =========================
+[2026-04-03 14:44:28] [SUCCESS] 模块 strategies 测试通过
+[2026-04-03 14:44:28] [INFO] 测试模块: visualizer
