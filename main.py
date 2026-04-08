@@ -5,17 +5,59 @@ from src.simulation.environment import Environment
 from src.utils.result_bundle import ResultGenerator
 
 
-def load_config(config_path):
-    """加载场景配置文件
+def deep_merge(base, override):
+    """深合并两个字典
+    
+    Args:
+        base: 基础字典
+        override: 覆盖字典
+    
+    Returns:
+        dict: 合并后的字典
+    """
+    result = base.copy()
+    for key, value in override.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            result[key] = deep_merge(result[key], value)
+        else:
+            result[key] = value
+    return result
+
+
+def load_config(config_path, visited=None):
+    """加载场景配置文件，支持继承
     
     Args:
         config_path: 配置文件路径
+        visited: 已访问的配置文件路径，用于检测循环继承
     
     Returns:
         dict: 配置信息
     """
+    if visited is None:
+        visited = set()
+    
+    # 检测循环继承
+    if config_path in visited:
+        raise ValueError(f"循环继承 detected: {config_path}")
+    visited.add(config_path)
+    
+    # 加载当前配置
     with open(config_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
+    
+    # 处理继承
+    if 'extends' in config:
+        extends_path = config['extends']
+        # 构建继承文件的完整路径
+        extends_full_path = os.path.join(os.path.dirname(config_path), extends_path)
+        # 递归加载父配置
+        parent_config = load_config(extends_full_path, visited.copy())
+        # 深合并配置（子配置覆盖父配置）
+        config = deep_merge(parent_config, config)
+        # 移除 extends 字段
+        del config['extends']
+    
     return config
 
 
@@ -33,14 +75,22 @@ def run_simulation(config):
     env = Environment(map_size=map_size)
     
     # 生成场景
-    env.generate_scenario({
+    scenario_config = {
         'num_tasks': config['num_tasks'],
         'num_uavs': config['num_uavs'],
         'num_agvs': config['num_agvs'],
-        'num_obstacles': config['obstacles']['num'],
+        'obstacles': config.get('obstacles', {}),
         'num_no_fly_zones': config.get('num_no_fly_zones', 0),
         'seed': config.get('seed')
-    })
+    }
+    
+    # 添加额外配置项
+    if 'task_density' in config:
+        scenario_config['task_density'] = config['task_density']
+    if 'time_window' in config:
+        scenario_config['time_window'] = config['time_window']
+    
+    env.generate_scenario(scenario_config)
     
     # 运行仿真
     simulation_time = 600  # 10小时，延长仿真时间以观察任务完成情况

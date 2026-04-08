@@ -1,0 +1,31 @@
+# 示例场景配置
+description: "示例场景，用于测试系统基本功能"
+
+# 任务配置
+num_tasks: 20
+
+# 资源配置
+num_uavs: 3
+num_agvs: 2
+
+# 障碍物配置
+obstacles:
+  count: 15
+  types:
+    - building
+    - tree
+    - wall
+
+# 任务密度（每平方公里任务点数）
+task_density: 20
+
+# 禁飞区数量
+num_no_fly_zones: 3
+
+# 时间窗口配置
+time_window:
+  min: 30
+  max: 120
+
+# 随机种子（用于复现场景）
+seed: 42

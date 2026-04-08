@@ -1,15 +1,13 @@
 # 小型场景配置
+# 继承基础配置
+extends: base.yaml
 
-# 任务数量
-num_tasks: 10
+description: "小型场景配置，适合快速验证系统基本功能"
 
 # 地图大小 (x, y)
 map_size:
   width: 500
   height: 500
-
-# 无人机数量
-num_uavs: 2
 
 # AGV数量
 num_agvs: 1
@@ -19,7 +17,7 @@ task_density: 40
 
 # 障碍物数量与类型
 obstacles:
-  num: 5
+  count: 5  # 新字段
   types:
     - building
     - tree
