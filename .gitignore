@@ -1,0 +1,34 @@
+# 运行产物
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 测试缓存
+.pytest_cache/
+pytest-cache-files-*
+
+# 日志文件
+logs/
+debug.log
+
+# 实验结果
+results/
+
+# 环境文件
+.env
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# IDE 文件
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# 操作系统文件
+.DS_Store
+Thumbs.db

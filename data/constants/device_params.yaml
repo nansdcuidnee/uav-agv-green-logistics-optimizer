@@ -1,0 +1,29 @@
+# 设备参数配置
+
+# UAV 参数
+uav:
+  # 最大速度（米/分钟）
+  speed: 10
+  # 最大电量
+  max_battery: 100
+  # 最大负载（公斤）
+  max_payload: 5
+  # 充电阈值
+  charge_threshold: 20
+  # 基础能耗
+  base_energy_consumption: 1.0
+  # 负载能耗因子
+  payload_energy_factor: 0.5
+
+# AGV 参数
+agv:
+  # 最大速度（米/分钟）
+  speed: 5
+  # 最大电量
+  max_battery: 100
+  # 最大负载（公斤）
+  max_payload: 10
+  # 充电能力
+  charging_capacity: 20
+  # 基础能耗
+  base_energy_consumption: 0.5

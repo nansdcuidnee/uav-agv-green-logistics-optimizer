@@ -34,7 +34,7 @@ class EnergyPriorityStrategy(BaseStrategy):
                 ) ** 0.5
 
                 battery_factor = 1.0 + max(0.0, (100.0 - uav.battery) / 100.0 * 0.3)
-                payload = getattr(task, "payload", 1.0)
+                payload = float(getattr(task, "payload", 1.0))
                 payload_factor = 1.0 + payload * 0.1
 
                 estimated_energy = distance * battery_factor * payload_factor
@@ -63,7 +63,7 @@ class EnergyPriorityStrategy(BaseStrategy):
             "total_estimated_energy": sum(item["estimated_energy"] for item in assignments),
         }
 
-    def select_charging_station(self, uav, environment) -> object:
+    def select_charging_station(self, uav, environment):
         available_agvs = self.get_available_agvs(environment)
         if not available_agvs:
             return None
