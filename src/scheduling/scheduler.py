@@ -1,5 +1,6 @@
 import logging
 from src.utils.math_utils import calculate_distance
+from src.planning.path_planner import PathPlanner
 from config.config import (
     UAV_CHARGE_THRESHOLD, ALPHA, BETA, GAMMA, DELTA,
     MAP_SIZE, UAV_SPEED, AGV_SPEED, AGV_CHARGING_CAPACITY,
@@ -48,6 +49,9 @@ class Scheduler:
 
         self.strategy_type = strategy_type
 
+        # 创建统一的路径规划器
+        self.path_planner = PathPlanner()
+
         # 计算地图对角线最大距离
         self.max_distance = (MAP_SIZE[0] ** 2 + MAP_SIZE[1] ** 2) ** 0.5
 
@@ -61,20 +65,35 @@ class Scheduler:
             ))
             self.logger.addHandler(handler)
 
-    def calculate_energy_consumption(self, uav, task):
+    def calculate_energy_consumption(self, uav, task, obstacles=None):
         """计算无人机执行任务的预估能耗
 
         Args:
             uav: 无人机对象
             task: 任务对象
+            obstacles: 障碍物列表（可选）
 
         Returns:
             float: 预估能耗
         """
-        # 计算往返距离（从当前位置到起点，再到终点，最后返回）
-        distance_to_start = calculate_distance(uav.position, task.start_point)
-        task_distance = calculate_distance(task.start_point, task.end_point)
-        return_distance = calculate_distance(task.end_point, uav.position)
+        # 使用 PathPlanner 计算实际路径距离
+        # 从 UAV 当前位置到任务起点
+        path_to_start = self.path_planner.plan_path(
+            uav.position, task.start_point, obstacles, algorithm='straight'
+        )
+        distance_to_start = self.path_planner._calculate_distance(
+            uav.position, task.start_point
+        )
+
+        # 从任务起点到终点
+        task_distance = self.path_planner._calculate_distance(
+            task.start_point, task.end_point
+        )
+
+        # 从任务终点返回 UAV 当前位置
+        return_distance = self.path_planner._calculate_distance(
+            task.end_point, uav.position
+        )
 
         total_distance = distance_to_start + task_distance + return_distance
 
@@ -195,16 +214,18 @@ class Scheduler:
             assignments.append((task, best_uav))
 
             # 记录决策日志
+            energy = self.calculate_energy_consumption(best_uav, task)
             dist = calculate_distance(best_uav.position, task.start_point)
             self.logger.info(
-                f"[BASELINE_DIRECT] Assign task {task.id} to UAV {best_uav.id}, "
-                f"distance={dist:.2f}, uav_battery={best_uav.battery}%"
+                f"[BASELINE_DIRECT] Task={task.id} | UAV={best_uav.id} | "
+                f"Distance={dist:.2f} | Battery={best_uav.battery}% | "
+                f"Energy={energy:.2f}"
             )
 
             idle_uavs.remove(best_uav)
 
         self.logger.info(
-            f"[BASELINE_DIRECT] Assignment result: total={len(tasks)}, "
+            f"[BASELINE_DIRECT] Result: total={len(tasks)}, "
             f"assigned={len(assignments)}, unassigned={len(tasks) - len(assignments)}"
         )
 
@@ -273,16 +294,17 @@ class Scheduler:
 
             # 记录决策日志
             agv_dist = calculate_distance(nearest_agv.position, task.start_point)
+            energy = self.calculate_energy_consumption(best_uav, task)
             self.logger.info(
-                f"[RELAY_COOP] Assign task {task.id} to UAV {best_uav.id}, "
-                f"relay_agv={nearest_agv.id}, relay_point={relay_point}, "
-                f"agv_distance={agv_dist:.2f}"
+                f"[RELAY_COOP] Task={task.id} | UAV={best_uav.id} | "
+                f"AGV={nearest_agv.id} | RelayPoint=({relay_point[0]:.1f},{relay_point[1]:.1f}) | "
+                f"AGV_Dist={agv_dist:.2f} | Energy={energy:.2f}"
             )
 
             idle_uavs.remove(best_uav)
 
         self.logger.info(
-            f"[RELAY_COOP] Assignment result: total={len(tasks)}, "
+            f"[RELAY_COOP] Result: total={len(tasks)}, "
             f"assigned={len(assignments)}, unassigned={len(tasks) - len(assignments)}"
         )
 
@@ -340,15 +362,17 @@ class Scheduler:
             total_estimated_energy += min_energy
 
             # 记录决策日志
+            dist = calculate_distance(best_uav.position, task.start_point)
             self.logger.info(
-                f"[ENERGY_PRIORITY] Assign task {task.id} to UAV {best_uav.id}, "
-                f"estimated_energy={min_energy:.2f}, uav_battery={best_uav.battery}%"
+                f"[ENERGY_PRIORITY] Task={task.id} | UAV={best_uav.id} | "
+                f"Distance={dist:.2f} | Battery={best_uav.battery}% | "
+                f"EstEnergy={min_energy:.2f}"
             )
 
             idle_uavs.remove(best_uav)
 
         self.logger.info(
-            f"[ENERGY_PRIORITY] Assignment result: total={len(tasks)}, "
+            f"[ENERGY_PRIORITY] Result: total={len(tasks)}, "
             f"assigned={len(assignments)}, unassigned={len(tasks) - len(assignments)}, "
             f"total_energy={total_estimated_energy:.2f}"
         )
@@ -472,4 +496,74 @@ class Scheduler:
             agvs: AGV列表
         """
 
+        Returns:
+            AGV: 选择的AGV对象，如果没有可用AGV则返回None
+        """
+        if not agvs:
+            return None
+
+        # 根据策略类型选择对应的AGV选择方法
+        if self.strategy_type == self.STRATEGY_BASELINE_DIRECT:
+            return self._select_agv_baseline_direct(uav, agvs)
+        elif self.strategy_type == self.STRATEGY_RELAY_COOP:
+            return self._select_agv_relay_coop(uav, agvs)
+        elif self.strategy_type == self.STRATEGY_ENERGY_PRIORITY:
+            return self._select_agv_energy_priority(uav, agvs)
+        else:
+            return self._select_agv_baseline_direct(uav, agvs)
+
+    def run_scenario(self, tasks, uavs, agvs=None):
+        """运行场景并返回结果
+
+        Args:
+            tasks: 任务列表
+            uavs: 无人机列表
+            agvs: AGV列表
+
+        Returns:
+            dict: 场景运行结果，包含策略信息、任务分配统计、能耗等
+        """
+        if agvs is None:
+            agvs = []
+
+        # 执行任务分配
+        assignments = self.assign_tasks(tasks, uavs, agvs)
+
+        # 计算总预估能耗
+        total_energy = 0.0
+        for task, uav in assignments:
+            energy = self.calculate_energy_consumption(uav, task)
+            total_energy += energy
+
+        # 统计已分配和未分配任务
+        assigned_task_ids = set()
+        for task, _ in assignments:
+            assigned_task_ids.add(task.id)
+
+        unassigned_count = sum(1 for t in tasks if t.id not in assigned_task_ids)
+
+        # 返回结果字典
+        return {
+            "strategy": self.strategy_type,
+            "total_tasks": len(tasks),
+            "assigned_count": len(assignments),
+            "unassigned_count": unassigned_count,
+            "total_energy": total_energy,
+            "assignments": assignments
+        }
+
+    def plan_uav_path(self, uav, start_point, end_point, obstacles=None, algorithm='straight'):
+        """使用统一的PathPlanner规划无人机路径
+
+        Args:
+            uav: 无人机对象
+            start_point: 起点位置
+            end_point: 终点位置
+            obstacles: 障碍物列表
+            algorithm: 路径规划算法 ('a_star', 'rrt', 'straight')
+
+        Returns:
+            list: 路径点列表
+        """
+        return self.path_planner.plan_path(start_point, end_point, obstacles, algorithm)
 
