@@ -1,8 +1,8 @@
 import yaml
 import os
+import argparse
 
-from src.simulation.environment import Environment
-from src.utils.result_bundle import ResultGenerator
+from src.utils.simulator_helper import build_environment, build_simulator
 
 
 def deep_merge(base, override):
@@ -61,74 +61,74 @@ def load_config(config_path, visited=None):
     return config
 
 
-def run_simulation(config):
+def run_simulation(config, config_file=None):
     """运行仿真
     
     Args:
         config: 场景配置
+        config_file: 配置文件路径
     
     Returns:
-        Environment: 环境对象
+        str: 结果输出目录
     """
-    # 初始化环境
-    map_size = (config['map_size']['width'], config['map_size']['height'])
-    env = Environment(map_size=map_size)
+    # 构建环境
+    env = build_environment(config)
     
-    # 生成场景
-    scenario_config = {
-        'num_tasks': config['num_tasks'],
-        'num_uavs': config['num_uavs'],
-        'num_agvs': config['num_agvs'],
-        'obstacles': config.get('obstacles', {}),
-        'num_no_fly_zones': config.get('num_no_fly_zones', 0),
-        'seed': config.get('seed')
-    }
+    # 确定策略类型
+    strategy_type = config.get('strategy', 'baseline_direct')
     
-    # 添加额外配置项
-    if 'task_density' in config:
-        scenario_config['task_density'] = config['task_density']
-    if 'time_window' in config:
-        scenario_config['time_window'] = config['time_window']
+    # 构建仿真器
+    simulator = build_simulator(env, strategy_type)
     
-    env.generate_scenario(scenario_config)
+    # 确定实验名称
+    if 'experiment_name' in config:
+        experiment_name = config['experiment_name']
+    elif config_file:
+        # 从配置文件名推导实验名称
+        experiment_name = os.path.splitext(os.path.basename(config_file))[0]
+    else:
+        experiment_name = 'default_experiment'
     
-    # 运行仿真
-    simulation_time = 600  # 10小时，延长仿真时间以观察任务完成情况
-    time_step = 1.0  # 1分钟
+    # 确定最大步数
+    max_steps = config.get('max_steps', 600)
     
-    for _ in range(int(simulation_time / time_step)):
-        env.update(time_step)
-    
-    return env
+    output_dir = simulator.run(max_steps=max_steps, experiment_name=experiment_name)
+    return output_dir
+
+
+def _build_arg_parser() -> argparse.ArgumentParser:
+    """构建命令行参数解析器"""
+    parser = argparse.ArgumentParser(description="运行 UAV-AGV 仿真")
+    parser.add_argument("--config", default="configs/scene_large.yaml", help="配置文件路径")
+    parser.add_argument("--strategy", help="策略类型")
+    parser.add_argument("--max-steps", type=int, help="最大仿真步数")
+    return parser
 
 
 def main():
     """主函数"""
-    # 场景配置文件路径
-    config_file = 'configs/scene_large.yaml'  # 只运行一个场景
+    # 解析命令行参数
+    parser = _build_arg_parser()
+    args = parser.parse_args()
+    
+    config_file = args.config
     
     if os.path.exists(config_file):
         print(f"运行场景: {config_file}")
         # 加载配置
         config = load_config(config_file)
         
-        # 运行仿真
-        env = run_simulation(config)
+        # 命令行参数覆盖配置
+        if args.strategy:
+            config['strategy'] = args.strategy
+        if args.max_steps is not None:
+            config['max_steps'] = args.max_steps
         
-        # 生成结果
-        print("正在生成可视化结果...")
-        experiment_name = os.path.splitext(os.path.basename(config_file))[0]
-        result_generator = ResultGenerator(env, experiment_name=experiment_name)
-        result_paths = result_generator.generate_all()
+        # 运行仿真
+        output_dir = run_simulation(config, config_file)
         
         print(f"场景 {config_file} 运行完成")
-        print("生成的文件:")
-        for key, path in result_paths.items():
-            if isinstance(path, list):
-                for i, p in enumerate(path):
-                    print(f"  - {key} {i+1}: {p}")
-            else:
-                print(f"  - {key}: {path}")
+        print(f"结果保存到: {output_dir}")
         print()
     else:
         print(f"配置文件不存在: {config_file}")

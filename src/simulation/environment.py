@@ -1260,9 +1260,16 @@ class Environment:
     def assign_tasks(self):
         """分配任务给空闲的UAV和AGV
         
+        !!! LEGACY METHOD !!!
+        此方法为旧版任务分配逻辑，现已迁移到策略类中
+        仅用于向后兼容，非主流程执行路径
+        
         Returns:
             Dict: 分配结果
         """
+        # 标记为 legacy 方法
+        print("WARNING: Using legacy Environment.assign_tasks() method. This is not the main execution flow.")
+        
         idle_uavs = self.get_idle_uavs()
         idle_agvs = self.get_idle_agvs()
         pending_tasks = [task for task in self.tasks if task.status == "pending"]
@@ -1398,9 +1405,16 @@ class Environment:
     def update(self, time_step=1.0):
         """更新环境状态
         
+        !!! LEGACY METHOD !!!
+        此方法为旧版主流程，现已迁移到 Simulator.run()
+        仅用于向后兼容，非主流程执行路径
+        
         Args:
             time_step: 时间步长（分钟）
         """
+        # 标记为 legacy 方法
+        print("WARNING: Using legacy Environment.update() method. This is not the main execution flow.")
+        
         self.current_time += time_step
         
         # 更新UAV状态
