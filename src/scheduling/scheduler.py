@@ -494,7 +494,6 @@ class Scheduler:
         Args:
             uav: 无人机对象
             agvs: AGV列表
-        """
 
         Returns:
             AGV: 选择的AGV对象，如果没有可用AGV则返回None
