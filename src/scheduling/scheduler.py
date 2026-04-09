@@ -195,16 +195,18 @@ class Scheduler:
             assignments.append((task, best_uav))
 
             # 记录决策日志
+            energy = self.calculate_energy_consumption(best_uav, task)
             dist = calculate_distance(best_uav.position, task.start_point)
             self.logger.info(
-                f"[BASELINE_DIRECT] Assign task {task.id} to UAV {best_uav.id}, "
-                f"distance={dist:.2f}, uav_battery={best_uav.battery}%"
+                f"[BASELINE_DIRECT] Task={task.id} | UAV={best_uav.id} | "
+                f"Distance={dist:.2f} | Battery={best_uav.battery}% | "
+                f"Energy={energy:.2f}"
             )
 
             idle_uavs.remove(best_uav)
 
         self.logger.info(
-            f"[BASELINE_DIRECT] Assignment result: total={len(tasks)}, "
+            f"[BASELINE_DIRECT] Result: total={len(tasks)}, "
             f"assigned={len(assignments)}, unassigned={len(tasks) - len(assignments)}"
         )
 
@@ -273,16 +275,17 @@ class Scheduler:
 
             # 记录决策日志
             agv_dist = calculate_distance(nearest_agv.position, task.start_point)
+            energy = self.calculate_energy_consumption(best_uav, task)
             self.logger.info(
-                f"[RELAY_COOP] Assign task {task.id} to UAV {best_uav.id}, "
-                f"relay_agv={nearest_agv.id}, relay_point={relay_point}, "
-                f"agv_distance={agv_dist:.2f}"
+                f"[RELAY_COOP] Task={task.id} | UAV={best_uav.id} | "
+                f"AGV={nearest_agv.id} | RelayPoint=({relay_point[0]:.1f},{relay_point[1]:.1f}) | "
+                f"AGV_Dist={agv_dist:.2f} | Energy={energy:.2f}"
             )
 
             idle_uavs.remove(best_uav)
 
         self.logger.info(
-            f"[RELAY_COOP] Assignment result: total={len(tasks)}, "
+            f"[RELAY_COOP] Result: total={len(tasks)}, "
             f"assigned={len(assignments)}, unassigned={len(tasks) - len(assignments)}"
         )
 
@@ -340,15 +343,17 @@ class Scheduler:
             total_estimated_energy += min_energy
 
             # 记录决策日志
+            dist = calculate_distance(best_uav.position, task.start_point)
             self.logger.info(
-                f"[ENERGY_PRIORITY] Assign task {task.id} to UAV {best_uav.id}, "
-                f"estimated_energy={min_energy:.2f}, uav_battery={best_uav.battery}%"
+                f"[ENERGY_PRIORITY] Task={task.id} | UAV={best_uav.id} | "
+                f"Distance={dist:.2f} | Battery={best_uav.battery}% | "
+                f"EstEnergy={min_energy:.2f}"
             )
 
             idle_uavs.remove(best_uav)
 
         self.logger.info(
-            f"[ENERGY_PRIORITY] Assignment result: total={len(tasks)}, "
+            f"[ENERGY_PRIORITY] Result: total={len(tasks)}, "
             f"assigned={len(assignments)}, unassigned={len(tasks) - len(assignments)}, "
             f"total_energy={total_estimated_energy:.2f}"
         )
@@ -536,3 +541,97 @@ class Scheduler:
                 )
 
         return charging_assignments
+
+    # ==================== 增强的决策日志和测试支持 ====================
+
+    def reset_tasks_and_uavs(self, tasks, uavs):
+        """重置任务和无人机状态，用于同一场景多次测试
+
+        Args:
+            tasks: 任务列表
+            uavs: 无人机列表
+        """
+        for task in tasks:
+            task.status = "pending"
+            task.assigned_uav = None
+            task.relay_point = None
+            task.assigned_agv = None
+
+        for uav in uavs:
+            uav.task = None
+            uav.path = []
+
+    def run_scenario(self, tasks, uavs, agvs=None):
+        """运行完整场景并返回详细结果
+
+        Args:
+            tasks: 任务列表
+            uavs: 无人机列表
+            agvs: AGV列表（可选）
+
+        Returns:
+            dict: 包含执行结果的字典
+        """
+        if agvs is None:
+            agvs = []
+
+        # 重置状态
+        self.reset_tasks_and_uavs(tasks, uavs)
+
+        # 执行任务分配
+        assignments = self.assign_tasks(tasks, uavs, agvs)
+
+        # 计算总能耗
+        total_energy = 0.0
+        for task, uav in assignments:
+            energy = self.calculate_energy_consumption(uav, task)
+            total_energy += energy
+
+        # 输出汇总日志
+        self.logger.info("=" * 60)
+        self.logger.info(f"[{self.strategy_type.upper()}] 执行结果汇总")
+        self.logger.info(f"  总任务数: {len(tasks)}")
+        self.logger.info(f"  已分配: {len(assignments)}")
+        self.logger.info(f"  未分配: {len(tasks) - len(assignments)}")
+        self.logger.info(f"  预估总能耗: {total_energy:.2f}")
+        self.logger.info("=" * 60)
+
+        return {
+            "strategy": self.strategy_type,
+            "total_tasks": len(tasks),
+            "assigned_count": len(assignments),
+            "unassigned_count": len(tasks) - len(assignments),
+            "total_energy": total_energy,
+            "assignments": assignments
+        }
+
+    @staticmethod
+    def compare_strategies(scenarios, task_list, uav_list, agv_list=None):
+        """对比所有策略的执行结果
+
+        Args:
+            scenarios: 策略列表 ["baseline_direct", "relay_coop", "energy_priority"]
+            task_list: 任务列表（会被重置后复用）
+            uav_list: 无人机列表（会被重置后复用）
+            agv_list: AGV列表（可选）
+
+        Returns:
+            list: 每个策略的执行结果列表
+        """
+        results = []
+
+        for strategy in scenarios:
+            # 创建调度器
+            scheduler = Scheduler(strategy_type=strategy)
+
+            # 复制任务和无人机状态用于测试
+            import copy
+            tasks_copy = copy.deepcopy(task_list)
+            uavs_copy = copy.deepcopy(uav_list)
+            agvs_copy = copy.deepcopy(agv_list) if agv_list else None
+
+            # 运行场景
+            result = scheduler.run_scenario(tasks_copy, uavs_copy, agvs_copy)
+            results.append(result)
+
+        return results
