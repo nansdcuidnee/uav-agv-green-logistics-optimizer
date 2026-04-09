@@ -6,7 +6,7 @@ from .base import BaseStrategy
 
 
 class BaselineDirectStrategy(BaseStrategy):
-    """Assign tasks in FIFO order to idle UAVs."""
+    """Assign tasks in simple FIFO order to idle UAVs."""
 
     def __init__(self):
         super().__init__("baseline_direct")
@@ -31,6 +31,6 @@ class BaselineDirectStrategy(BaseStrategy):
             "assigned_count": len(assignments),
         }
 
-    def select_charging_station(self, uav, environment) -> object:
+    def select_charging_station(self, uav, environment):
         available_agvs = self.get_available_agvs(environment)
         return available_agvs[0] if available_agvs else None

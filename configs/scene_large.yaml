@@ -1,0 +1,38 @@
+# 大型场景配置
+
+# 任务数量
+num_tasks: 50
+
+# 地图大小 (x, y)
+map_size:
+  width: 2000
+  height: 2000
+
+# 无人机数量
+num_uavs: 10
+
+# AGV数量
+num_agvs: 5
+
+# 任务点分布密度（每平方公里任务点数）
+task_density: 12.5
+
+# 障碍物数量与类型
+obstacles:
+  num: 30
+  types:
+    - building
+    - tree
+    - wall
+    - tower
+
+# 禁飞区数量
+num_no_fly_zones: 10
+
+# 时间窗口范围（分钟）
+time_window:
+  min: 15
+  max: 240
+
+# 随机种子
+seed: 44
