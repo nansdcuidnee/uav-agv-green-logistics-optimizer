@@ -1,4 +1,4 @@
-﻿"""Relay cooperative strategy."""
+"""Relay cooperative strategy."""
 
 from typing import Any, Dict
 
@@ -38,6 +38,10 @@ class RelayCoopStrategy(BaseStrategy):
                 nearest_agv.position[0] + direction[0] * self.relay_distance,
                 nearest_agv.position[1] + direction[1] * self.relay_distance,
             )
+
+            # AGV 前移到中继区
+            nearest_agv.position = relay_point
+            nearest_agv.status = "moving_to_relay"
 
             uav = idle_uavs.pop(0)
             uav.assign_task(task)
