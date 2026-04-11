@@ -1,0 +1,65 @@
+extends: base.yaml
+
+# 资格赛场景配置
+experiment_name: qualification
+max_steps: 100
+
+# 环境配置
+environment:
+  map_size: [1000, 1000]
+  obstacles: []
+  no_fly_zones: []
+
+# UAV 配置
+uavs:
+  - id: 1
+    position: [100, 100]
+    battery_capacity: 100.0
+    max_payload: 5.0
+  - id: 2
+    position: [200, 200]
+    battery_capacity: 100.0
+    max_payload: 5.0
+
+# AGV 配置
+agvs:
+  - id: 1
+    position: [50, 50]
+  - id: 2
+    position: [150, 150]
+
+# 任务配置
+tasks:
+  - id: 1
+    start_point: [100, 100]
+    end_point: [500, 500]
+    payload: 3.0
+    priority: 1
+  - id: 2
+    start_point: [200, 200]
+    end_point: [300, 600]
+    payload: 1.0
+    priority: 2
+  - id: 3
+    start_point: [300, 300]
+    end_point: [700, 200]
+    payload: 2.5
+    priority: 3
+  - id: 4
+    start_point: [400, 400]
+    end_point: [100, 600]
+    payload: 1.5
+    priority: 1
+  - id: 5
+    start_point: [500, 500]
+    end_point: [200, 300]
+    payload: 2.0
+    priority: 2
+  - id: 6
+    start_point: [600, 600]
+    end_point: [400, 200]
+    payload: 3.5
+    priority: 3
+
+# 策略配置
+strategy: baseline_direct

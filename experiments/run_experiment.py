@@ -1,4 +1,4 @@
-﻿import argparse
+import argparse
 import random
 import yaml
 import os
@@ -54,9 +54,6 @@ def run_experiment(
     return output_dir
 
 
-
-
-
 def _build_arg_parser() -> argparse.ArgumentParser:
 
     parser = argparse.ArgumentParser(description="Run UAV-AGV experiment.")
@@ -88,15 +85,11 @@ def _build_arg_parser() -> argparse.ArgumentParser:
     return parser
 
 
-
-
-
 def main() -> None:
 
     parser = _build_arg_parser()
 
     args = parser.parse_args()
-
 
 
     # 从配置文件加载参数（如果提供）
@@ -128,7 +121,6 @@ def main() -> None:
             print(f"Warning: Configuration file not found: {config_path}")
 
 
-
     # 命令行参数覆盖配置文件参数
 
     experiment_name = args.experiment_name or config.get('experiment_name', 'default_experiment')
@@ -144,7 +136,6 @@ def main() -> None:
     strategy_type = args.strategy or config.get('strategy', 'baseline_direct')
 
     seed = args.seed if args.seed is not None else config.get('seed', 42)
-
 
 
     run_experiment(
@@ -166,10 +157,6 @@ def main() -> None:
     )
 
 
-
-
-
 if __name__ == "__main__":
 
     main()
-

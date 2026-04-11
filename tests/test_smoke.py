@@ -45,7 +45,7 @@ def _run_once(strategy_type="baseline_direct", seed=42, experiment_name="smoke_t
         Scheduler(),
         strategy_type=strategy_type,
     )
-    output_dir = simulator.run(max_steps=200, experiment_name=experiment_name)
+    output_dir = simulator.run(max_steps=200, experiment_name=experiment_name, result_type="tests")
 
     metrics_file = os.path.join(output_dir, "metrics.json")
     with open(metrics_file, "r", encoding="utf-8") as f:
@@ -60,12 +60,14 @@ def test_smoke_flow_and_required_artifacts():
 
     assert os.path.exists(output_dir), f"result dir does not exist: {output_dir}"
     assert os.path.exists(os.path.join(output_dir, "metrics.json")), "missing metrics.json"
-    assert os.path.exists(os.path.join(output_dir, "records.csv")), "missing records.csv"
-    assert os.path.exists(os.path.join(output_dir, "chart.png")), "missing chart.png"
     assert os.path.exists(os.path.join(output_dir, "metadata.json")), "missing metadata.json"
+    assert (output_path / "records" / "steps.csv").exists(), "missing records/steps.csv"
+    assert (output_path / "records" / "tasks.csv").exists(), "missing records/tasks.csv"
+    assert (output_path / "plots" / "chart.png").exists(), "missing plots/chart.png"
+    assert (output_path / "plots" / "energy_plot.png").exists(), "missing plots/energy_plot.png"
+    assert (output_path / "plots" / "task_plot.png").exists(), "missing plots/task_plot.png"
+    assert output_path.parent.parent.name == "tests", f"unexpected parent dir: {output_path.parent.parent}"
     assert output_path.parent.name == "smoke_test", f"unexpected experiment dir: {output_path.parent}"
-    assert (output_path / "plots" / "energy_plot.png").exists(), "missing energy plot"
-    assert (output_path / "plots" / "task_plot.png").exists(), "missing task plot"
 
     assert metrics["task_completion_rate"] > 0, "task completion rate should be > 0"
 

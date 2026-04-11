@@ -39,6 +39,8 @@ class AGV:
     def __post_init__(self):
         """初始化后验证参数"""
         self._validate_parameters()
+        # 将初始位置添加到历史轨迹
+        self.path_history.append(self.position)
     
     def _validate_parameters(self):
         """验证参数的合理性"""

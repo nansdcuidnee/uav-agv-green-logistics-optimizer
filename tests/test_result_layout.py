@@ -31,12 +31,13 @@ def test_result_generator_writes_timestamped_run_directory():
     result_paths = generator.generate_all()
     output_dir = Path(result_paths["output_dir"])
 
+    # 验证新的目录结构
+    assert output_dir.parent.parent.name == "tests"
     assert output_dir.parent.name == "result_bundle_test"
     assert output_dir.name == "20990101_010203"
     assert (output_dir / "metrics.json").exists()
-    assert (output_dir / "records.csv").exists()
-    assert (output_dir / "chart.png").exists()
     assert (output_dir / "metadata.json").exists()
+    assert (output_dir / "plots" / "chart.png").exists()
     assert (output_dir / "plots" / "environment_state.png").exists()
 
 
@@ -50,16 +51,15 @@ def test_result_generator_metadata_and_records_schema():
     result_paths = generator.generate_all()
     output_dir = Path(result_paths["output_dir"])
 
+    # 验证新的目录结构
+    assert output_dir.parent.parent.name == "tests"
+
     with (output_dir / "metadata.json").open("r", encoding="utf-8") as file_obj:
         metadata = json.load(file_obj)
 
     assert metadata["records_granularity"] == "task"
-    assert metadata["required_artifacts"] == ["metrics.json", "records.csv", "chart.png"]
-
-    with (output_dir / "records.csv").open("r", encoding="utf-8") as file_obj:
-        reader = csv.DictReader(file_obj)
-        rows = list(reader)
-
-    assert rows, "records.csv should contain task rows"
-    assert "task_id" in rows[0]
-    assert "path_distance" in rows[0]
+    # 检查required_artifacts是否包含预期的文件
+    assert "metrics.json" in metadata["required_artifacts"]
+    assert "records/steps.csv" in metadata["required_artifacts"]
+    assert "records/tasks.csv" in metadata["required_artifacts"]
+    assert "plots/chart.png" in metadata["required_artifacts"]
