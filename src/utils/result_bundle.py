@@ -13,7 +13,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 from src.simulation.environment import Environment
-from src.utils.result_layout import REQUIRED_ARTIFACTS, create_result_layout, write_metadata
+from src.utils.result_layout import REQUIRED_ARTIFACTS, create_test_layout, write_metadata
 
 
 class ResultGenerator:
@@ -27,7 +27,7 @@ class ResultGenerator:
         timestamp: str | None = None,
     ) -> None:
         self.environment = environment
-        self.layout = create_result_layout(experiment_name=experiment_name, timestamp=timestamp)
+        self.layout = create_test_layout(test_name=experiment_name, timestamp=timestamp)
         self.output_dir = str(self.layout.run_dir)
 
     def generate_metrics(self) -> str:
@@ -151,7 +151,7 @@ class ResultGenerator:
             axis.grid(True, alpha=0.3)
 
         fig.tight_layout()
-        file_path = self.layout.artifact_path("chart.png")
+        file_path = self.layout.plot_path("chart.png")
         fig.savefig(file_path)
         plt.close(fig)
         return str(file_path)
