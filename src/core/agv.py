@@ -32,12 +32,15 @@ class AGV:
     turning_radius: float = field(default=2.0)
     charging_power: float = field(default=200.0)
     status: str = field(default="idle")  # idle, transporting, charging
-    path: List[Tuple[float, float]] = field(default_factory=list)
+    path: List[Tuple[float, float]] = field(default_factory=list)  # 剩余路径
+    path_history: List[Tuple[float, float]] = field(default_factory=list)  # 历史轨迹
     task: Optional[object] = field(default=None)
     
     def __post_init__(self):
         """初始化后验证参数"""
         self._validate_parameters()
+        # 将初始位置添加到历史轨迹
+        self.path_history.append(self.position)
     
     def _validate_parameters(self):
         """验证参数的合理性"""
@@ -65,7 +68,7 @@ class AGV:
             target_position: 目标位置 (x, y)
         """
         self.position = target_position
-        self.path.append(target_position)
+        self.path_history.append(target_position)
     
     def charge(self, uav):
         """为无人机充电
@@ -73,11 +76,11 @@ class AGV:
         Args:
             uav: 无人机对象
         """
-        # 简单的固定步长充电模型
-        uav.update_battery(20)
+        # 增加充电量，确保充电后能够支撑更长时间的飞行
+        uav.update_battery(50)
         print(
             f"AGV {self.id} charged UAV {uav.id}: "
-            f"{max(0, uav.battery - 20)}% -> {uav.battery}%"
+            f"{max(0, uav.battery - 50)}% -> {uav.battery}%"
         )
     
     def assign_task(self, task):

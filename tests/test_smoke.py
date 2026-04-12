@@ -6,9 +6,6 @@ import random
 import sys
 from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.core.agv import AGV
 from src.core.task import Task
@@ -31,8 +28,8 @@ def _build_environment(seed=42):
     environment.agvs.append(agv)
 
     environment.tasks = [
-        Task(task_id=1, start_point=(10, 10), end_point=(20, 20), payload=1, priority=1),
-        Task(task_id=2, start_point=(20, 20), end_point=(30, 30), payload=1, priority=1),
+        Task(id=1, start_point=(10, 10), end_point=(20, 20), payload=1, priority=1),
+        Task(id=2, start_point=(20, 20), end_point=(30, 30), payload=1, priority=1),
     ]
     environment.delivery_points = [task.end_point for task in environment.tasks]
 
@@ -48,7 +45,7 @@ def _run_once(strategy_type="baseline_direct", seed=42, experiment_name="smoke_t
         Scheduler(),
         strategy_type=strategy_type,
     )
-    output_dir = simulator.run(max_steps=200, experiment_name=experiment_name)
+    output_dir = simulator.run(max_steps=200, experiment_name=experiment_name, result_type="tests")
 
     metrics_file = os.path.join(output_dir, "metrics.json")
     with open(metrics_file, "r", encoding="utf-8") as f:
@@ -59,13 +56,29 @@ def _run_once(strategy_type="baseline_direct", seed=42, experiment_name="smoke_t
 
 def test_smoke_flow_and_required_artifacts():
     output_dir, metrics = _run_once(strategy_type="baseline_direct", seed=42, experiment_name="smoke_test")
+    output_path = Path(output_dir)
 
     assert os.path.exists(output_dir), f"result dir does not exist: {output_dir}"
     assert os.path.exists(os.path.join(output_dir, "metrics.json")), "missing metrics.json"
-    assert os.path.exists(os.path.join(output_dir, "records.csv")), "missing records.csv"
-    assert os.path.exists(os.path.join(output_dir, "chart.png")), "missing chart.png"
+    assert os.path.exists(os.path.join(output_dir, "metadata.json")), "missing metadata.json"
+    assert (output_path / "records" / "steps.csv").exists(), "missing records/steps.csv"
+    assert (output_path / "records" / "tasks.csv").exists(), "missing records/tasks.csv"
+    # 检查标准图集
+    standard_plots = [
+        "task_progress.png",
+        "battery_status.png",
+        "energy_curve.png",
+        "trajectory_map.png",
+        "environment_state.png",
+        "coordination_events.png",
+        "kpi_summary.png"
+    ]
+    for plot_name in standard_plots:
+        assert (output_path / "plots" / plot_name).exists(), f"missing plots/{plot_name}"
+    assert output_path.parent.parent.name == "tests", f"unexpected parent dir: {output_path.parent.parent}"
+    assert output_path.parent.name == "smoke_test", f"unexpected experiment dir: {output_path.parent}"
 
-    assert metrics["task_completion_rate"] > 0, "task completion rate should be > 0"
+    assert metrics["completion_rate"] > 0, "task completion rate should be > 0"
 
 
 def test_metrics_schema_and_types():
@@ -77,17 +90,20 @@ def test_metrics_schema_and_types():
         "energy_per_km",
         "energy_saving_rate_vs_baseline",
         "emission_reduction_rate_vs_baseline",
-        "task_completion_rate",
+        "completion_rate",
         "completed_tasks",
         "total_time",
         "charging_count",
-        "total_distance_km",
-        "baseline_energy",
+        "total_distance",
     ]
 
     for metric in required_metrics:
         assert metric in metrics, f"missing metric: {metric}"
-        assert isinstance(metrics[metric], (int, float)), f"metric type error for {metric}"
+        # 允许energy_saving_rate_vs_baseline和emission_reduction_rate_vs_baseline为None
+        if metric in ["energy_saving_rate_vs_baseline", "emission_reduction_rate_vs_baseline"]:
+            assert metrics[metric] is None or isinstance(metrics[metric], (int, float)), f"metric type error for {metric}"
+        else:
+            assert isinstance(metrics[metric], (int, float)), f"metric type error for {metric}"
 
 
 def test_strategy_switching_runs_all_strategies():

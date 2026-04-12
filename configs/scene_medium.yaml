@@ -1,12 +1,11 @@
 # 中型场景配置
+# 继承基础配置
+extends: base.yaml
+
+description: "中型场景配置，测试系统在中等负载下的性能"
 
 # 任务数量
 num_tasks: 30
-
-# 地图大小 (x, y)
-map_size:
-  width: 1000
-  height: 1000
 
 # 无人机数量
 num_uavs: 5
@@ -19,7 +18,7 @@ task_density: 30
 
 # 障碍物数量与类型
 obstacles:
-  num: 15
+  count: 15  # 新字段
   types:
     - building
     - tree

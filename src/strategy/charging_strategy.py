@@ -3,9 +3,6 @@ import os
 import matplotlib.pyplot as plt
 import time
 
-# 添加项目根目录到Python导入路径
-# 这样无论是从项目根目录运行还是直接运行此文件，都能正确导入模块
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from src.planning.path_planner import PathPlanner
 from src.energy.energy_model import EnergyModel
@@ -233,7 +230,11 @@ class ChargingStrategy:
                         bbox=dict(facecolor='white', alpha=0.7, boxstyle='round'))
             
             # 绘制无人机路径
-            if uav.path and len(uav.path) > 1:
+            if hasattr(uav, 'path_history') and uav.path_history and len(uav.path_history) > 1:
+                path_x = [point[0] for point in uav.path_history]
+                path_y = [point[1] for point in uav.path_history]
+                self.ax.plot(path_x, path_y, 'b--', linewidth=1, label='UAV Path')
+            elif uav.path and len(uav.path) > 1:
                 path_x = [point[0] for point in uav.path]
                 path_y = [point[1] for point in uav.path]
                 self.ax.plot(path_x, path_y, 'b--', linewidth=1, label='UAV Path')

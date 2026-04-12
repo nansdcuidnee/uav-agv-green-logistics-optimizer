@@ -370,8 +370,9 @@ class PathPlanner:
             if current_pos == end_point:
                 return self._reconstruct_path(current_node)
             
-            # 将当前节点加入关闭集合
-            closed_set.add(current_pos)
+            # 将当前节点加入关闭集合，对位置进行四舍五入以减少集合大小
+            rounded_pos = (round(current_pos[0], 1), round(current_pos[1], 1))
+            closed_set.add(rounded_pos)
             
             # 获取邻居节点
             neighbors = self._get_neighbors(current_node, end_point, obstacles)
@@ -379,8 +380,9 @@ class PathPlanner:
             for neighbor in neighbors:
                 neighbor_pos = neighbor.position
                 
-                # 检查邻居节点是否在关闭集合中
-                if neighbor_pos in closed_set:
+                # 检查邻居节点是否在关闭集合中，使用四舍五入后的位置
+                rounded_neighbor_pos = (round(neighbor_pos[0], 1), round(neighbor_pos[1], 1))
+                if rounded_neighbor_pos in closed_set:
                     continue
                 
                 # 检查邻居节点是否在开放列表中
@@ -604,32 +606,17 @@ class PathPlanner:
             if not start_point or not end_point:
                 raise TypeError("Start and end points must be provided")
             
-            # 首先使用最近邻算法规划中间停靠点的顺序
-            if not stops:
-                return self.plan_path(start_point, end_point, obstacles)
-            
-            # 验证停靠点列表
-            if not hasattr(stops, '__iter__'):
-                raise TypeError("Stops must be an iterable")
-            
-            # 使用最近邻算法规划中间停靠点的顺序
-            optimized_stops = self.nearest_neighbor(start_point, stops)
-            
-            # 构建完整路径：起点 -> 优化后的停靠点 -> 终点
+            # 构建完整路径：起点 -> 停靠点 -> 终点
             path = [start_point]
             current_point = start_point
             
-            # 为每个停靠点规划路径
-            for stop in optimized_stops[1:]:
-                segment_path = self.plan_path(current_point, stop, obstacles)
-                if segment_path:
-                    path.extend(segment_path[1:])  # 避免重复添加起点
-                    current_point = stop
+            # 为每个停靠点添加直线路径
+            for stop in stops:
+                path.append(stop)
+                current_point = stop
             
-            # 规划从最后一个停靠点到终点的路径
-            final_path = self.plan_path(current_point, end_point, obstacles)
-            if final_path:
-                path.extend(final_path[1:])  # 避免重复添加起点
+            # 添加到终点的直线路径
+            path.append(end_point)
             
             return path
         except (TypeError, ValueError) as e:
