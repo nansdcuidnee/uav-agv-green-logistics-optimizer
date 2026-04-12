@@ -1402,6 +1402,18 @@ class Environment:
         
         return result
     
+    def copy(self):
+        """创建环境的副本"""
+        new_env = Environment(map_size=self.map_size)
+        new_env.tasks = self.tasks.copy()
+        new_env.uavs = self.uavs.copy()
+        new_env.agvs = self.agvs.copy()
+        new_env.delivery_points = self.delivery_points.copy()
+        new_env.obstacles = self.obstacles.copy()
+        new_env.no_fly_zones = self.no_fly_zones.copy()
+        new_env.current_time = self.current_time
+        return new_env
+    
     def update(self, time_step=1.0):
         """更新环境状态
         
