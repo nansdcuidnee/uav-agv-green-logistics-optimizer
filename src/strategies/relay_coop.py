@@ -17,6 +17,7 @@ class RelayCoopStrategy(BaseStrategy):
         pending_tasks = self.get_pending_tasks(environment)
 
         assignments = []
+        actions = []
 
         for task in pending_tasks:
             if not idle_uavs:
@@ -39,16 +40,26 @@ class RelayCoopStrategy(BaseStrategy):
                 nearest_agv.position[1] + direction[1] * self.relay_distance,
             )
 
-            # AGV 前移到中继区
-            nearest_agv.position = relay_point
-            nearest_agv.status = "moving_to_relay"
+            # 计算 AGV 移动距离
+            agv_move_distance = ((nearest_agv.position[0] - relay_point[0]) ** 2 + (nearest_agv.position[1] - relay_point[1]) ** 2) ** 0.5
+            
+            # 记录 AGV 移动信息到任务
+            task.agv_move_distance = agv_move_distance
+            task.relay_point = relay_point
+            task.assigned_agv = nearest_agv
+
+            # 添加移动AGV的行动意图
+            actions.append({
+                "action": "move_agv_to_relay",
+                "agv_id": nearest_agv.id,
+                "relay_point": relay_point,
+                "task_id": task.id
+            })
 
             uav = idle_uavs.pop(0)
             uav.assign_task(task)
-            task.status = "in_progress"
+            task.status = "waiting_for_agv"  # 任务状态改为等待AGV
             task.assigned_uav = uav
-            task.relay_point = relay_point
-            task.assigned_agv = nearest_agv
 
             assignments.append(
                 {
@@ -62,6 +73,7 @@ class RelayCoopStrategy(BaseStrategy):
         return {
             "strategy": self.name,
             "assignments": assignments,
+            "actions": actions,
             "assigned_count": len(assignments),
         }
 

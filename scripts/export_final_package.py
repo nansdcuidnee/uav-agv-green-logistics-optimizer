@@ -64,45 +64,37 @@ def export_final_package(run_dir, comparison_dir, package_name):
     else:
         print("records directory not found")
     
-    # Copy strategy_compare.png from specified comparison directory
-    if comparison_dir:
-        strategy_compare_file = Path(comparison_dir) / "plots" / "strategy_compare.png"
-        if strategy_compare_file.exists():
-            shutil.copy2(strategy_compare_file, layout.artifact_path("strategy_compare.png"))
-            print(f"Copied strategy_compare.png from {strategy_compare_file}")
-        else:
-            print("strategy_compare.png not found in specified comparison directory")
-            raise FileNotFoundError("strategy_compare.png not found in specified comparison directory")
+    # Read comparison_summary.json to get baseline information
+    comparison_summary_file = Path(comparison_dir) / "comparison_summary.json"
+    if comparison_summary_file.exists():
+        with open(comparison_summary_file, "r", encoding="utf-8") as f:
+            comparison_summary = json.load(f)
+        print(f"Read comparison_summary.json, baseline strategy: {comparison_summary.get('baseline_strategy_name')}")
     else:
-        # Fallback to latest comparison if none specified
-        comparisons_dir = Path("results/comparisons")
-        if comparisons_dir.exists():
-            # Get all comparison directories
-            compare_dirs = []
-            for compare_name_dir in comparisons_dir.iterdir():
-                if compare_name_dir.is_dir():
-                    for timestamp_dir in compare_name_dir.iterdir():
-                        if timestamp_dir.is_dir():
-                            compare_dirs.append(timestamp_dir)
-            
-            if compare_dirs:
-                # Sort by modification time
-                compare_dirs.sort(key=lambda x: x.stat().st_mtime, reverse=True)
-                latest_compare_dir = compare_dirs[0]
-                
-                strategy_compare_file = latest_compare_dir / "plots" / "strategy_compare.png"
-                if strategy_compare_file.exists():
-                    shutil.copy2(strategy_compare_file, layout.artifact_path("strategy_compare.png"))
-                    print(f"Copied strategy_compare.png from {strategy_compare_file}")
-                else:
-                    print("strategy_compare.png not found in latest comparison directory")
-                    raise FileNotFoundError("strategy_compare.png not found in latest comparison directory")
+        print("comparison_summary.json not found")
+        raise FileNotFoundError("comparison_summary.json not found in specified comparison directory")
+    
+    # Copy all comparison plots
+    plots_dir = Path(comparison_dir) / "plots"
+    if plots_dir.exists():
+        comparison_plots = [
+            "total_energy_compare.png",
+            "completion_rate_compare.png",
+            "on_time_rate_compare.png",
+            "avg_delivery_time_compare.png",
+            "energy_saving_rate_compare.png"
+        ]
+        
+        for plot_file in comparison_plots:
+            source_file = plots_dir / plot_file
+            if source_file.exists():
+                shutil.copy2(source_file, layout.artifact_path(plot_file))
+                print(f"Copied {plot_file} from {source_file}")
             else:
-                print("No comparison directories found")
-                raise FileNotFoundError("No comparison directories found")
-        else:
-            print("results/comparisons directory not found")
-            raise FileNotFoundError("results/comparisons directory not found")
+                print(f"{plot_file} not found in comparison directory")
+    else:
+        print("plots directory not found in comparison directory")
+        raise FileNotFoundError("plots directory not found in comparison directory")
     
     # Generate and copy network_topology.png
     network_topology_file = layout.artifact_path("network_topology.png")
@@ -125,35 +117,21 @@ def export_final_package(run_dir, comparison_dir, package_name):
 def main():
     """Export final package."""
     parser = argparse.ArgumentParser(description="Export final package for competition")
-    parser.add_argument("--run-dir", type=str, help="Run directory to export from")
-    parser.add_argument("--comparison-dir", type=str, help="Comparison directory to export from")
+    parser.add_argument("--run-dir", type=str, required=True, help="Run directory to export from")
+    parser.add_argument("--comparison-dir", type=str, required=True, help="Comparison directory to export from")
     parser.add_argument("--package-name", type=str, default="qualification_demo", help="Package name")
     
     args = parser.parse_args()
     
-    if not args.run_dir:
-        # Use the most recent run directory
-        runs_dir = Path("results/runs")
-        if runs_dir.exists():
-            # Get all run directories
-            run_dirs = []
-            for scene_dir in runs_dir.iterdir():
-                if scene_dir.is_dir():
-                    for timestamp_dir in scene_dir.iterdir():
-                        if timestamp_dir.is_dir():
-                            run_dirs.append(timestamp_dir)
-            
-            if run_dirs:
-                # Sort by modification time
-                run_dirs.sort(key=lambda x: x.stat().st_mtime, reverse=True)
-                args.run_dir = str(run_dirs[0])
-                print(f"Using most recent run: {args.run_dir}")
-            else:
-                print("No run directories found")
-                sys.exit(1)
-        else:
-            print("results/runs directory not found")
-            sys.exit(1)
+    # Verify run directory exists
+    if not Path(args.run_dir).exists():
+        print(f"Run directory not found: {args.run_dir}")
+        sys.exit(1)
+    
+    # Verify comparison directory exists
+    if not Path(args.comparison_dir).exists():
+        print(f"Comparison directory not found: {args.comparison_dir}")
+        sys.exit(1)
     
     export_final_package(args.run_dir, args.comparison_dir, args.package_name)
 
