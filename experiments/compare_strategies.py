@@ -253,11 +253,47 @@ def main():
     
     # 1. completion_rate_compare.png
     plt.figure(figsize=(10, 6))
-    completion_rate = [r["completion_rate"] * 100 for r in results]  # 转换为百分比
+    completion_rate = []
+    all_invalid = True
+    
+    # 打印每个策略的 completion_rate 值
+    print("=== Completion Rate Debug Info ===")
+    for i, r in enumerate(results):
+        strategy = r["strategy"]
+        run_dir = r["run_dir"]
+        rate = r.get("completion_rate")
+        
+        print(f"Strategy: {strategy}")
+        print(f"  Run Dir: {run_dir}")
+        print(f"  Completion Rate: {rate}")
+        
+        if rate is not None and rate >= 0:
+            completion_rate.append(rate * 100)  # 转换为百分比
+            all_invalid = False
+        else:
+            completion_rate.append(0.0)
+            print(f"  Warning: Invalid completion_rate value")
+            
+            # 打印 metrics.json 中的实际键
+            metrics_file = Path(run_dir) / "metrics.json"
+            if metrics_file.exists():
+                with open(metrics_file, "r", encoding="utf-8") as f:
+                    metrics_data = json.load(f)
+                print(f"  Metrics keys: {list(metrics_data.keys())}")
+    
+    if all_invalid:
+        raise ValueError("All completion_rate values are invalid")
+    
     plt.bar(strategies, completion_rate)
     plt.xlabel("Strategy")
     plt.ylabel("Completion Rate (%)")
-    plt.title("Completion Rate by Strategy")
+    plt.title("Task Completion Rate by Strategy")
+    plt.ylim(0, 100)  # 设置 y 轴范围为 0 到 100
+    
+    # 在柱子上方显示数值标签
+    for i, v in enumerate(completion_rate):
+        plt.text(i, v + 1, f"{v:.1f}%", ha='center', va='bottom')
+    
     plt.savefig(layout.plot_path("completion_rate_compare.png"))
     plt.close()
     

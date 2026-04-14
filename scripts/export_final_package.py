@@ -49,7 +49,7 @@ def export_final_package(run_dir, comparison_dir, package_name):
     # Copy chart.png as trajectory.png
     trajectory_file = Path(run_dir) / "plots" / "chart.png"
     if trajectory_file.exists():
-        shutil.copy2(trajectory_file, layout.artifact_path("trajectory.png"))
+        shutil.copy2(trajectory_file, layout.plot_path("trajectory.png"))
         print("Copied trajectory.png")
     else:
         print("chart.png not found")
@@ -88,7 +88,7 @@ def export_final_package(run_dir, comparison_dir, package_name):
         for plot_file in comparison_plots:
             source_file = plots_dir / plot_file
             if source_file.exists():
-                shutil.copy2(source_file, layout.artifact_path(plot_file))
+                shutil.copy2(source_file, layout.plot_path(plot_file))
                 print(f"Copied {plot_file} from {source_file}")
             else:
                 print(f"{plot_file} not found in comparison directory")
@@ -97,7 +97,7 @@ def export_final_package(run_dir, comparison_dir, package_name):
         raise FileNotFoundError("plots directory not found in comparison directory")
     
     # Generate and copy network_topology.png
-    network_topology_file = layout.artifact_path("network_topology.png")
+    network_topology_file = layout.plot_path("network_topology.png")
     generate_network_topology_script = Path(__file__).parent / "generate_network_topology.py"
     if generate_network_topology_script.exists():
         try:

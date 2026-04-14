@@ -406,8 +406,16 @@ class Simulator:
                         if not (hasattr(agv, 'status') and agv.status == "moving_to_relay"):
                             # AGV 已到达，规划路径
                             relay_point = uav.task.relay_point
+                            # 转换障碍物为 (x, y, radius) 列表格式
+                            obstacles = []
+                            if hasattr(self.environment, 'obstacles'):
+                                for obstacle in self.environment.obstacles:
+                                    if hasattr(obstacle, 'position') and hasattr(obstacle, 'radius'):
+                                        obstacles.append((obstacle.position[0], obstacle.position[1], obstacle.radius))
+                                    elif isinstance(obstacle, (list, tuple)) and len(obstacle) >= 3:
+                                        obstacles.append((obstacle[0], obstacle[1], obstacle[2]))
                             uav.path = self.path_planner.plan_multi_stop_path(
-                                uav.position, [relay_point], uav.task.end_point
+                                uav.position, [relay_point], uav.task.end_point, obstacles
                             )
                             # 记录中继协同事件
                             if not hasattr(uav.task, "relay_event_recorded"):
@@ -422,7 +430,15 @@ class Simulator:
                                 uav.task.relay_event_recorded = True
                     else:
                         # 其他策略或 AGV 已到达，直接规划到终点
-                        uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point)
+                        # 转换障碍物为 (x, y, radius) 列表格式
+                        obstacles = []
+                        if hasattr(self.environment, 'obstacles'):
+                            for obstacle in self.environment.obstacles:
+                                if hasattr(obstacle, 'position') and hasattr(obstacle, 'radius'):
+                                    obstacles.append((obstacle.position[0], obstacle.position[1], obstacle.radius))
+                                elif isinstance(obstacle, (list, tuple)) and len(obstacle) >= 3:
+                                    obstacles.append((obstacle[0], obstacle[1], obstacle[2]))
+                        uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point, obstacles)
 
             if uav.path:
                 next_point = uav.path[0]

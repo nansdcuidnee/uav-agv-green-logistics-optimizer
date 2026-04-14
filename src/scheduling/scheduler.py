@@ -400,24 +400,33 @@ class Scheduler:
         Returns:
             float: 预估能耗
         """
+        # 计算路径长度的辅助函数
+        def calculate_path_length(path):
+            if len(path) < 2:
+                return 0.0
+            length = 0.0
+            for i in range(len(path) - 1):
+                length += self.path_planner._calculate_distance(path[i], path[i+1])
+            return length
+
         # 使用 PathPlanner 计算实际路径距离
         # 从 UAV 当前位置到任务起点
         path_to_start = self.path_planner.plan_path(
-            uav.position, task.start_point, obstacles, algorithm='straight'
+            uav.position, task.start_point, obstacles
         )
-        distance_to_start = self.path_planner._calculate_distance(
-            uav.position, task.start_point
-        )
+        distance_to_start = calculate_path_length(path_to_start)
 
         # 从任务起点到终点
-        task_distance = self.path_planner._calculate_distance(
-            task.start_point, task.end_point
+        path_task = self.path_planner.plan_path(
+            task.start_point, task.end_point, obstacles
         )
+        task_distance = calculate_path_length(path_task)
 
         # 从任务终点返回 UAV 当前位置
-        return_distance = self.path_planner._calculate_distance(
-            task.end_point, uav.position
+        path_return = self.path_planner.plan_path(
+            task.end_point, uav.position, obstacles
         )
+        return_distance = calculate_path_length(path_return)
 
         total_distance = distance_to_start + task_distance + return_distance
 
@@ -466,8 +475,12 @@ class Scheduler:
         if not self.can_complete_task(uav, task):
             return 0.0
 
-        # 1. 距离评分：无人机当前位置到任务起点的距离
-        distance = calculate_distance(uav.position, task.start_point)
+        # 1. 距离评分：无人机当前位置到任务起点的距离（使用规划路径）
+        path = self.path_planner.plan_path(uav.position, task.start_point)
+        distance = 0.0
+        if len(path) >= 2:
+            for i in range(len(path) - 1):
+                distance += self.path_planner._calculate_distance(path[i], path[i+1])
         distance_score = 1 - min(distance / self.max_distance, 1.0)
 
         # 2. 电量评分：电量越高的无人机越适合
@@ -516,10 +529,17 @@ class Scheduler:
             if not idle_uavs:
                 break
 
-            # 选择距离任务起点最近的无人机
+            # 选择距离任务起点最近的无人机（使用规划路径）
+            def get_planned_distance(uav):
+                path = self.path_planner.plan_path(uav.position, task.start_point)
+                distance = 0.0
+                if len(path) >= 2:
+                    for i in range(len(path) - 1):
+                        distance += self.path_planner._calculate_distance(path[i], path[i+1])
+                return distance
             best_uav = min(
                 idle_uavs,
-                key=lambda uav: calculate_distance(uav.position, task.start_point)
+                key=get_planned_distance
             )
 
             # 检查任务可行性
@@ -601,10 +621,17 @@ class Scheduler:
                 nearest_agv.position[1] + direction[1] * relay_distance,
             )
 
-            # 选择最近的UAV
+            # 选择最近的UAV（使用规划路径）
+            def get_planned_distance(uav):
+                path = self.path_planner.plan_path(uav.position, task.start_point)
+                distance = 0.0
+                if len(path) >= 2:
+                    for i in range(len(path) - 1):
+                        distance += self.path_planner._calculate_distance(path[i], path[i+1])
+                return distance
             best_uav = min(
                 idle_uavs,
-                key=lambda uav: calculate_distance(uav.position, task.start_point)
+                key=get_planned_distance
             )
 
             # 检查任务可行性
@@ -659,18 +686,30 @@ class Scheduler:
             if not idle_uavs:
                 break
 
-            # 计算每个UAV执行任务的预估能耗
+            # 计算每个UAV执行任务的预估能耗（使用规划路径）
             uav_energy_costs = []
             for uav in idle_uavs:
-                distance = calculate_distance(uav.position, task.start_point)
-                distance += calculate_distance(task.start_point, task.end_point)
+                # 计算规划路径长度
+                path_to_start = self.path_planner.plan_path(uav.position, task.start_point)
+                distance_to_start = 0.0
+                if len(path_to_start) >= 2:
+                    for i in range(len(path_to_start) - 1):
+                        distance_to_start += self.path_planner._calculate_distance(path_to_start[i], path_to_start[i+1])
+                
+                path_task = self.path_planner.plan_path(task.start_point, task.end_point)
+                task_distance = 0.0
+                if len(path_task) >= 2:
+                    for i in range(len(path_task) - 1):
+                        task_distance += self.path_planner._calculate_distance(path_task[i], path_task[i+1])
+                
+                total_distance = distance_to_start + task_distance
 
                 # 能耗因子：电量越低，能耗越高
                 battery_factor = 1.0 + max(0.0, (100.0 - uav.battery) / 100.0 * 0.3)
                 payload = float(getattr(task, 'payload', 1.0))
                 payload_factor = 1.0 + payload * 0.1
 
-                estimated_energy = distance * battery_factor * payload_factor
+                estimated_energy = total_distance * battery_factor * payload_factor
                 uav_energy_costs.append((uav, estimated_energy))
 
             # 选择能耗最低的UAV
