@@ -532,7 +532,7 @@ class PathPlanner:
     
     def plan_path(self, start_point, end_point, obstacles=None, algorithm='a_star', smooth=True, simplify=True):
         """规划从起点到终点的路径
-        
+
         Args:
             start_point: 起点位置
             end_point: 终点位置
@@ -540,10 +540,10 @@ class PathPlanner:
             algorithm: 路径规划算法，可选值: 'a_star', 'rrt', 'straight'
             smooth: 是否平滑路径
             simplify: 是否简化路径
-            
+
         Returns:
             list: 路径点列表
-        
+
         Raises:
             TypeError: 如果输入参数类型不正确
             ValueError: 如果算法名称无效
@@ -566,6 +566,8 @@ class PathPlanner:
                     if simplify:
                         path = self._simplify_path(path)
                     return path
+                # A* 算法失败，回退到直线算法
+                return [start_point, end_point]
             elif algorithm == 'rrt':
                 path = self.rrt(start_point, end_point, obstacles)
                 if path:
@@ -574,14 +576,10 @@ class PathPlanner:
                     if simplify:
                         path = self._simplify_path(path)
                     return path
+                # RRT 算法失败，回退到直线算法
+                return [start_point, end_point]
             
-            # 如果算法失败或选择直线算法，返回直线路径
-            # 检查直线是否与障碍物碰撞
-            if obstacles:
-                # 简单的直线碰撞检测
-                # 实际项目中可能需要更复杂的碰撞检测
-                pass
-            
+            # 选择直线算法
             return [start_point, end_point]
         except (TypeError, ValueError) as e:
             raise TypeError(f"Invalid input: {str(e)}")
@@ -597,7 +595,7 @@ class PathPlanner:
             
         Returns:
             list: 路径点列表
-        
+            
         Raises:
             TypeError: 如果输入参数类型不正确
         """
@@ -610,13 +608,17 @@ class PathPlanner:
             path = [start_point]
             current_point = start_point
             
-            # 为每个停靠点添加直线路径
+            # 为每个停靠点规划路径
             for stop in stops:
-                path.append(stop)
-                current_point = stop
+                segment_path = self.plan_path(current_point, stop, obstacles)
+                if segment_path and len(segment_path) > 1:
+                    path.extend(segment_path[1:])  # 避免重复添加起点
+                    current_point = stop
             
-            # 添加到终点的直线路径
-            path.append(end_point)
+            # 添加到终点的路径
+            segment_path = self.plan_path(current_point, end_point, obstacles)
+            if segment_path and len(segment_path) > 1:
+                path.extend(segment_path[1:])  # 避免重复添加起点
             
             return path
         except (TypeError, ValueError) as e:
