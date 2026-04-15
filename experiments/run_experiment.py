@@ -62,25 +62,25 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 
     parser.add_argument("--experiment-name", default="default_experiment")
 
-    parser.add_argument("--num-uavs", type=int, default=2)
+    parser.add_argument("--num-uavs", type=int, default=None)
 
-    parser.add_argument("--num-agvs", type=int, default=2)
+    parser.add_argument("--num-agvs", type=int, default=None)
 
-    parser.add_argument("--num-tasks", type=int, default=3)
+    parser.add_argument("--num-tasks", type=int, default=None)
 
-    parser.add_argument("--max-steps", type=int, default=50)
+    parser.add_argument("--max-steps", type=int, default=None)
 
     parser.add_argument(
 
         "--strategy",
 
-        default="baseline_direct",
+        default=None,
 
         choices=["baseline_direct", "relay_coop", "energy_priority"],
 
     )
 
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seed", type=int, default=None)
 
     return parser
 

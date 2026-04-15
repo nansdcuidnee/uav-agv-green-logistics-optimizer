@@ -31,15 +31,21 @@ def export_final_package(run_dir, comparison_dir, package_name):
         print("metrics.json not found")
     
     # Copy communication_log.csv
-    communication_log_file = Path(run_dir) / "communication_log.csv"
+    communication_log_file = Path(run_dir) / "records" / "communication_log.csv"
+    if not communication_log_file.exists():
+        # 兼容旧位置
+        communication_log_file = Path(run_dir) / "communication_log.csv"
     if communication_log_file.exists():
         shutil.copy2(communication_log_file, layout.artifact_path("communication_log.csv"))
         print("Copied communication_log.csv")
     else:
         print("communication_log.csv not found")
-    
+
     # Copy event_timeline.txt
-    event_timeline_file = Path(run_dir) / "event_timeline.txt"
+    event_timeline_file = Path(run_dir) / "records" / "event_timeline.txt"
+    if not event_timeline_file.exists():
+        # 兼容旧位置
+        event_timeline_file = Path(run_dir) / "event_timeline.txt"
     if event_timeline_file.exists():
         shutil.copy2(event_timeline_file, layout.artifact_path("event_timeline.txt"))
         print("Copied event_timeline.txt")

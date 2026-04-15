@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-运行 relay_coop 策略的脚本
+运行 energy_priority 策略的脚本
 """
 
 from src.simulation.environment import Environment
@@ -11,8 +11,8 @@ from src.scheduling.scheduler import Scheduler
 
 
 def main():
-    """运行 relay_coop 策略"""
-    print("=== 运行 relay_coop 策略 ===")
+    """运行 energy_priority 策略"""
+    print("=== 运行 energy_priority 策略 ===")
     
     # 创建环境
     env = Environment(map_size=(1000, 1000))
@@ -42,11 +42,11 @@ def main():
         energy_model=EnergyModel(),
         path_planner=PathPlanner(),
         scheduler=Scheduler(),
-        strategy_type="relay_coop"  # 指定策略
+        strategy_type="energy_priority"  # 指定策略
     )
     
     # 运行仿真
-    output_dir = simulator.run(max_steps=200, experiment_name="relay_coop", result_type="runs")
+    output_dir = simulator.run(max_steps=200, experiment_name="energy_priority", result_type="runs")
     print(f"结果保存到: {output_dir}")
 
 
