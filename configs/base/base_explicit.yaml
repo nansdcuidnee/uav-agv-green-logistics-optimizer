@@ -1,0 +1,39 @@
+# 显式场景基础配置
+# 通用默认配置项，explicit 场景通过 extends 继承
+
+description: "显式场景基础配置，提供通用默认值"
+scene_type: explicit
+
+# 地图尺寸（单位：米）
+# 建议范围：1000-5000
+map_size:
+  width: 1000
+  height: 1000
+
+# 环境配置
+environment:
+  map_size:
+    width: 1000
+    height: 1000
+  obstacles: []
+  no_fly_zones: []
+
+# 时间窗口配置
+time_window:
+  # 时间窗口最小值（单位：分钟）
+  # 建议范围：0-60
+  min: 0
+  # 时间窗口最大值（单位：分钟）
+  # 建议范围：30-120
+  max: 60
+  # 是否启用时间窗口
+  enabled: true
+
+# 策略配置
+strategy: baseline_direct
+
+# 最大仿真步数
+max_steps: 100
+
+# 随机种子（用于复现场景）
+seed: 42

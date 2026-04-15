@@ -1,12 +1,16 @@
-extends: base.yaml
-
 # 资格赛场景配置
+# 继承显式场景基础配置
+extends: ../base/base_explicit.yaml
+
 experiment_name: qualification
 max_steps: 100
+scene_type: explicit
 
 # 环境配置
 environment:
-  map_size: [1000, 1000]
+  map_size:
+    width: 1000
+    height: 1000
   obstacles: []
   no_fly_zones: []
 
