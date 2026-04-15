@@ -3,8 +3,9 @@ from src.utils.math_utils import calculate_distance
 from src.planning.path_planner import PathPlanner
 from config.config import (
     UAV_CHARGE_THRESHOLD, ALPHA, BETA, GAMMA, DELTA,
-    MAP_SIZE, UAV_SPEED, AGV_SPEED, AGV_CHARGING_CAPACITY,
-    BASE_ENERGY_CONSUMPTION, PAYLOAD_ENERGY_FACTOR
+    MAP_SIZE, UAV_SPEED, AGV_SPEED, AGV_CHARGE_RATE_PER_STEP,
+    BASE_ENERGY_CONSUMPTION, PAYLOAD_ENERGY_FACTOR,
+    WIND_SPEED, WIND_ENERGY_FACTOR
 )
 
 
@@ -110,8 +111,10 @@ class Scheduler:
         distance_energy = total_distance / UAV_SPEED * BASE_ENERGY_CONSUMPTION
         # 负载能耗
         payload_energy = task_distance * PAYLOAD_ENERGY_FACTOR if task.payload > 0 else 0
+        # 风速能耗
+        wind_energy = total_distance * WIND_SPEED * WIND_ENERGY_FACTOR
 
-        return distance_energy + payload_energy
+        return distance_energy + payload_energy + wind_energy
 
     def can_complete_task(self, uav, task):
         """检查无人机是否有足够电量完成任务

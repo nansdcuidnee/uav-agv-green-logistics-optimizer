@@ -1,4 +1,5 @@
 """仿真器构建辅助模块"""
+from config.config import UAV_INIT_BATTERY, AGV_INIT_BATTERY
 from src.simulation.environment import Environment
 from src.simulation.simulator import Simulator
 from src.energy.energy_model import EnergyModel
@@ -49,7 +50,7 @@ def build_environment(config):
                 id=uav_config['id'],
                 position=tuple(uav_config['position']),
                 max_payload=uav_config.get('max_payload', 5.0),
-                battery=uav_config.get('battery_capacity', 100.0)
+                battery=uav_config.get('battery_capacity', UAV_INIT_BATTERY)
             )
             env.uavs.append(uav)
         

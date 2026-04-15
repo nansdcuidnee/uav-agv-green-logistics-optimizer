@@ -1,10 +1,11 @@
 # 小型场景配置
 # 继承基础配置
-extends: base.yaml
+extends: ../base/base.yaml
 
 description: "小型场景配置，适合快速验证系统基本功能"
+scene_type: generated
 
-# 地图大小 (x, y)
+# 地图大小
 map_size:
   width: 500
   height: 500
@@ -17,18 +18,20 @@ task_density: 40
 
 # 障碍物数量与类型
 obstacles:
-  count: 5  # 新字段
+  count: 5
   types:
     - building
     - tree
 
-# 禁飞区数量
-num_no_fly_zones: 2
+# 禁飞区配置
+no_fly_zones:
+  count: 2
 
 # 时间窗口范围（分钟）
 time_window:
   min: 30
   max: 120
+  enabled: true
 
 # 随机种子
 seed: 42

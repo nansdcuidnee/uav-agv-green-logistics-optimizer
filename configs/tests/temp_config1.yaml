@@ -1,0 +1,30 @@
+# 临时测试配置1
+
+# 地图大小
+map_size: [800, 800]
+
+# 任务数量
+num_tasks: 5
+
+# 无人机数量
+num_uavs: 2
+
+# AGV数量
+num_agvs: 1
+
+# 任务密度
+task_density: 0.5
+
+# 障碍物数量
+obstacles:
+  count: 3
+
+# 禁飞区数量
+num_no_fly_zones: 1
+
+# 时间窗口大小
+time_window:
+  size: 60
+
+# 随机种子
+seed: 42

@@ -1,6 +1,6 @@
 import os
 import pytest
-from main import load_config
+from config.config_loader import load_config
 
 
 def test_config_inheritance():
@@ -48,7 +48,7 @@ def test_circular_inheritance(tmp_path):
     temp_config2.write_text('extends: temp_config1.yaml\nkey2: value2\n')
     
     # 测试循环继承是否抛出异常
-    with pytest.raises(ValueError, match="循环继承 detected"):
+    with pytest.raises(ValueError, match="循环继承检测到"):
         load_config(str(temp_config1))
 
 
@@ -68,3 +68,25 @@ def test_no_extends():
     assert 'num_no_fly_zones' in config
     assert 'time_window' in config
     assert 'seed' in config
+
+
+def test_explicit_no_generated_fields():
+    """测试 explicit 场景不包含 generated 字段"""
+    # 测试 explicit 场景配置
+    config_path = os.path.join('configs', 'explicit', 'demo.yaml')
+    config = load_config(config_path)
+    
+    # 验证场景类型
+    assert config['scene_type'] == 'explicit'
+    
+    # 验证不包含 generated 字段
+    assert 'num_tasks' not in config
+    assert 'num_uavs' not in config
+    assert 'num_agvs' not in config
+    assert 'task_density' not in config
+    
+    # 验证包含 explicit 场景必要字段
+    assert 'environment' in config
+    assert 'uavs' in config
+    assert 'agvs' in config
+    assert 'tasks' in config

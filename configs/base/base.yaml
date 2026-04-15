@@ -2,6 +2,7 @@
 # 通用默认配置项，其他场景通过 extends 继承
 
 description: "基础场景配置，提供通用默认值"
+scene_type: generated
 
 # 地图尺寸（单位：米）
 # 建议范围：1000-5000
@@ -36,15 +37,22 @@ obstacles:
     - building
     - tree
 
-# 禁飞区数量
-# 建议范围：0-10
-num_no_fly_zones: 0
+# 禁飞区配置
+no_fly_zones:
+  # 禁飞区数量
+  # 建议范围：0-10
+  count: 0
 
 # 时间窗口配置
 time_window:
-  # 时间窗口大小（单位：分钟）
+  # 时间窗口最小值（单位：分钟）
+  # 建议范围：0-60
+  min: 0
+  # 时间窗口最大值（单位：分钟）
   # 建议范围：30-120
-  size: 60
+  max: 60
+  # 是否启用时间窗口
+  enabled: true
 
 # 随机种子（用于复现场景）
 seed: 42

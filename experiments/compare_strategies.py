@@ -7,49 +7,12 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import yaml
 from pathlib import Path
 
+from config.config_loader import load_config
+from config.config import DEFAULT_SIMULATION_STEPS, MAX_SIMULATION_STEPS, RANDOM_SEED
 from src.utils.simulator_helper import build_environment, build_simulator
 from src.utils.result_layout import create_comparison_layout
-
-def deep_merge(base, override):
-    """深合并两个字典"""
-    result = base.copy()
-    for key, value in override.items():
-        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
-            result[key] = deep_merge(result[key], value)
-        else:
-            result[key] = value
-    return result
-
-def load_config(config_path, visited=None):
-    """加载场景配置文件，支持继承"""
-    if visited is None:
-        visited = set()
-    
-    # 检测循环继承
-    if config_path in visited:
-        raise ValueError(f"循环继承 detected: {config_path}")
-    visited.add(config_path)
-    
-    # 加载当前配置
-    with open(config_path, 'r', encoding='utf-8') as f:
-        config = yaml.safe_load(f)
-    
-    # 处理继承
-    if 'extends' in config:
-        extends_path = config['extends']
-        # 构建继承文件的完整路径
-        extends_full_path = os.path.join(os.path.dirname(config_path), extends_path)
-        # 递归加载父配置
-        parent_config = load_config(extends_full_path, visited.copy())
-        # 深合并配置（子配置覆盖父配置）
-        config = deep_merge(parent_config, config)
-        # 移除 extends 字段
-        del config['extends']
-    
-    return config
 
 def compute_relative_metrics(strategy_metrics, baseline_metrics):
     """计算相对指标
@@ -107,7 +70,7 @@ def compute_relative_metrics(strategy_metrics, baseline_metrics):
 def main():
     """Compare different strategies."""
     parser = argparse.ArgumentParser(description="Compare different strategies")
-    parser.add_argument("--config", type=str, default="configs/qualification.yaml", help="Configuration file path")
+    parser.add_argument("--config", type=str, default="configs/explicit/qualification.yaml", help="Configuration file path")
     parser.add_argument("--max-steps", type=int, help="Maximum number of steps")
     parser.add_argument("--compare-name", type=str, default="strategy_comparison", help="Comparison name")
     parser.add_argument("--baseline-strategy", type=str, default="baseline_direct", help="Baseline strategy name")
@@ -115,10 +78,6 @@ def main():
     args = parser.parse_args()
     
     config_file = args.config
-    
-    if not os.path.exists(config_file):
-        print(f"配置文件不存在: {config_file}")
-        return
     
     # 加载配置
     config = load_config(config_file)
@@ -171,7 +130,9 @@ def main():
         simulator = build_simulator(env, strategy_type)
         
         # 确定最大步数
-        max_steps = config.get('max_steps', 100)
+        max_steps = config.get('max_steps', DEFAULT_SIMULATION_STEPS)
+        # 裁剪max_steps到最大限制
+        max_steps = min(max_steps, MAX_SIMULATION_STEPS)
         
         # Run simulation
         output_dir = simulator.run(
