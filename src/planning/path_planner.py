@@ -353,8 +353,9 @@ class PathPlanner:
         end_node = Node(end_point)
         
         # 将起点加入开放列表
+        rounded_start = (round(start_point[0], 1), round(start_point[1], 1))
         heapq.heappush(open_list, start_node)
-        open_dict[start_point] = start_node
+        open_dict[rounded_start] = start_node
         
         # 主循环
         while open_list:
@@ -363,11 +364,13 @@ class PathPlanner:
             current_pos = current_node.position
             
             # 从开放字典中移除当前节点
-            if current_pos in open_dict:
-                del open_dict[current_pos]
+            rounded_pos = (round(current_pos[0], 1), round(current_pos[1], 1))
+            if rounded_pos in open_dict:
+                del open_dict[rounded_pos]
             
-            # 检查是否到达终点
-            if current_pos == end_point:
+            # 检查是否到达终点（使用容差比较）
+            distance_to_end = self._calculate_distance(current_pos, end_point)
+            if distance_to_end < 1e-6:
                 return self._reconstruct_path(current_node)
             
             # 将当前节点加入关闭集合，对位置进行四舍五入以减少集合大小
@@ -385,10 +388,10 @@ class PathPlanner:
                 if rounded_neighbor_pos in closed_set:
                     continue
                 
-                # 检查邻居节点是否在开放列表中
-                if neighbor_pos in open_dict:
+                # 检查邻居节点是否在开放列表中，使用四舍五入后的位置
+                if rounded_neighbor_pos in open_dict:
                     # 如果当前路径更优，更新节点信息
-                    existing_node = open_dict[neighbor_pos]
+                    existing_node = open_dict[rounded_neighbor_pos]
                     if neighbor.g < existing_node.g:
                         # 更新节点信息
                         existing_node.g = neighbor.g
@@ -400,7 +403,7 @@ class PathPlanner:
                 else:
                     # 如果邻居节点不在开放列表中，加入开放列表
                     heapq.heappush(open_list, neighbor)
-                    open_dict[neighbor_pos] = neighbor
+                    open_dict[rounded_neighbor_pos] = neighbor
         
         # 如果没有找到路径，返回空列表
         return []
@@ -443,8 +446,8 @@ class PathPlanner:
                 random_point = end_point
             else:
                 # 在合理范围内随机采样
-                # 这里假设环境范围为 [-10, 10]，实际项目中可能需要根据具体环境调整
-                random_point = (random.uniform(-10, 10), random.uniform(-10, 10))
+                # 使用更大的范围以适应实际地图大小
+                random_point = (random.uniform(0, 1000), random.uniform(0, 1000))
             
             # 找到树中距离随机点最近的节点
             # 优化：使用预计算的位置列表和索引，提高查找效率

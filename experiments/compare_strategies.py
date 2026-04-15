@@ -127,8 +127,35 @@ def main():
     if args.max_steps is not None:
         config['max_steps'] = args.max_steps
     
-    # Create comparison layout
-    layout = create_comparison_layout(compare_name=args.compare_name)
+    # Create comparison layout - 固定使用 strategy_comparison 目录并添加时间戳
+    from pathlib import Path
+    from datetime import datetime
+    base_dir = "results"
+    compare_name = "strategy_comparison"  # 固定使用此名称
+    
+    # 创建带有时间戳的目录结构
+    result_dir = Path(base_dir) / "comparisons"
+    experiment_dir = result_dir / compare_name
+    run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = experiment_dir / run_timestamp
+    plots_dir = run_dir / "plots"
+    
+    # 创建目录
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 创建简化的布局对象
+    class FixedLayout:
+        def __init__(self, run_dir, plots_dir):
+            self.run_dir = run_dir
+            self.plots_dir = plots_dir
+        
+        def artifact_path(self, filename):
+            return self.run_dir / filename
+        
+        def plot_path(self, filename):
+            return self.plots_dir / filename
+    
+    layout = FixedLayout(run_dir=run_dir, plots_dir=plots_dir)
     
     # Strategies to compare
     strategies = ["baseline_direct", "relay_coop", "energy_priority"]
@@ -377,35 +404,54 @@ def main():
     
     # 7. total_distance_agv_compare.png
     plt.figure(figsize=(10, 6))
-    total_distance_agv = [r["total_distance_agv"] for r in results]
+    total_distance_agv = []
+    for r in results:
+        value = r["total_distance_agv"]
+        # 对于 None 值，显示为 0
+        if value is None:
+            total_distance_agv.append(0)
+        else:
+            total_distance_agv.append(value)
     plt.bar(strategies, total_distance_agv)
     plt.xlabel("Strategy")
     plt.ylabel("Total Distance (AGV)")
     plt.title("Total Distance (AGV) by Strategy")
+    # 添加数值标签
+    for i, v in enumerate(total_distance_agv):
+        if v == 0:
+            # 对于不使用AGV的策略，显示"N/A"
+            plt.text(i, v + 5, "N/A", ha='center', va='bottom')
+        else:
+            plt.text(i, v + 5, f"{v:.1f}", ha='center', va='bottom')
+    # 设置 y 轴范围
+    plt.ylim(0, max(total_distance_agv) * 1.2 if total_distance_agv else 10)
     plt.savefig(layout.plot_path("total_distance_agv_compare.png"))
     plt.close()
     
     # 8. avg_wait_time_at_relay_compare.png
     plt.figure(figsize=(10, 6))
     avg_wait_time_at_relay = []
-    all_none = True
     for r in results:
         value = r["avg_wait_time_at_relay"]
-        # 检查是否所有值都是 None
+        # 对于 None 值，显示为 0
         if value is None:
-            avg_wait_time_at_relay.append(np.nan)
+            avg_wait_time_at_relay.append(0)
         else:
             avg_wait_time_at_relay.append(value)
-    
-    # 检查是否所有值都是 0（表示都是 None）
-    if all(v == 0 for v in avg_wait_time_at_relay):
-        print("错误：avg_wait_time_at_relay 所有值都是 null，无法生成图表")
-        return
     
     plt.bar(strategies, avg_wait_time_at_relay)
     plt.xlabel("Strategy")
     plt.ylabel("Average Wait Time at Relay")
     plt.title("Average Wait Time at Relay by Strategy")
+    # 添加数值标签
+    for i, v in enumerate(avg_wait_time_at_relay):
+        if v == 0:
+            # 对于不使用AGV的策略，显示"N/A"
+            plt.text(i, v + 0.5, "N/A", ha='center', va='bottom')
+        else:
+            plt.text(i, v + 0.5, f"{v:.1f}", ha='center', va='bottom')
+    # 设置 y 轴范围
+    plt.ylim(0, max(avg_wait_time_at_relay) * 1.2 if avg_wait_time_at_relay else 10)
     plt.savefig(layout.plot_path("avg_wait_time_at_relay_compare.png"))
     plt.close()
     

@@ -99,12 +99,14 @@ def build_environment(config):
     return env
 
 
-def build_simulator(environment, strategy_type="baseline_direct"):
+def build_simulator(environment, strategy_type="baseline_direct", scenario_name="default", seed=42):
     """构建仿真器
     
     Args:
         environment: 环境对象
         strategy_type: 策略类型
+        scenario_name: 场景名称
+        seed: 随机种子
     
     Returns:
         Simulator: 仿真器对象
@@ -115,4 +117,6 @@ def build_simulator(environment, strategy_type="baseline_direct"):
         path_planner=PathPlanner(),
         scheduler=Scheduler(),
         strategy_type=strategy_type,
+        scenario_name=scenario_name,
+        seed=seed,
     )
