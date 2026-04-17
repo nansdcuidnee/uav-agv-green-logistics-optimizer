@@ -1,0 +1,45 @@
+{
+  "baseline_strategy_name": "baseline_direct",
+  "scenario_name": "default",
+  "seed": 42,
+  "strategy_run_dir_map": {
+    "baseline_direct": "results\\runs\\baseline_direct\\20260414_202926",
+    "relay_coop": "results\\runs\\relay_coop\\20260414_202927",
+    "energy_priority": "results\\runs\\energy_priority\\20260414_202930"
+  },
+  "metrics": {
+    "baseline_direct": {
+      "completion_rate": 1.0,
+      "on_time_rate": 1.0,
+      "avg_delivery_time": 64.33333333333333,
+      "total_energy": 2397.2145055999913,
+      "avg_energy_per_task": 399.5357509333319,
+      "energy_per_km": 0.7291002096669175,
+      "total_distance_agv": 0.0,
+      "avg_wait_time_at_relay": null,
+      "charging_count": 22
+    },
+    "relay_coop": {
+      "completion_rate": 0.8333333333333334,
+      "on_time_rate": 0.8333333333333334,
+      "avg_delivery_time": 3.8,
+      "total_energy": 403.218777481265,
+      "avg_energy_per_task": 80.64375549625301,
+      "energy_per_km": 0.08408080664851068,
+      "total_distance_agv": 1000.0,
+      "avg_wait_time_at_relay": 46.333333333333336,
+      "charging_count": 2
+    },
+    "energy_priority": {
+      "completion_rate": 0.6666666666666666,
+      "on_time_rate": 0.6666666666666666,
+      "avg_delivery_time": 53.75,
+      "total_energy": 2405.9333584306455,
+      "avg_energy_per_task": 601.4833396076614,
+      "energy_per_km": 0.9257959976655917,
+      "total_distance_agv": 0.0,
+      "avg_wait_time_at_relay": null,
+      "charging_count": 23
+    }
+  }
+}

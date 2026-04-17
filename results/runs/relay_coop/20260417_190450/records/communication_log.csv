@@ -1,0 +1,33 @@
+timestamp,sender,receiver,message_type,content
+21,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
+21,UAV 2,Control Center,TASK_COMPLETE,Complete task 2
+41,UAV 2,Control Center,LOW_BATTERY,Battery level: 28.6%
+42,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 9.3%"
+42,Control Center,AGV 2,CHARGING_COMMAND,Charge UAV 2
+42,AGV 2,UAV 2,CHARGING_START,Start charging
+57,UAV 2,Control Center,TASK_COMPLETE,Complete task 4
+78,UAV 2,Control Center,LOW_BATTERY,Battery level: 27.2%
+79,UAV 2,Control Center,TASK_COMPLETE,Complete task 5
+79,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 9.6%"
+79,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+79,AGV 1,UAV 2,CHARGING_START,Start charging
+101,UAV 2,Control Center,TASK_COMPLETE,Complete task 6
+101,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+102,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+103,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+104,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+105,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+106,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+107,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+108,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+109,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+110,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+111,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+112,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+113,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+114,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+115,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+116,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+117,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+118,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%
+119,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.2%

@@ -1,0 +1,26 @@
+{
+  "experiment_name": "smoke_test",
+  "timestamp": "20260411_213015",
+  "strategy": "baseline_direct",
+  "records_granularity": "step",
+  "required_artifacts": [
+    "metrics.json",
+    "records/steps.csv",
+    "records/tasks.csv",
+    "plots/chart.png"
+  ],
+  "plots": [
+    "plots\\energy_plot.png",
+    "plots\\task_plot.png",
+    "plots\\battery_plot.png",
+    "plots\\chart.png",
+    "plots\\environment_state.png",
+    "plots\\trajectory_map.png",
+    "plots\\task_distribution.png"
+  ],
+  "summary": {
+    "initial_task_count": 2,
+    "completed_tasks": 2,
+    "time_steps": 10
+  }
+}

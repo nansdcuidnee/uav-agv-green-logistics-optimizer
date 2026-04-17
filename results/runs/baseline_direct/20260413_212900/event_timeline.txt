@@ -1,0 +1,178 @@
+Event Timeline
+================
+Step 0:
+  - Task start: UAV 1 started task 1
+  - Task start: UAV 2 started task 2
+Step 1:
+  - Task complete: UAV 1 completed task 1
+Step 2:
+  - Task complete: UAV 1 completed task 1
+  - Task start: UAV 1 started task 3
+Step 3:
+  - Charging request: UAV 1 requests charging (battery: 18.2%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Low battery alert: UAV 2 battery at 27.7%
+Step 4:
+  - Charging request: UAV 2 requests charging (battery: 9.8%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 5:
+  - Low battery alert: UAV 1 battery at 29.6%
+Step 6:
+  - Charging request: UAV 1 requests charging (battery: 10.1%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Low battery alert: UAV 2 battery at 24.1%
+Step 7:
+  - Charging request: UAV 2 requests charging (battery: 6.3%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 8:
+  - Low battery alert: UAV 1 battery at 21.4%
+Step 9:
+  - Charging request: UAV 1 requests charging (battery: 2.0%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Low battery alert: UAV 2 battery at 20.6%
+Step 10:
+  - Charging request: UAV 2 requests charging (battery: 2.8%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 11:
+  - Charging request: UAV 1 requests charging (battery: 13.5%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 12:
+  - Charging request: UAV 2 requests charging (battery: 17.6%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 13:
+  - Task complete: UAV 1 completed task 3
+  - Low battery alert: UAV 1 battery at 26.2%
+Step 14:
+  - Task complete: UAV 1 completed task 3
+  - Task start: UAV 1 started task 4
+  - Charging request: UAV 1 requests charging (battery: 4.8%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 15:
+  - Charging request: UAV 2 requests charging (battery: 17.2%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 16:
+  - Charging request: UAV 1 requests charging (battery: 14.5%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 18:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 17.6%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 19:
+  - Charging request: UAV 1 requests charging (battery: 4.7%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 21:
+  - Charging request: UAV 1 requests charging (battery: 15.4%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Charging request: UAV 2 requests charging (battery: 18.3%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 23:
+  - Low battery alert: UAV 1 battery at 26.5%
+  - Task complete: UAV 2 completed task 2
+Step 24:
+  - Task complete: UAV 2 completed task 2
+  - Task start: UAV 2 started task 5
+  - Charging request: UAV 1 requests charging (battery: 7.1%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Charging request: UAV 2 requests charging (battery: 16.1%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 26:
+  - Charging request: UAV 1 requests charging (battery: 18.6%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Low battery alert: UAV 2 battery at 28.8%
+Step 27:
+  - Charging request: UAV 2 requests charging (battery: 10.3%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 29:
+  - Task complete: UAV 1 completed task 4
+  - Charging request: UAV 1 requests charging (battery: 13.5%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Low battery alert: UAV 2 battery at 23.0%
+Step 30:
+  - Task complete: UAV 1 completed task 4
+  - Task start: UAV 1 started task 6
+  - Charging request: UAV 2 requests charging (battery: 4.4%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 31:
+  - Charging request: UAV 1 requests charging (battery: 19.1%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 32:
+  - Charging request: UAV 2 requests charging (battery: 17.2%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 33:
+  - Low battery alert: UAV 1 battery at 25.9%
+Step 34:
+  - Charging request: UAV 1 requests charging (battery: 4.7%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 35:
+  - Charging request: UAV 2 requests charging (battery: 11.6%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 36:
+  - Charging request: UAV 1 requests charging (battery: 12.4%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 37:
+  - Low battery alert: UAV 2 battery at 25.1%
+Step 38:
+  - Low battery alert: UAV 1 battery at 20.4%
+  - Charging request: UAV 2 requests charging (battery: 7.0%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 39:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+Step 40:
+  - Low battery alert: UAV 1 battery at 29.2%
+  - Low battery alert: UAV 2 battery at 21.2%
+Step 41:
+  - Charging request: UAV 1 requests charging (battery: 8.5%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Charging request: UAV 2 requests charging (battery: 3.3%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 43:
+  - Charging request: UAV 1 requests charging (battery: 17.5%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging end: UAV 1 finished charging
+  - Charging request: UAV 2 requests charging (battery: 17.8%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 44:
+  - Task complete: UAV 1 completed task 6
+Step 45:
+  - Task complete: UAV 1 completed task 6
+Step 46:
+  - Charging request: UAV 2 requests charging (battery: 14.9%)
+  - Charging start: AGV 1 starts charging UAV 2
+  - Charging end: UAV 2 finished charging
+Step 47:
+  - Task complete: UAV 2 completed task 5
+
+Final Statistics:
+- Total tasks completed: 6/6

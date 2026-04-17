@@ -1,0 +1,49 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,AGV_MOVE_START,1,,2,400,400,AGV starts moving to relay point
+0,0,AGV_MOVE_START,2,,1,300,300,AGV starts moving to relay point
+0,0,TASK_ASSIGNED,1,1,2,,,Task assigned to UAV
+0,0,RELAY_REQUEST,1,,2,,,Relay support requested for task
+0,0,TASK_ASSIGNED,2,2,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,2,,1,,,Relay support requested for task
+0,0,WAIT_FOR_AGV_START,1,1,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,2,2,,,,Task starts waiting for AGV
+19,19,AGV_ARRIVE_RELAY,2,,1,185.96135553245875,464.30212283475134,AGV arrived at relay point
+19,19,AGV_ARRIVE_RELAY,1,,2,532.807847793167,250.46045484706397,AGV arrived at relay point
+19,19,RELAY_COOP_START,1,1,2,,,
+19,19,RELAY_COOP_START,2,2,1,,,
+20,20,WAIT_FOR_AGV_END,1,1,,,,Task stops waiting for AGV
+20,20,WAIT_FOR_AGV_END,2,2,,,,Task stops waiting for AGV
+21,21,TASK_COMPLETE,1,1,,,,
+21,21,TASK_COMPLETE,2,2,,,,
+22,22,AGV_MOVE_START,3,,2,532.807847793167,250.46045484706397,AGV starts moving to relay point
+22,22,AGV_MOVE_START,4,,1,185.96135553245875,464.30212283475134,AGV starts moving to relay point
+22,22,TASK_ASSIGNED,3,1,2,,,Task assigned to UAV
+22,22,RELAY_REQUEST,3,,2,,,Relay support requested for task
+22,22,TASK_ASSIGNED,4,2,1,,,Task assigned to UAV
+22,22,RELAY_REQUEST,4,,1,,,Relay support requested for task
+22,22,WAIT_FOR_AGV_START,3,1,,,,Task starts waiting for AGV
+22,22,WAIT_FOR_AGV_START,4,2,,,,Task starts waiting for AGV
+41,41,AGV_ARRIVE_RELAY,4,,1,164.02241188069897,265.5090576854738,AGV arrived at relay point
+41,41,AGV_ARRIVE_RELAY,3,,2,587.2226577335987,442.9157183738033,AGV arrived at relay point
+41,41,RELAY_COOP_START,3,1,2,,,
+41,41,RELAY_COOP_START,4,2,1,,,
+42,42,WAIT_FOR_AGV_END,3,1,,,,Task stops waiting for AGV
+42,42,WAIT_FOR_AGV_END,4,2,,,,Task stops waiting for AGV
+42,42,LOW_BATTERY,,1,,,,
+42,42,CHARGING_REQUEST,,2,,,,UAV requests charging
+42,42,CHARGING_START,,2,1,164.02241188069897,265.5090576854738,Charging started
+43,43,TASK_COMPLETE,3,1,,,,
+43,43,CHARGING_REQUEST,,1,,,,UAV requests charging
+43,43,CHARGING_START,,1,2,558,429,Charging started
+44,44,AGV_MOVE_START,5,,2,587.2226577335987,442.9157183738033,AGV starts moving to relay point
+44,44,TASK_ASSIGNED,5,1,2,,,Task assigned to UAV
+44,44,RELAY_REQUEST,5,,2,,,Relay support requested for task
+44,44,WAIT_FOR_AGV_START,5,1,,,,Task starts waiting for AGV
+55,55,CHARGING_END,,2,1,164.02241188069897,265.5090576854738,Charging ended
+55,55,TASK_COMPLETE,4,2,,,,
+58,58,CHARGING_END,,1,2,558,429,Charging ended
+63,63,AGV_ARRIVE_RELAY,5,,2,689.94079323247,271.3086537184241,AGV arrived at relay point
+63,63,RELAY_COOP_START,5,1,2,,,
+64,64,WAIT_FOR_AGV_END,5,1,,,,Task stops waiting for AGV
+65,65,TASK_COMPLETE,5,1,,,,
+65,65,LOW_BATTERY,,1,,,,

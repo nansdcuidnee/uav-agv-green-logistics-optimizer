@@ -1,0 +1,36 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,AGV_MOVE_START,1,,2,178.43591354096907,17.38776652588323,AGV starts moving to relay point
+0,0,AGV_MOVE_START,2,,1,147.29424283280247,135.33989748458225,AGV starts moving to relay point
+0,0,TASK_ASSIGNED,1,1,2,,,Task assigned to UAV
+0,0,RELAY_REQUEST,1,,2,,,Relay support requested for task
+0,0,TASK_ASSIGNED,2,2,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,2,,1,,,Relay support requested for task
+0,0,WAIT_FOR_AGV_START,1,1,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,2,2,,,,Task starts waiting for AGV
+19,19,AGV_ARRIVE_RELAY,2,,1,-51.161659577009544,160.14422772563427,AGV arrived at relay point
+19,19,RELAY_COOP_START,2,2,1,,,
+19,19,LOW_BATTERY,,2,,,,
+20,20,WAIT_FOR_AGV_END,2,2,,,,Task stops waiting for AGV
+20,20,AGV_ARRIVE_RELAY,1,,2,13.62774260780273,130.6938422396958,AGV arrived at relay point
+20,20,RELAY_COOP_START,1,1,2,,,
+20,20,LOW_BATTERY,,1,,,,
+20,20,CHARGING_REQUEST,,2,,,,UAV requests charging
+20,20,CHARGING_START,,2,1,-51.161659577009544,160.14422772563427,Charging started
+21,21,WAIT_FOR_AGV_END,1,1,,,,Task stops waiting for AGV
+21,21,CHARGING_REQUEST,,1,,,,UAV requests charging
+21,21,CHARGING_START,,1,2,13.62774260780273,130.6938422396958,Charging started
+35,35,CHARGING_END,,2,1,-51.161659577009544,160.14422772563427,Charging ended
+35,35,TASK_COMPLETE,2,2,,,,
+36,36,AGV_MOVE_START,3,,2,13.62774260780273,130.6938422396958,AGV starts moving to relay point
+36,36,TASK_ASSIGNED,3,2,2,,,Task assigned to UAV
+36,36,RELAY_REQUEST,3,,2,,,Relay support requested for task
+36,36,WAIT_FOR_AGV_START,3,2,,,,Task starts waiting for AGV
+37,37,CHARGING_END,,1,2,13.62774260780273,130.6938422396958,Charging ended
+37,37,TASK_COMPLETE,1,1,,,,
+56,56,AGV_ARRIVE_RELAY,3,,2,204.276392280822,191.1346593904788,AGV arrived at relay point
+56,56,RELAY_COOP_START,3,2,2,,,
+57,57,WAIT_FOR_AGV_END,3,2,,,,Task stops waiting for AGV
+58,58,TASK_COMPLETE,3,2,,,,
+58,58,CHARGING_REQUEST,,2,,,,UAV requests charging
+58,58,CHARGING_START,,2,2,139,107,Charging started
+72,72,CHARGING_END,,2,2,139,107,Charging ended

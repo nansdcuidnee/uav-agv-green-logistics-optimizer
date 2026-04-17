@@ -1,0 +1,9 @@
+Experiment: repro_test_2
+Strategy: baseline_direct
+Initial tasks: 2
+UAVs: 1
+AGVs: 1
+Completed tasks: 2
+Total energy: 1.943975807830664
+Total time steps: 10
+Charging count: 0

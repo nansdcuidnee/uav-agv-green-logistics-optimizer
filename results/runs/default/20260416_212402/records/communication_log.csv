@@ -1,0 +1,3 @@
+timestamp,sender,receiver,message_type,content
+0,UAV 1,Control Center,TASK_START,Start task 1
+3,UAV 1,Control Center,TASK_COMPLETE,Complete task 1

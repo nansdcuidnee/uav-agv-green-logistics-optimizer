@@ -1,0 +1,62 @@
+Event Timeline
+================
+Step 0:
+  - Task assignment: UAV 1 assigned task 1 with AGV 1
+  - Task assignment: UAV 2 assigned task 2 with AGV 2
+Step 19:
+  - Task start: UAV 1 started task 1
+  - Task start: UAV 2 started task 2
+Step 20:
+  - Task start: UAV 1 started task 1
+  - Task start: UAV 2 started task 2
+Step 21:
+  - Task complete: UAV 1 completed task 1
+  - Task complete: UAV 2 completed task 2
+Step 22:
+  - Task assignment: UAV 1 assigned task 3 with AGV 2
+  - Task assignment: UAV 2 assigned task 4 with AGV 2
+Step 41:
+  - Task start: UAV 2 started task 4
+  - Low battery alert: UAV 2 battery at 28.6%
+Step 42:
+  - Task start: UAV 2 started task 4
+  - Charging request: UAV 2 requests charging (battery: 9.3%)
+  - Charging start: AGV 2 starts charging UAV 2
+Step 43:
+  - Task complete: UAV 2 completed task 4
+  - Charging request: UAV 2 requests charging (battery: 12.4%)
+  - Charging start: AGV 2 starts charging UAV 2
+Step 44:
+  - Task assignment: UAV 2 assigned task 5 with AGV 2
+Step 63:
+  - Task start: UAV 2 started task 5
+  - Charging request: UAV 2 requests charging (battery: 12.7%)
+  - Charging start: AGV 2 starts charging UAV 2
+Step 64:
+  - Task start: UAV 2 started task 5
+  - Charging request: UAV 2 requests charging (battery: 12.2%)
+  - Charging start: AGV 2 starts charging UAV 2
+Step 65:
+  - Task complete: UAV 2 completed task 5
+  - Charging request: UAV 2 requests charging (battery: 14.6%)
+  - Charging start: AGV 1 starts charging UAV 2
+Step 66:
+  - Task assignment: UAV 2 assigned task 6 with AGV 2
+Step 85:
+  - Task start: UAV 2 started task 6
+  - Charging request: UAV 2 requests charging (battery: 13.5%)
+  - Charging start: AGV 2 starts charging UAV 2
+Step 86:
+  - Task start: UAV 2 started task 6
+  - Charging request: UAV 2 requests charging (battery: 9.8%)
+  - Charging start: AGV 2 starts charging UAV 2
+Step 87:
+  - Task complete: UAV 2 completed task 6
+  - Charging request: UAV 2 requests charging (battery: 10.2%)
+  - Charging start: AGV 1 starts charging UAV 2
+
+Final Statistics:
+- Total tasks completed: 5/6
+- Total energy consumed: 359.22
+- Total charging sessions: 8
+- Simulation completed in: 100 steps
