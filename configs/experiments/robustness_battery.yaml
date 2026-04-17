@@ -1,0 +1,44 @@
+# 鲁棒性实验 - 电池容量扰动配置
+
+# 实验类型
+experiment_type: capacity
+
+# 实验名称
+experiment_name: robustness_battery
+
+# 策略列表
+strategies:
+  - baseline_direct
+  - relay_coop
+  - energy_priority
+
+# 种子
+seed: 42
+
+# 电池容量扰动配置
+battery_scales:
+  - name: low
+    uav_capacity_factor: 0.8  # 电池容量为标准的80%
+  - name: normal
+    uav_capacity_factor: 1.0  # 标准电池容量
+  - name: high
+    uav_capacity_factor: 1.2  # 电池容量为标准的120%
+
+# 基础配置
+base_config:
+  num_tasks: 30
+  num_uavs: 3
+  num_agvs: 2
+  max_steps: 200
+  map_size:
+    width: 1000
+    height: 1000
+  obstacles:
+    count: 5
+  time_window:
+    min: 0
+    max: 60
+    enabled: true
+
+# 实验说明
+description: 电池容量扰动实验，测试不同电池容量下的性能表现

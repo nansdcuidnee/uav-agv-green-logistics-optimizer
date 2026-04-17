@@ -1,502 +1,462 @@
-#!/usr/bin/env python3
-"""鲁棒性实验脚本"""
+﻿#!/usr/bin/env python3
+"""Run robustness experiments in a config-driven way."""
 
 import argparse
 import csv
 import json
-import os
-import random
-import yaml
+from copy import deepcopy
 from pathlib import Path
-from datetime import datetime
+from typing import Any
+
 import numpy as np
-
+from config.config_loader import load_config
 from src.utils.simulator_helper import build_environment, build_simulator
-from src.utils.result_layout import create_robustness_layout, create_robustness_summary_layout, write_metadata
+from src.utils.result_layout import create_robustness_summary_layout
+
+SUPPORTED_EXPERIMENT_TYPES = {"seed_stability", "scale", "capacity", "failure"}
+DEFAULT_STRATEGIES = ["baseline_direct", "relay_coop", "energy_priority"]
 
 
-def run_round1_single_factor(campaign_name, max_steps, seeds, strategies):
-    """运行第一轮：单因素敏感性分析"""
-    results = []
-    
-    # 定义不同场景
-    scenes = [
-        {'name': 'scene_small', 'num_tasks': 3, 'num_uavs': 1, 'num_agvs': 1, 'map_size': {'width': 500, 'height': 500}},
-        {'name': 'scene_medium', 'num_tasks': 5, 'num_uavs': 2, 'num_agvs': 2, 'map_size': {'width': 1000, 'height': 1000}},
-        {'name': 'scene_large', 'num_tasks': 8, 'num_uavs': 3, 'num_agvs': 3, 'map_size': {'width': 1500, 'height': 1500}}
-    ]
-    
-    for scene in scenes:
-        for strategy in strategies:
-            for seed in seeds:
-                print(f"\n=== Round 1: Single Factor - Scene: {scene['name']}, Strategy: {strategy}, Seed: {seed} ===")
-                
-                # 构建配置
-                config = {
-                    'seed': seed,
-                    'max_steps': max_steps,
-                    'num_tasks': scene['num_tasks'],
-                    'num_uavs': scene['num_uavs'],
-                    'num_agvs': scene['num_agvs'],
-                    'map_size': scene['map_size']
-                }
-                
-                # 构建环境和仿真器
-                env = build_environment(config)
-                simulator = build_simulator(env, strategy, scenario_name=f"round1_{scene['name']}_{strategy}", seed=seed)
-                
-                # 运行仿真器
-                output_dir = simulator.run(
-                    max_steps=max_steps,
-                    experiment_name=f"{scene['name']}_{strategy}_seed{seed}",
-                    result_type="round1_single_factor",
-                    campaign_name=campaign_name
-                )
-                
-                # 读取metrics
-                metrics_file = Path(output_dir) / "metrics.json"
-                if metrics_file.exists():
-                    with open(metrics_file, 'r', encoding='utf-8') as f:
-                        metrics = json.load(f)
-                        results.append({
-                            'round': 1,
-                            'strategy': strategy,
-                            'seed': seed,
-                            'scene': scene['name'],
-                            'completion_rate': metrics.get('completion_rate', 0),
-                            'on_time_rate': metrics.get('on_time_rate', 0),
-                            'total_energy': metrics.get('total_energy', 0),
-                            'total_time': metrics.get('total_time', 0),
-                            'charging_count': metrics.get('charging_count', 0),
-                            'avg_wait_time_at_relay': metrics.get('avg_wait_time_at_relay', 0),
-                            'run_dir': output_dir
-                        })
-                else:
-                    raise FileNotFoundError(f"metrics.json not found in {output_dir}")
-    
-    # 校验样本数
-    expected = len(scenes) * len(strategies) * len(seeds)
-    actual = len(results)
-    if actual != expected:
-        raise ValueError(f"Round 1: Expected {expected} results, got {actual}")
-    
-    return results
+def load_campaign_config(config_path: str) -> dict[str, Any]:
+    """Load robustness experiment config with extends/normalization support."""
+    return load_config(config_path)
 
 
-def run_round2_perturbation(campaign_name, max_steps, seeds, strategies):
-    """运行第二轮：扰动鲁棒性测试"""
-    results = []
-    
-    # 定义不同的扰动因子
-    perturbations = [
-        {'name': 'obstacles_high', 'obstacles': {'count': 10}, 'num_no_fly_zones': 0, 'task_density': 0.5, 'time_window': {'min': 200, 'max': 300}},
-        {'name': 'no_fly_zones_high', 'obstacles': {'count': 5}, 'num_no_fly_zones': 5, 'task_density': 0.5, 'time_window': {'min': 200, 'max': 300}},
-        {'name': 'task_density_high', 'obstacles': {'count': 5}, 'num_no_fly_zones': 0, 'task_density': 0.9, 'time_window': {'min': 200, 'max': 300}},
-        {'name': 'time_window_short', 'obstacles': {'count': 5}, 'num_no_fly_zones': 0, 'task_density': 0.5, 'time_window': {'min': 50, 'max': 100}},
-        {'name': 'battery_low', 'obstacles': {'count': 5}, 'num_no_fly_zones': 0, 'task_density': 0.5, 'time_window': {'min': 200, 'max': 300}}  # 初始电量较低
-    ]
-    
-    for perturbation in perturbations:
-        for strategy in strategies:
-            for seed in seeds:
-                print(f"\n=== Round 2: Perturbation - Factor: {perturbation['name']}, Strategy: {strategy}, Seed: {seed} ===")
-                
-                # 构建配置，添加扰动
-                config = {
-                    'seed': seed,
-                    'max_steps': max_steps,
-                    'num_tasks': 5,
-                    'num_uavs': 2,
-                    'num_agvs': 2,
-                    'obstacles': perturbation['obstacles'],
-                    'num_no_fly_zones': perturbation['num_no_fly_zones'],
-                    'task_density': perturbation['task_density'],
-                    'time_window': perturbation['time_window']
-                }
-                
-                # 构建环境和仿真器
-                env = build_environment(config)
-                # 如果指定了初始电量，修改UAV的电池容量
-                if 'uav_battery' in perturbation:
-                    for uav in env.uavs:
-                        uav.battery = perturbation['uav_battery']
-                simulator = build_simulator(env, strategy, scenario_name=f"round2_{perturbation['name']}_{strategy}", seed=seed)
-                
-                # 运行仿真器
-                output_dir = simulator.run(
-                    max_steps=max_steps,
-                    experiment_name=f"{perturbation['name']}_{strategy}_seed{seed}",
-                    result_type="round2_perturbation",
-                    campaign_name=campaign_name
-                )
-                
-                # 读取metrics
-                metrics_file = Path(output_dir) / "metrics.json"
-                if metrics_file.exists():
-                    with open(metrics_file, 'r', encoding='utf-8') as f:
-                        metrics = json.load(f)
-                        results.append({
-                            'round': 2,
-                            'strategy': strategy,
-                            'seed': seed,
-                            'perturbation': perturbation['name'],
-                            'completion_rate': metrics.get('completion_rate', 0),
-                            'on_time_rate': metrics.get('on_time_rate', 0),
-                            'total_energy': metrics.get('total_energy', 0),
-                            'total_time': metrics.get('total_time', 0),
-                            'charging_count': metrics.get('charging_count', 0),
-                            'avg_wait_time_at_relay': metrics.get('avg_wait_time_at_relay', 0),
-                            'run_dir': output_dir
-                        })
-                else:
-                    raise FileNotFoundError(f"metrics.json not found in {output_dir}")
-    
-    # 校验样本数
-    expected = len(perturbations) * len(strategies) * len(seeds)
-    actual = len(results)
-    if actual != expected:
-        raise ValueError(f"Round 2: Expected {expected} results, got {actual}")
-    
-    return results
+def normalize_cases(config: dict[str, Any]) -> list[dict[str, Any]]:
+    """Normalize config into a uniform list of executable cases."""
+    experiment_type = config.get("experiment_type")
+    if experiment_type not in SUPPORTED_EXPERIMENT_TYPES:
+        raise ValueError(
+            f"Unsupported experiment_type: {experiment_type}. "
+            f"Supported: {sorted(SUPPORTED_EXPERIMENT_TYPES)}"
+        )
 
+    cases: list[dict[str, Any]] = []
 
-def run_round3_extreme_combo(campaign_name, max_steps, seeds, strategies):
-    """运行第三轮：极端组合测试"""
-    results = []
-    
-    # 基于前两轮最差的因子组合成极端场景
-    extreme_scenarios = [
-        {
-            'name': 'extreme_1',
-            'description': '高障碍物 + 高禁飞区 + 高任务密度',
-            'config': {
-                'num_tasks': 10,
-                'num_uavs': 2,
-                'num_agvs': 1,
-                'obstacles': {'count': 15},
-                'num_no_fly_zones': 8,
-                'task_density': 0.95,
-                'time_window': {'min': 50, 'max': 100}
-            }
-        },
-        {
-            'name': 'extreme_2',
-            'description': '短时间窗口 + 低初始电量 + 少AGV',
-            'config': {
-                'num_tasks': 8,
-                'num_uavs': 2,
-                'num_agvs': 1,
-                'obstacles': {'count': 5},
-                'num_no_fly_zones': 0,
-                'task_density': 0.8,
-                'time_window': {'min': 30, 'max': 60}
-            }
-        },
-        {
-            'name': 'extreme_3',
-            'description': '大场景 + 高任务密度 + 短时间窗口',
-            'config': {
-                'num_tasks': 12,
-                'num_uavs': 3,
-                'num_agvs': 2,
-                'obstacles': {'count': 10},
-                'num_no_fly_zones': 5,
-                'task_density': 0.9,
-                'time_window': {'min': 40, 'max': 80},
-                'map_size': {'width': 2000, 'height': 2000}
-            }
-        }
-    ]
-    
-    for scenario in extreme_scenarios:
-        for strategy in strategies:
-            for seed in seeds:
-                print(f"\n=== Round 3: Extreme Combo - Scenario: {scenario['name']}, Strategy: {strategy}, Seed: {seed} ===")
-                print(f"  Description: {scenario['description']}")
-                
-                # 构建配置
-                config = {
-                    'seed': seed,
-                    'max_steps': max_steps,
-                    **scenario['config']
-                }
-                
-                # 构建环境和仿真器
-                env = build_environment(config)
-                # 设置初始电量较低
-                for uav in env.uavs:
-                    uav.battery = 40  # 初始电量较低
-                simulator = build_simulator(env, strategy, scenario_name=f"round3_{scenario['name']}_{strategy}", seed=seed)
-                
-                # 运行仿真器
-                output_dir = simulator.run(
-                    max_steps=max_steps,
-                    experiment_name=f"{scenario['name']}_{strategy}_seed{seed}",
-                    result_type="round3_extreme_combo",
-                    campaign_name=campaign_name
-                )
-                
-                # 读取metrics
-                metrics_file = Path(output_dir) / "metrics.json"
-                if metrics_file.exists():
-                    with open(metrics_file, 'r', encoding='utf-8') as f:
-                        metrics = json.load(f)
-                        results.append({
-                            'round': 3,
-                            'strategy': strategy,
-                            'seed': seed,
-                            'scenario': scenario['name'],
-                            'description': scenario['description'],
-                            'completion_rate': metrics.get('completion_rate', 0),
-                            'on_time_rate': metrics.get('on_time_rate', 0),
-                            'total_energy': metrics.get('total_energy', 0),
-                            'total_time': metrics.get('total_time', 0),
-                            'charging_count': metrics.get('charging_count', 0),
-                            'avg_wait_time_at_relay': metrics.get('avg_wait_time_at_relay', 0),
-                            'run_dir': output_dir
-                        })
-                else:
-                    raise FileNotFoundError(f"metrics.json not found in {output_dir}")
-    
-    # 校验样本数
-    expected = len(extreme_scenarios) * len(strategies) * len(seeds)
-    actual = len(results)
-    if actual != expected:
-        raise ValueError(f"Round 3: Expected {expected} results, got {actual}")
-    
-    return results
-
-
-def generate_summary(campaign_name, all_results):
-    """生成汇总文件"""
-    summary_dir = create_robustness_summary_layout(campaign_name)
-    
-    # 生成CSV文件（逐run明细）
-    csv_file = summary_dir / "robustness_summary.csv"
-    with open(csv_file, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        # 写入表头，包含所有可能的字段
-        writer.writerow(['round', 'strategy', 'seed', 'scene', 'perturbation', 'scenario', 'description', 'completion_rate', 'on_time_rate', 'total_energy', 'total_time', 'charging_count', 'avg_wait_time_at_relay', 'run_dir'])
-        for result in all_results:
-            writer.writerow([
-                result.get('round', ''),
-                result.get('strategy', ''),
-                result.get('seed', ''),
-                result.get('scene', ''),
-                result.get('perturbation', ''),
-                result.get('scenario', ''),
-                result.get('description', ''),
-                result.get('completion_rate', 0),
-                result.get('on_time_rate', 0),
-                result.get('total_energy', 0),
-                result.get('total_time', 0),
-                result.get('charging_count', 0),
-                result.get('avg_wait_time_at_relay', 0),
-                result.get('run_dir', '')
-            ])
-    
-    # 生成JSON文件（逐run明细）
-    json_file = summary_dir / "robustness_summary.json"
-    with open(json_file, 'w', encoding='utf-8') as f:
-        json.dump(all_results, f, indent=2, ensure_ascii=False)
-    
-    # 生成按round+strategy聚合的统计文件
-    stats_file = summary_dir / "robustness_stats_by_round.csv"
-    with open(stats_file, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['round', 'strategy', 'median_completion_rate', 'p10_completion_rate', 'p90_completion_rate', 'median_on_time_rate', 'p10_on_time_rate', 'p90_on_time_rate', 'median_total_energy', 'p10_total_energy', 'p90_total_energy', 'median_total_time', 'p10_total_time', 'p90_total_time', 'failure_rate', 'n'])
-        
-        # 按round和strategy分组
-        groups = {}
-        for result in all_results:
-            key = (result['round'], result['strategy'])
-            if key not in groups:
-                groups[key] = []
-            groups[key].append(result)
-        
-        # 计算每组的统计指标
-        for (round_num, strategy), group_results in groups.items():
-            # 提取指标数据
-            completion_rates = [r['completion_rate'] for r in group_results]
-            on_time_rates = [r['on_time_rate'] for r in group_results]
-            total_energies = [r['total_energy'] for r in group_results]
-            total_times = [r['total_time'] for r in group_results]
-            
-            # 计算统计指标
-            median_completion = np.median(completion_rates)
-            p10_completion = np.percentile(completion_rates, 10)
-            p90_completion = np.percentile(completion_rates, 90)
-            
-            median_on_time = np.median(on_time_rates)
-            p10_on_time = np.percentile(on_time_rates, 10)
-            p90_on_time = np.percentile(on_time_rates, 90)
-            
-            median_energy = np.median(total_energies)
-            p10_energy = np.percentile(total_energies, 10)
-            p90_energy = np.percentile(total_energies, 90)
-            
-            median_time = np.median(total_times)
-            p10_time = np.percentile(total_times, 10)
-            p90_time = np.percentile(total_times, 90)
-            
-            # 计算失败率（completion_rate < 1 计失败）
-            failure_count = sum(1 for r in group_results if r['completion_rate'] < 1)
-            failure_rate = failure_count / len(group_results) if group_results else 0
-            
-            # 写入统计数据
-            writer.writerow([
-                round_num,
-                strategy,
-                median_completion,
-                p10_completion,
-                p90_completion,
-                median_on_time,
-                p10_on_time,
-                p90_on_time,
-                median_energy,
-                p10_energy,
-                p90_energy,
-                median_time,
-                p10_time,
-                p90_time,
-                failure_rate,
-                len(group_results)
-            ])
-    
-    # 生成鲁棒性排名文件
-    ranking_file = summary_dir / "robustness_ranking.csv"
-    with open(ranking_file, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['rank', 'strategy', 'round', 'median_completion_rate', 'median_on_time_rate', 'median_total_energy', 'median_total_time', 'failure_rate', 'composite_score'])
-        
-        # 计算每个策略在每个轮次的综合得分
-        ranking_data = []
-        for (round_num, strategy), group_results in groups.items():
-            # 提取指标数据
-            completion_rates = [r['completion_rate'] for r in group_results]
-            on_time_rates = [r['on_time_rate'] for r in group_results]
-            total_energies = [r['total_energy'] for r in group_results]
-            total_times = [r['total_time'] for r in group_results]
-            
-            # 计算统计指标
-            median_completion = np.median(completion_rates)
-            median_on_time = np.median(on_time_rates)
-            median_energy = np.median(total_energies)
-            median_time = np.median(total_times)
-            
-            # 计算失败率
-            failure_count = sum(1 for r in group_results if r['completion_rate'] < 1)
-            failure_rate = failure_count / len(group_results) if group_results else 0
-            
-            # 计算综合得分（越高越好）
-            # 权重：完成率(0.4) + 准时率(0.2) + 能量效率(0.2) + 时间效率(0.2)
-            # 能量和时间取倒数，因为越小越好
-            energy_score = 1 / (median_energy + 1)  # +1避免除零
-            time_score = 1 / (median_time + 1)      # +1避免除零
-            composite_score = (median_completion * 0.4) + (median_on_time * 0.2) + (energy_score * 0.2) + (time_score * 0.2)
-            
-            ranking_data.append({
-                'round': round_num,
-                'strategy': strategy,
-                'median_completion_rate': median_completion,
-                'median_on_time_rate': median_on_time,
-                'median_total_energy': median_energy,
-                'median_total_time': median_time,
-                'failure_rate': failure_rate,
-                'composite_score': composite_score
+    if experiment_type == "seed_stability":
+        for seed in config.get("seeds", []):
+            cases.append({
+                "name": f"seed_{seed}",
+                "seed": int(seed),
+                "overrides": {},
             })
-        
-        # 按综合得分排序
-        ranking_data.sort(key=lambda x: x['composite_score'], reverse=True)
-        
-        # 写入排名数据
-        for i, item in enumerate(ranking_data, 1):
-            writer.writerow([
-                i,
-                item['strategy'],
-                item['round'],
-                item['median_completion_rate'],
-                item['median_on_time_rate'],
-                item['median_total_energy'],
-                item['median_total_time'],
-                item['failure_rate'],
-                item['composite_score']
-            ])
-    
-    # 生成排名规则的metadata文件
-    ranking_metadata = {
-        'ranking_rules': {
-            'composite_score_calculation': '0.4 * median_completion_rate + 0.2 * median_on_time_rate + 0.2 * (1/(median_total_energy + 1)) + 0.2 * (1/(median_total_time + 1))',
-            'ranking_criteria': 'Higher composite score is better',
-            'weights': {
-                'completion_rate': 0.4,
-                'on_time_rate': 0.2,
-                'energy_efficiency': 0.2,
-                'time_efficiency': 0.2
-            }
-        }
+
+    elif experiment_type == "scale":
+        for scale in config.get("scales", []):
+            cases.append({
+                "name": scale["name"],
+                "overrides": {
+                    "num_tasks": int(scale["num_tasks"]),
+                    "num_uavs": int(scale["num_uavs"]),
+                    "num_agvs": int(scale["num_agvs"]),
+                },
+            })
+
+    elif experiment_type == "capacity":
+        for scale_cfg in config.get("battery_scales", []):
+            factor = scale_cfg.get("uav_capacity_factor", scale_cfg.get("battery_factor", 1.0))
+            cases.append({
+                "name": scale_cfg["name"],
+                "capacity_factor": float(factor),
+                "overrides": {},
+            })
+
+    elif experiment_type == "failure":
+        for failure_cfg in config.get("failures", []):
+            cases.append({
+                "name": failure_cfg["name"],
+                "runtime_events": failure_cfg.get("events", []),
+                "overrides": {},
+            })
+
+    if not cases:
+        raise ValueError(f"No cases found for experiment_type={experiment_type}")
+
+    return cases
+
+
+def build_run_config(
+    base_config: dict[str, Any],
+    case: dict[str, Any],
+    experiment_type: str,
+    default_seed: int | None,
+) -> dict[str, Any]:
+    """Build one concrete run config from base + case."""
+    run_config = deepcopy(base_config)
+
+    run_config.update(case.get("overrides", {}))
+
+    if experiment_type == "seed_stability":
+        run_config["seed"] = int(case["seed"])
+    elif "seed" not in run_config:
+        run_config["seed"] = int(default_seed if default_seed is not None else 42)
+
+    return run_config
+
+
+def apply_capacity_case(env, capacity_factor: float) -> None:
+    """Apply UAV capacity perturbation by scaling range/endurance."""
+    for uav in env.uavs:
+        if hasattr(uav, "max_range"):
+            uav.max_range *= capacity_factor
+        if hasattr(uav, "max_endurance"):
+            uav.max_endurance *= capacity_factor
+
+
+def attach_failure_events(simulator, runtime_events: list[dict[str, Any]]) -> None:
+    """Attach runtime failure events to simulator (consumption is TODO in simulator loop)."""
+    setattr(simulator, "runtime_events", runtime_events)
+    if runtime_events:
+        print(f"[TODO] runtime_events attached but not yet consumed in Simulator.run: {runtime_events}")
+
+
+def _safe_float(value: Any, default: float = 0.0) -> float:
+    if value is None:
+        return default
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return default
+
+
+def _nan_stat(values: list[float], op: str) -> float | None:
+    arr = np.array(values, dtype=float)
+    if arr.size == 0 or np.isnan(arr).all():
+        return None
+    if op == "mean":
+        return float(np.nanmean(arr))
+    if op == "std":
+        return float(np.nanstd(arr))
+    if op == "min":
+        return float(np.nanmin(arr))
+    if op == "max":
+        return float(np.nanmax(arr))
+    raise ValueError(f"Unsupported op: {op}")
+
+
+def run_case(
+    campaign_name: str,
+    run_config: dict[str, Any],
+    case: dict[str, Any],
+    strategy: str,
+    experiment_type: str,
+    dry_run: bool = False,
+) -> dict[str, Any] | None:
+    """Run one case-strategy pair."""
+    case_name = case["name"]
+    seed = int(run_config.get("seed", 42))
+    max_steps = int(run_config.get("max_steps", 100))
+
+    print(
+        f"\n=== {experiment_type} - Case: {case_name}, "
+        f"Strategy: {strategy}, Seed: {seed} ==="
+    )
+
+    if dry_run:
+        print(f"  [DRY-RUN] run_config={run_config}")
+        print(
+            "  [DRY-RUN] "
+            f"max_steps={max_steps}, experiment_name={case_name}_{strategy}_seed{seed}"
+        )
+        return None
+
+    env = build_environment(run_config)
+
+    if experiment_type == "capacity":
+        apply_capacity_case(env, float(case.get("capacity_factor", 1.0)))
+
+    simulator = build_simulator(
+        env,
+        strategy,
+        scenario_name=f"{experiment_type}_{case_name}_{strategy}",
+        seed=seed,
+    )
+
+    if experiment_type == "failure":
+        attach_failure_events(simulator, case.get("runtime_events", []))
+
+    output_dir = simulator.run(
+        max_steps=max_steps,
+        experiment_name=f"{case_name}_{strategy}_seed{seed}",
+        result_type=experiment_type,
+        campaign_name=campaign_name,
+    )
+
+    metrics_file = Path(output_dir) / "metrics.json"
+    if not metrics_file.exists():
+        raise FileNotFoundError(f"metrics.json not found in {output_dir}")
+
+    with metrics_file.open("r", encoding="utf-8") as file_obj:
+        metrics = json.load(file_obj)
+
+    completion_rate = _safe_float(metrics.get("completion_rate"), 0.0)
+    failed_tasks = int(metrics.get("failed_tasks", 0))
+    initial_task_count = int(metrics.get("total_tasks", 0))
+    completed_tasks = int(metrics.get("completed_tasks", 0))
+    task_failure_rate = failed_tasks / initial_task_count if initial_task_count > 0 else 0.0
+    on_time_rate = _safe_float(metrics.get("on_time_rate"), 0.0)
+    if 'on_time_rate' not in metrics:
+        print(f"[WARNING] on_time_rate not found in metrics for case {case_name}, strategy {strategy}")
+
+    return {
+        "experiment_type": experiment_type,
+        "case_name": case_name,
+        "strategy": strategy,
+        "seed": seed,
+        "initial_task_count": initial_task_count,
+        "completed_tasks": completed_tasks,
+        "failed_tasks": failed_tasks,
+        "completion_rate": completion_rate,
+        "task_failure_rate": task_failure_rate,
+        "total_energy": _safe_float(metrics.get("total_energy"), 0.0),
+        "avg_energy_per_task": metrics.get("avg_energy_per_task"),
+        "avg_wait_time_at_relay": metrics.get("avg_wait_time_at_relay"),
+        "on_time_rate": on_time_rate,
+        "run_dir": output_dir,
     }
-    metadata_file = summary_dir / "ranking_metadata.json"
-    with open(metadata_file, 'w', encoding='utf-8') as f:
-        json.dump(ranking_metadata, f, indent=2, ensure_ascii=False)
-    
-    print(f"\n=== 汇总文件生成完成 ===")
-    print(f"明细CSV文件: {csv_file}")
-    print(f"明细JSON文件: {json_file}")
-    print(f"按轮次统计文件: {stats_file}")
-    print(f"鲁棒性排名文件: {ranking_file}")
-    print(f"排名规则文件: {metadata_file}")
 
 
-def main():
-    """主函数"""
-    parser = argparse.ArgumentParser(description="运行鲁棒性实验")
-    parser.add_argument("--campaign-name", type=str, default="default", help="鲁棒性实验名称")
-    parser.add_argument("--round", type=str, default="all", choices=["1", "2", "3", "all"], help="运行的轮次")
-    parser.add_argument("--max-steps", type=int, default=100, help="最大步数")
-    parser.add_argument("--seeds", type=str, default="42", help="种子列表，逗号分隔")
-    
+def generate_summary(campaign_name: str, all_results: list[dict[str, Any]]) -> None:
+    """Generate run-level and grouped summary files."""
+    summary_dir = create_robustness_summary_layout(campaign_name)
+
+    detail_fields = [
+        "experiment_type",
+        "case_name",
+        "strategy",
+        "seed",
+        "initial_task_count",
+        "completed_tasks",
+        "failed_tasks",
+        "completion_rate",
+        "task_failure_rate",
+        "total_energy",
+        "avg_energy_per_task",
+        "avg_wait_time_at_relay",
+        "on_time_rate",
+        "run_dir",
+    ]
+
+    csv_file = summary_dir / "robustness_runs.csv"
+    with csv_file.open("w", newline="", encoding="utf-8") as file_obj:
+        writer = csv.DictWriter(file_obj, fieldnames=detail_fields)
+        writer.writeheader()
+        for result in all_results:
+            writer.writerow({key: result.get(key, "") for key in detail_fields})
+
+    json_file = summary_dir / "robustness_runs.json"
+    with json_file.open("w", encoding="utf-8") as file_obj:
+        json.dump(all_results, file_obj, indent=2, ensure_ascii=False)
+
+    # 计算退化率
+    degradation_data = []
+    # 按 experiment_type + strategy 分组
+    exp_strategies: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for result in all_results:
+        key = (result["experiment_type"], result["strategy"])
+        exp_strategies.setdefault(key, []).append(result)
+
+    for (exp_type, strategy), results in exp_strategies.items():
+        # 找到 normal case
+        normal_result = None
+        if exp_type == "capacity":
+            normal_result = next((r for r in results if r["case_name"] == "normal"), None)
+        elif exp_type == "failure":
+            normal_result = next((r for r in results if r["case_name"] == "no_failure"), None)
+
+        if normal_result:
+            normal_completion = _safe_float(normal_result.get("completion_rate"), 0.0)
+            normal_energy = _safe_float(normal_result.get("total_energy"), 0.0)
+            normal_wait = _safe_float(normal_result.get("avg_wait_time_at_relay"), 0.0)
+
+            for result in results:
+                if result["case_name"] == "normal" or result["case_name"] == "no_failure":
+                    continue
+                
+                completion = _safe_float(result.get("completion_rate"), 0.0)
+                energy = _safe_float(result.get("total_energy"), 0.0)
+                wait = _safe_float(result.get("avg_wait_time_at_relay"), 0.0)
+
+                completion_drop = 0.0
+                energy_increase = 0.0
+                wait_increase = 0.0
+
+                if normal_completion > 0:
+                    completion_drop = (normal_completion - completion) / normal_completion
+                if normal_energy > 0:
+                    energy_increase = (energy - normal_energy) / normal_energy
+                if normal_wait > 0:
+                    wait_increase = (wait - normal_wait) / normal_wait
+
+                degradation_data.append({
+                    "experiment_type": exp_type,
+                    "case_name": result["case_name"],
+                    "strategy": strategy,
+                    "completion_drop": completion_drop,
+                    "energy_increase": energy_increase,
+                    "wait_increase": wait_increase,
+                })
+
+    # 生成统计文件
+    stats_file = summary_dir / "robustness_stats.csv"
+    with stats_file.open("w", newline="", encoding="utf-8") as file_obj:
+        writer = csv.writer(file_obj)
+        writer.writerow(
+            [
+                "experiment_type",
+                "case_name",
+                "strategy",
+                "mean_completion_rate",
+                "std_completion_rate",
+                "min_completion_rate",
+                "max_completion_rate",
+                "mean_total_energy",
+                "std_total_energy",
+                "mean_avg_energy_per_task",
+                "std_avg_energy_per_task",
+                "mean_avg_wait_time",
+                "std_avg_wait_time",
+                "run_failure_rate",
+                "task_failure_rate_mean",
+                "task_failure_rate_std",
+                "n",
+            ]
+        )
+
+        groups: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
+        for result in all_results:
+            key = (result["experiment_type"], result["case_name"], result["strategy"])
+            groups.setdefault(key, []).append(result)
+
+        for (experiment_type, case_name, strategy), group_results in groups.items():
+            completion = [_safe_float(item.get("completion_rate"), 0.0) for item in group_results]
+            total_energy = [_safe_float(item.get("total_energy"), 0.0) for item in group_results]
+
+            avg_energy = [
+                np.nan if item.get("avg_energy_per_task") is None else float(item["avg_energy_per_task"])
+                for item in group_results
+            ]
+            avg_wait = [
+                np.nan if item.get("avg_wait_time_at_relay") is None else float(item["avg_wait_time_at_relay"])
+                for item in group_results
+            ]
+
+            # 计算任务失败率
+            task_failure_rates = [item.get("task_failure_rate", 0.0) for item in group_results]
+            
+            # 计算运行失败率（这里简化为检查是否有异常数据，如缺失关键字段）
+            run_failure_count = sum(1 for item in group_results if item.get("initial_task_count") is None or item.get("completed_tasks") is None)
+            run_failure_rate = run_failure_count / len(group_results) if group_results else 0.0
+
+            writer.writerow(
+                [
+                    experiment_type,
+                    case_name,
+                    strategy,
+                    _nan_stat(completion, "mean"),
+                    _nan_stat(completion, "std"),
+                    _nan_stat(completion, "min"),
+                    _nan_stat(completion, "max"),
+                    _nan_stat(total_energy, "mean"),
+                    _nan_stat(total_energy, "std"),
+                    _nan_stat(avg_energy, "mean"),
+                    _nan_stat(avg_energy, "std"),
+                    _nan_stat(avg_wait, "mean"),
+                    _nan_stat(avg_wait, "std"),
+                    run_failure_rate,
+                    _nan_stat(task_failure_rates, "mean"),
+                    _nan_stat(task_failure_rates, "std"),
+                    len(group_results),
+                ]
+            )
+
+    # 生成退化率文件
+    if degradation_data:
+        degradation_file = summary_dir / "robustness_degradation.csv"
+        with degradation_file.open("w", newline="", encoding="utf-8") as file_obj:
+            writer = csv.writer(file_obj)
+            writer.writerow([
+                "experiment_type",
+                "case_name",
+                "strategy",
+                "completion_drop",
+                "energy_increase",
+                "wait_increase",
+            ])
+            for data in degradation_data:
+                writer.writerow([
+                    data["experiment_type"],
+                    data["case_name"],
+                    data["strategy"],
+                    data["completion_drop"],
+                    data["energy_increase"],
+                    data["wait_increase"],
+                ])
+        print(f"Degradation CSV: {degradation_file}")
+
+    print("\n=== Summary Generated ===")
+    print(f"Detail CSV: {csv_file}")
+    print(f"Detail JSON: {json_file}")
+    print(f"Stats CSV: {stats_file}")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run robustness experiments")
+    parser.add_argument("--config", type=str, required=True, help="Robustness config file path")
+    parser.add_argument("--campaign-name", type=str, default="default", help="Campaign name")
+    parser.add_argument("--dry-run", action="store_true", help="Expand cases and print plan only")
     args = parser.parse_args()
-    
-    # 解析种子列表
-    seeds = [int(seed.strip()) for seed in args.seeds.split(',')]
-    
-    # 策略列表
-    strategies = ["baseline_direct", "relay_coop", "energy_priority"]
-    
-    # 运行实验
-    all_results = []
-    
-    if args.round in ["1", "all"]:
-        round1_results = run_round1_single_factor(args.campaign_name, args.max_steps, seeds, strategies)
-        all_results.extend(round1_results)
-    
-    if args.round in ["2", "all"]:
-        round2_results = run_round2_perturbation(args.campaign_name, args.max_steps, seeds, strategies)
-        all_results.extend(round2_results)
-    
-    if args.round in ["3", "all"]:
-        round3_results = run_round3_extreme_combo(args.campaign_name, args.max_steps, seeds, strategies)
-        all_results.extend(round3_results)
-    
-    # 校验总样本数
-    expected_total = 0
-    if args.round in ["1", "all"]:
-        expected_total += len(strategies) * len(seeds)
-    if args.round in ["2", "all"]:
-        expected_total += len(strategies) * len(seeds)
-    if args.round in ["3", "all"]:
-        expected_total += len(strategies) * len(seeds)
-    
+
+    config = load_campaign_config(args.config)
+    experiment_type = config.get("experiment_type")
+
+    if experiment_type not in SUPPORTED_EXPERIMENT_TYPES:
+        raise ValueError(
+            f"Unsupported experiment_type: {experiment_type}. "
+            f"Supported: {sorted(SUPPORTED_EXPERIMENT_TYPES)}"
+        )
+
+    strategies = config.get("strategies", DEFAULT_STRATEGIES)
+    base_config = config.get("base_config", {})
+    default_seed = config.get("seed")
+
+    cases = normalize_cases(config)
+
+    all_results: list[dict[str, Any]] = []
+    expected_total = len(cases) * len(strategies)
+
+    print("\n=== Robustness Plan ===")
+    print(f"Experiment Type: {experiment_type}")
+    print(f"Strategies: {strategies}")
+    print(f"Cases: {[case['name'] for case in cases]}")
+    print(f"Expected Runs: {expected_total}")
+
+    for case in cases:
+        for strategy in strategies:
+            run_config = build_run_config(base_config, case, experiment_type, default_seed)
+            result = run_case(
+                args.campaign_name,
+                run_config,
+                case,
+                strategy,
+                experiment_type,
+                dry_run=args.dry_run,
+            )
+            if result is not None:
+                all_results.append(result)
+
+    if args.dry_run:
+        print("\n=== DRY-RUN Complete ===")
+        return
+
     actual_total = len(all_results)
     if actual_total != expected_total:
         raise ValueError(f"Expected {expected_total} total results, got {actual_total}")
-    
-    # 生成汇总文件
+
     generate_summary(args.campaign_name, all_results)
-    
-    print(f"\n=== 鲁棒性实验完成 ===")
-    print(f"结果保存到: results/robustness/{args.campaign_name}")
+
+    print("\n=== Robustness Experiment Complete ===")
+    print(f"Results saved to: results/robustness/{args.campaign_name}")
 
 
 if __name__ == "__main__":
