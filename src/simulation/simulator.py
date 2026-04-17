@@ -169,6 +169,41 @@ class Simulator:
         step_agv_energy = 0.0
         step_charge_loss_energy = 0.0
 
+        # 处理运行时事件
+        if hasattr(self, 'runtime_events') and self.runtime_events:
+            events_to_remove = []
+            for event in self.runtime_events:
+                if event.get('step') == self.time_step:
+                    if event.get('type') == 'uav_removal':
+                        uav_id = event.get('uav_id')
+                        # 找到目标UAV
+                        uav = next((u for u in self.environment.uavs if u.id == uav_id), None)
+                        if uav:
+                            # 标记UAV为不可用
+                            uav.available = False
+                            print(f"[EVENT] UAV {uav_id} removed at step {self.time_step}")
+                            
+                            # 检查UAV是否正在执行任务
+                            if hasattr(uav, 'task') and uav.task:
+                                task = uav.task
+                                # 将任务状态回退为pending
+                                task.status = "pending"
+                                task.assigned_uav = None
+                                uav.task = None
+                                print(f"[EVENT] Task {task.id} returned to pending state")
+                            
+                            # 记录事件
+                            self.events.append({
+                                "step": self.time_step,
+                                "type": "UAV_REMOVED",
+                                "uav_id": uav_id,
+                                "details": f"UAV {uav_id} removed due to failure"
+                            })
+                    events_to_remove.append(event)
+            # 移除已处理的事件
+            for event in events_to_remove:
+                self.runtime_events.remove(event)
+
         # 分配任务并记录开始时间
         assignment_result = self.strategy.assign_tasks(self.environment)
         
@@ -746,7 +781,8 @@ class Simulator:
 
     def save_results(self, experiment_name="default", result_type="runs", campaign_name=None):
         # 根据result_type选择不同的布局创建函数
-        if result_type.startswith("round") and campaign_name:
+        robustness_result_types = {"seed_stability", "scale", "capacity", "failure"}
+        if campaign_name and (result_type.startswith("round") or result_type in robustness_result_types):
             # 使用鲁棒性实验布局
             from src.utils.result_layout import create_robustness_layout
             layout = create_robustness_layout(
