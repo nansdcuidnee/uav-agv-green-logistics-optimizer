@@ -1,0 +1,15 @@
+{
+  "total_energy": 173.21277698842076,
+  "avg_energy_per_task": 86.60638849421038,
+  "energy_per_km": 4084.652288606044,
+  "completion_rate": 100.0,
+  "task_completion_rate": 100.0,
+  "avg_delivery_time": 4.0,
+  "energy_saving_rate_vs_baseline": -100.0,
+  "emission_reduction_rate_vs_baseline": -100.0,
+  "completed_tasks": 2,
+  "total_time": 10,
+  "charging_count": 5,
+  "total_distance_km": 0.0424057581281986,
+  "baseline_energy": 2.8284271247461903
+}

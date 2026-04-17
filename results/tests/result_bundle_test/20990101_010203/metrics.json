@@ -1,0 +1,12 @@
+{
+  "total_tasks": 2,
+  "completed_tasks": 0,
+  "average_completion_time": 0.0,
+  "on_time_rate": 0.0,
+  "uav_utilization": 0.0,
+  "agv_utilization": 0.0,
+  "current_time": 0.0,
+  "uav_energy": 0.0,
+  "agv_energy": 0.0,
+  "delay_rate": 0.0
+}

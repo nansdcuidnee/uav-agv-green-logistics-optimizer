@@ -1,0 +1,9 @@
+Experiment: switch_relay_coop
+Strategy: relay_coop
+Initial tasks: 2
+UAVs: 1
+AGVs: 1
+Completed tasks: 0
+Total energy: 0.0
+Total time steps: 200
+Charging count: 0

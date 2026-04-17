@@ -1,0 +1,26 @@
+{
+  "experiment_name": "repro_test_1",
+  "timestamp": "20260415_212646",
+  "strategy": "baseline_direct",
+  "records_granularity": "step",
+  "required_artifacts": [
+    "metrics.json",
+    "records/steps.csv",
+    "records/tasks.csv",
+    "plots/chart.png"
+  ],
+  "plots": [
+    "plots\\task_progress.png",
+    "plots\\battery_status.png",
+    "plots\\energy_curve.png",
+    "plots\\trajectory_map.png",
+    "plots\\environment_state.png",
+    "plots\\coordination_events.png",
+    "plots\\kpi_summary.png"
+  ],
+  "summary": {
+    "initial_task_count": 2,
+    "completed_tasks": 2,
+    "time_steps": 34
+  }
+}
