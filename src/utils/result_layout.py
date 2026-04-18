@@ -118,3 +118,49 @@ def create_test_layout(
 
 def list_relative_artifacts(layout: ResultLayout, paths: Sequence[Path]) -> list[str]:
     return [str(path.relative_to(layout.run_dir)) for path in paths]
+
+
+def create_robustness_layout(
+    campaign_name: str = "default",
+    round_type: str = "round1_single_factor",
+    *, 
+    timestamp: str | None = None,
+    base_dir: str | Path = "results",
+) -> ResultLayout:
+    """创建鲁棒性实验结果目录布局
+    
+    Args:
+        campaign_name: 鲁棒性实验名称
+        round_type: 轮次类型，可选值: round1_single_factor, round2_perturbation, round3_extreme_combo
+        timestamp: 时间戳
+        base_dir: 基础目录
+    """
+    result_dir = Path(base_dir) / "robustness" / sanitize_experiment_name(campaign_name)
+    round_dir = result_dir / round_type
+    run_timestamp = timestamp or datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = round_dir / run_timestamp
+    plots_dir = run_dir / "plots"
+    logs_dir = run_dir / "logs"
+    records_dir = run_dir / "records"
+
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    records_dir.mkdir(parents=True, exist_ok=True)
+
+    return ResultLayout(run_dir=run_dir, plots_dir=plots_dir, logs_dir=logs_dir, records_dir=records_dir)
+
+
+def create_robustness_summary_layout(
+    campaign_name: str = "default",
+    *, 
+    base_dir: str | Path = "results",
+) -> Path:
+    """创建鲁棒性实验汇总目录
+    
+    Args:
+        campaign_name: 鲁棒性实验名称
+        base_dir: 基础目录
+    """
+    summary_dir = Path(base_dir) / "robustness" / sanitize_experiment_name(campaign_name) / "summary"
+    summary_dir.mkdir(parents=True, exist_ok=True)
+    return summary_dir

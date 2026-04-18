@@ -1,0 +1,21 @@
+Event Timeline
+================
+Step 0:
+  - Task start: UAV 1 started task 1
+Step 4:
+  - Task complete: UAV 1 completed task 1
+  - Charging request: UAV 1 requests charging (battery: 18.4%)
+  - Charging start: AGV 1 starts charging UAV 1
+Step 5:
+  - Task complete: UAV 1 completed task 1
+  - Task start: UAV 1 started task 2
+  - Low battery alert: UAV 1 battery at 22.0%
+  - Charging end: UAV 1 finished charging
+Step 6:
+  - Charging request: UAV 1 requests charging (battery: 5.7%)
+  - Charging start: AGV 1 starts charging UAV 1
+Step 9:
+  - Task complete: UAV 1 completed task 2
+
+Final Statistics:
+- Total tasks completed: 2/2

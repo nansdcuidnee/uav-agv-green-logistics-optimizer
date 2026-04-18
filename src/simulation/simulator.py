@@ -20,12 +20,14 @@ from src.communication.communication_logger import CommunicationLogger
 class Simulator:
     """Main simulation runner for UAV-AGV charging experiments."""
 
-    def __init__(self, environment, energy_model, path_planner, scheduler, strategy_type="baseline_direct"):
+    def __init__(self, environment, energy_model, path_planner, scheduler, strategy_type="baseline_direct", scenario_name="default", seed=42):
         self.environment = environment
         self.energy_model = energy_model
         self.path_planner = path_planner
         self.scheduler = scheduler
         self.time_step = 0
+        self.scenario_name = scenario_name
+        self.seed = seed
 
         strategy_factory = {
             "baseline_direct": lambda: BaselineDirectStrategy(),
@@ -43,6 +45,14 @@ class Simulator:
         self.total_uav_energy = 0.0
         self.total_agv_energy = 0.0
         self.total_charge_loss_energy = 0.0
+        
+        # 充电配置参数
+        self.charge_rate_per_step = 5.0  # 每步充电百分比
+        self.charge_start_threshold = 20  # 低于该值开始充电
+        self.charge_target_soc = 80  # 充到该值结束
+        
+        # 充电状态管理
+        self.charging_uavs = {}  # 记录正在充电的UAV及其充电信息
 
         self.energy_history = []
         self.task_history = []
@@ -101,6 +111,10 @@ class Simulator:
             task.total_energy = 0.0
         if not hasattr(task, 'assigned_time'):
             task.assigned_time = None
+        if not hasattr(task, 'start_time'):
+            task.start_time = None
+        if not hasattr(task, 'completion_time'):
+            task.completion_time = None
         if not hasattr(task, 'wait_time_at_relay'):
             task.wait_time_at_relay = 0.0
 
@@ -126,7 +140,7 @@ class Simulator:
         setattr(task, key, current_value + float(delta))
         task.total_energy = float(task.uav_energy) + float(task.agv_energy) + float(task.charge_loss_energy)
 
-    def run(self, max_steps, experiment_name="default", result_type="runs"):
+    def run(self, max_steps, experiment_name="default", result_type="runs", campaign_name=None):
         print(f"Starting simulation, max_steps={max_steps}, strategy={self.strategy.name}")
         
         # 连接所有设备到网络
@@ -138,12 +152,14 @@ class Simulator:
 
         for _ in range(max_steps):
             self.total_energy += self.step()
-            if self.completed_tasks >= self.initial_task_count:
+            # Do not stop until all active charging sessions are closed.
+            # Otherwise CHARGING_END may be missing from records.
+            if self.completed_tasks >= self.initial_task_count and not self.charging_uavs:
                 print("All tasks completed, stopping early.")
                 break
 
         self.print_results()
-        return self.save_results(experiment_name, result_type)
+        return self.save_results(experiment_name, result_type, campaign_name)
 
     def step(self):
         step_energy = 0.0
@@ -152,6 +168,41 @@ class Simulator:
         step_uav_energy = 0.0
         step_agv_energy = 0.0
         step_charge_loss_energy = 0.0
+
+        # 处理运行时事件
+        if hasattr(self, 'runtime_events') and self.runtime_events:
+            events_to_remove = []
+            for event in self.runtime_events:
+                if event.get('step') == self.time_step:
+                    if event.get('type') == 'uav_removal':
+                        uav_id = event.get('uav_id')
+                        # 找到目标UAV
+                        uav = next((u for u in self.environment.uavs if u.id == uav_id), None)
+                        if uav:
+                            # 标记UAV为不可用
+                            uav.available = False
+                            print(f"[EVENT] UAV {uav_id} removed at step {self.time_step}")
+                            
+                            # 检查UAV是否正在执行任务
+                            if hasattr(uav, 'task') and uav.task:
+                                task = uav.task
+                                # 将任务状态回退为pending
+                                task.status = "pending"
+                                task.assigned_uav = None
+                                uav.task = None
+                                print(f"[EVENT] Task {task.id} returned to pending state")
+                            
+                            # 记录事件
+                            self.events.append({
+                                "step": self.time_step,
+                                "type": "UAV_REMOVED",
+                                "uav_id": uav_id,
+                                "details": f"UAV {uav_id} removed due to failure"
+                            })
+                    events_to_remove.append(event)
+            # 移除已处理的事件
+            for event in events_to_remove:
+                self.runtime_events.remove(event)
 
         # 分配任务并记录开始时间
         assignment_result = self.strategy.assign_tasks(self.environment)
@@ -260,6 +311,9 @@ class Simulator:
                 })
                 # 更新任务状态
                 self.task_states[task.id] = "IN_PROGRESS"
+                # 设置任务开始时间（仅首次）
+                if task.start_time is None:
+                    task.start_time = self.time_step
             elif task.status == "in_progress" and current_task_state != "IN_PROGRESS" and current_task_state != "WAITING_FOR_AGV":
                 # 记录任务开始事件
                 self.events.append({
@@ -271,16 +325,11 @@ class Simulator:
                 })
                 # 更新任务状态
                 self.task_states[task.id] = "IN_PROGRESS"
+                # 设置任务开始时间（仅首次）
+                if task.start_time is None:
+                    task.start_time = self.time_step
             elif task.status == "completed" and current_task_state != "COMPLETED":
-                # 记录任务完成事件
-                self.events.append({
-                    "step": self.time_step,
-                    "type": "TASK_COMPLETE",
-                    "task_id": task.id,
-                    "uav_id": task.assigned_uav.id if hasattr(task, 'assigned_uav') else None,
-                    "details": "Task completed"
-                })
-                # 更新任务状态
+                # 更新任务状态（不再在这里记录事件，避免重复）
                 self.task_states[task.id] = "COMPLETED"
             
             # 累计等待时间
@@ -296,16 +345,53 @@ class Simulator:
             if hasattr(agv, 'status') and agv.status == "moving_to_relay" and hasattr(agv, 'destination'):
                 # 计算 AGV 移动速度（假设 AGV 移动速度为 10 单位/步）
                 agv_speed = 10.0
-                if hasattr(agv, 'move_distance'):
+                if hasattr(agv, 'move_distance') and hasattr(agv, 'move_progress'):
                     if agv.move_distance > 0:
                         # 计算每步移动的距离
-                        step_distance = min(agv_speed, agv.move_distance - agv.move_progress)
+                        step_distance = max(0, min(agv_speed, agv.move_distance - agv.move_progress))
                         
                         # 计算移动方向
                         dx = agv.destination[0] - agv.position[0]
                         dy = agv.destination[1] - agv.position[1]
                         distance = (dx**2 + dy**2) ** 0.5
-                        if distance > 0:
+                        
+                        # 检查是否已经到达目的地
+                        if distance <= 1e-6:
+                            # 已经到达目的地
+                            agv.position = agv.destination
+                            agv.status = "idle"
+                            
+                            # 记录 AGV 到达中继点事件
+                            self.events.append({
+                                "step": self.time_step,
+                                "type": "AGV_ARRIVE_RELAY",
+                                "agv_id": agv.id,
+                                "task_id": getattr(agv, 'task_id', None),
+                                "x": agv.position[0],
+                                "y": agv.position[1],
+                                "details": "AGV arrived at relay point"
+                            })
+                            # 更新 AGV 状态
+                            self.agv_states[agv.id] = "READY_AT_RELAY"
+                            
+                            # 找到对应的任务并将其状态改为in_progress
+                            task_id = getattr(agv, 'task_id', None)
+                            if task_id:
+                                task = next((t for t in self.environment.tasks if t.id == task_id), None)
+                                if task and task.status == "waiting_for_agv":
+                                    task.status = "in_progress"
+                            
+                            # 移除移动相关属性
+                            if hasattr(agv, 'destination'):
+                                delattr(agv, 'destination')
+                            if hasattr(agv, 'move_distance'):
+                                delattr(agv, 'move_distance')
+                            if hasattr(agv, 'move_progress'):
+                                delattr(agv, 'move_progress')
+                            # 最后删除task_id属性
+                            if hasattr(agv, 'task_id'):
+                                delattr(agv, 'task_id')
+                        else:
                             direction_x = dx / distance
                             direction_y = dy / distance
                             
@@ -349,6 +435,7 @@ class Simulator:
                                     delattr(agv, 'move_distance')
                                 if hasattr(agv, 'move_progress'):
                                     delattr(agv, 'move_progress')
+                                # 最后删除task_id属性
                                 if hasattr(agv, 'task_id'):
                                     delattr(agv, 'task_id')
                         
@@ -394,8 +481,47 @@ class Simulator:
                         if hasattr(agv, 'task_id'):
                             delattr(agv, 'task_id')
 
+        # 处理正在充电的UAV
+        for uav in self.environment.uavs:
+            if uav.id in self.charging_uavs:
+                # UAV正在充电中
+                charging_info = self.charging_uavs[uav.id]
+                agv = charging_info['agv']
+                
+                # 每步充电
+                charge_amount = self.charge_rate_per_step
+                uav.update_battery(charge_amount)
+                
+                # 计算充电能耗
+                agv_energy = 2.0  # 每次充电的基础能耗
+                self.total_energy += agv_energy
+                self.total_charge_loss_energy += agv_energy
+                step_energy += agv_energy
+                step_charge_loss_energy += agv_energy
+                
+                # 检查是否达到目标电量
+                if uav.battery >= self.charge_target_soc:
+                    # 记录充电结束事件
+                    self.events.append({
+                        "step": self.time_step,
+                        "type": "CHARGING_END",
+                        "uav_id": uav.id,
+                        "agv_id": agv.id,
+                        "battery": uav.battery,
+                        "x": uav.position[0],
+                        "y": uav.position[1],
+                        "details": "Charging ended"
+                    })
+                    # 移除充电状态
+                    del self.charging_uavs[uav.id]
+                    self.charging_states[uav.id] = False
+        
         # 处理 UAV 任务和路径规划
         for uav in self.environment.uavs:
+            # 正在充电的UAV不能执行任务
+            if uav.id in self.charging_uavs:
+                continue
+                
             if uav.task and not uav.path:
                 # 只有当任务状态为 in_progress 时才规划路径
                 if uav.task.status == "in_progress":
@@ -403,12 +529,20 @@ class Simulator:
                     if self.strategy.name == "relay_coop" and hasattr(uav.task, "relay_point") and hasattr(uav.task, "assigned_agv"):
                         agv = uav.task.assigned_agv
                         # 检查 AGV 是否到达中继点
-                        if not (hasattr(agv, 'status') and agv.status == "moving_to_relay"):
+                        if hasattr(agv, 'status') and agv.status == "idle":
                             # AGV 已到达，规划路径
                             relay_point = uav.task.relay_point
-                            uav.path = self.path_planner.plan_multi_stop_path(
-                                uav.position, [relay_point], uav.task.end_point
-                            )
+                            # 转换障碍物为 (x, y, radius) 列表格式
+                            obstacles = []
+                            if hasattr(self.environment, 'obstacles'):
+                                for obstacle in self.environment.obstacles:
+                                    if hasattr(obstacle, 'position') and hasattr(obstacle, 'radius'):
+                                        obstacles.append((obstacle.position[0], obstacle.position[1], obstacle.radius))
+                                    elif isinstance(obstacle, (list, tuple)) and len(obstacle) >= 3:
+                                        obstacles.append((obstacle[0], obstacle[1], obstacle[2]))
+                            # 直接使用直线算法，避免A*算法可能的性能问题
+                            path = [uav.position, relay_point, uav.task.end_point]
+                            uav.path = path
                             # 记录中继协同事件
                             if not hasattr(uav.task, "relay_event_recorded"):
                                 self.events.append({
@@ -422,7 +556,15 @@ class Simulator:
                                 uav.task.relay_event_recorded = True
                     else:
                         # 其他策略或 AGV 已到达，直接规划到终点
-                        uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point)
+                        # 转换障碍物为 (x, y, radius) 列表格式
+                        obstacles = []
+                        if hasattr(self.environment, 'obstacles'):
+                            for obstacle in self.environment.obstacles:
+                                if hasattr(obstacle, 'position') and hasattr(obstacle, 'radius'):
+                                    obstacles.append((obstacle.position[0], obstacle.position[1], obstacle.radius))
+                                elif isinstance(obstacle, (list, tuple)) and len(obstacle) >= 3:
+                                    obstacles.append((obstacle[0], obstacle[1], obstacle[2]))
+                        uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point, obstacles)
 
             if uav.path:
                 next_point = uav.path[0]
@@ -452,8 +594,6 @@ class Simulator:
                     # 其他策略使用标准能耗模型
                     cost = float(self.energy_model.compute(uav))
 
-
-                
                 uav.update_battery(-cost)
                 step_energy += cost
                 step_uav_energy += cost
@@ -490,10 +630,11 @@ class Simulator:
                     f"UAV {uav.id} battery level: {uav.battery:.2f}%"
                 )
             # 检查充电状态变化
-            now_charging = uav.needs_charging()
+            now_charging = uav.battery < self.charge_start_threshold
             was_charging = self.charging_states.get(uav.id, False)
             
-            if now_charging and not was_charging:
+            # 确保不会在连续步骤中重复触发充电请求
+            if now_charging and not was_charging and uav.id not in self.charging_uavs:
                 # 记录充电请求事件
                 self.events.append({
                     "step": self.time_step,
@@ -518,16 +659,6 @@ class Simulator:
                         "CHARGING_ASSIGNMENT",
                         f"AGV {agv.id} assigned to charge UAV {uav.id}"
                     )
-                    # 计算 AGV 充电时的能耗
-                    # 假设充电时 AGV 静止，但需要消耗一定能量
-                    agv_energy = 2.0  # 每次充电的基础能耗
-                    agv.charge(uav)
-                    self.charging_count += 1
-                    self.total_energy += agv_energy
-                    self.total_charge_loss_energy += agv_energy
-                    step_energy += agv_energy
-                    step_charge_loss_energy += agv_energy
-                    
                     # 记录充电开始事件
                     self.events.append({
                         "step": self.time_step,
@@ -541,35 +672,13 @@ class Simulator:
                     })
                     # 更新充电状态
                     self.charging_states[uav.id] = True
-                    
-                    # 充电后再次检查充电状态
-                    after_charging = uav.needs_charging()
-                    if not after_charging:
-                        # 记录充电结束事件
-                        self.events.append({
-                            "step": self.time_step,
-                            "type": "CHARGING_END",
-                            "uav_id": uav.id,
-                            "battery": uav.battery,
-                            "x": uav.position[0],
-                            "y": uav.position[1],
-                            "details": "Charging ended"
-                        })
-                        # 更新充电状态
-                        self.charging_states[uav.id] = False
-            elif not now_charging and was_charging:
-                # 记录充电结束事件
-                self.events.append({
-                    "step": self.time_step,
-                    "type": "CHARGING_END",
-                    "uav_id": uav.id,
-                    "battery": uav.battery,
-                    "x": uav.position[0],
-                    "y": uav.position[1],
-                    "details": "Charging ended"
-                })
-                # 更新充电状态
-                self.charging_states[uav.id] = False
+                    self.charging_count += 1
+                    # 记录充电信息
+                    self.charging_uavs[uav.id] = {
+                        'agv': agv,
+                        'start_step': self.time_step,
+                        'start_battery': uav.battery
+                    }
 
         self.energy_history.append(step_energy)
         self.task_history.append(self.completed_tasks)
@@ -600,94 +709,6 @@ class Simulator:
         print(f"task_completion_rate: {task_completion_rate:.2f}%")
         print(f"completed_tasks: {self.completed_tasks}/{self.initial_task_count}")
         print(f"charging_count: {self.charging_count}")
-
-    def calculate_metrics(self):
-        # 计算完成率（0-1范围）
-        completion_rate = (
-            self.completed_tasks / self.initial_task_count if self.initial_task_count > 0 else 0.0
-        )
-        
-        # 计算平均能耗 per task
-        avg_energy_per_task = self.total_energy / self.completed_tasks if self.completed_tasks > 0 else None
-
-        # 计算 energy_per_km
-        total_distance = self.total_distance + self.total_distance_agv
-        energy_per_km = self.total_energy / total_distance if total_distance > 0 else None
-
-        # 计算平均交付时间（执行时长的平均值）
-        execution_times = []
-        wait_times = []
-        on_time_tasks = 0
-        
-        for task in self.environment.tasks:
-            # 只考虑已完成的任务
-            if task.status == "completed" and hasattr(task, 'start_time') and hasattr(task, 'completion_time'):
-                start_time = getattr(task, 'start_time', None)
-                completion_time = getattr(task, 'completion_time', None)
-                if start_time is not None and completion_time is not None:
-                    execution_time = completion_time - start_time
-                    execution_times.append(execution_time)
-                    
-                    # 计算准时完成的任务数
-                    if hasattr(task, 'deadline') and task.deadline is not None:
-                        if completion_time <= task.deadline:
-                            on_time_tasks += 1
-                    
-                    # 计算等待时间
-                    if hasattr(task, 'wait_time_at_relay'):
-                        wait_time = getattr(task, 'wait_time_at_relay', 0)
-                        if wait_time > 0:
-                            wait_times.append(wait_time)
-        
-        # 计算平均交付时间（仅completed任务）
-        avg_delivery_time = sum(execution_times) / len(execution_times) if execution_times else 0.0
-        
-        # 计算平均等待时间（无样本返回null）
-        avg_wait_time_at_relay = sum(wait_times) / len(wait_times) if wait_times else None
-        
-        max_delivery_time = max(execution_times) if execution_times else 0.0
-        
-        # 计算准时率（0-1范围）
-        on_time_rate = on_time_tasks / self.initial_task_count if self.initial_task_count > 0 else 0.0
-        on_time_rate_given_completed = (
-            on_time_tasks / self.completed_tasks if self.completed_tasks > 0 else None
-        )
-        
-        # 计算碳排放量（假设1单位能量产生0.5单位碳排放）
-        carbon_emission = self.total_energy * 0.5
-
-        return {
-            "strategy_name": self.strategy.name,
-            "scenario_name": "default",
-            "seed": 42,
-            "total_tasks": self.initial_task_count,
-            "completed_tasks": int(self.completed_tasks),
-            "failed_tasks": self.initial_task_count - self.completed_tasks,
-            "completion_rate": float(completion_rate),
-            "on_time_tasks": on_time_tasks,
-            "on_time_rate": float(on_time_rate),
-            "total_time": int(self.time_step),
-            "avg_delivery_time": float(avg_delivery_time),
-            "avg_wait_time_at_relay": avg_wait_time_at_relay,
-            "max_delivery_time": float(max_delivery_time),
-            "total_distance_uav": float(self.total_distance),
-            "total_distance_agv": float(self.total_distance_agv),
-            "total_distance": float(total_distance),
-            "uav_energy": float(self.total_uav_energy),
-            "agv_energy": float(self.total_agv_energy),
-            "charge_loss_energy": float(self.total_charge_loss_energy),
-            "total_energy": float(self.total_energy),
-            "avg_energy_per_task": avg_energy_per_task,
-            "energy_per_km": energy_per_km,
-            "carbon_emission": float(carbon_emission),
-            "charging_count": int(self.charging_count),
-            "baseline_strategy_name": None,
-            "baseline_run_dir": None,
-            "baseline_total_energy": None,
-            "baseline_carbon_emission": None,
-            "energy_saving_rate_vs_baseline": None,
-            "emission_reduction_rate_vs_baseline": None,
-        }
 
     def calculate_metrics(self):
         completion_rate = (
@@ -726,8 +747,8 @@ class Simulator:
 
         return {
             "strategy_name": self.strategy.name,
-            "scenario_name": "default",
-            "seed": 42,
+            "scenario_name": self.scenario_name,
+            "seed": self.seed,
             "total_tasks": self.initial_task_count,
             "completed_tasks": int(self.completed_tasks),
             "failed_tasks": self.initial_task_count - self.completed_tasks,
@@ -758,8 +779,19 @@ class Simulator:
             "emission_reduction_rate_vs_baseline": None,
         }
 
-    def save_results(self, experiment_name="default", result_type="runs"):
-        layout = create_result_layout(experiment_name=experiment_name, result_type=result_type)
+    def save_results(self, experiment_name="default", result_type="runs", campaign_name=None):
+        # 根据result_type选择不同的布局创建函数
+        robustness_result_types = {"seed_stability", "scale", "capacity", "failure"}
+        if campaign_name and (result_type.startswith("round") or result_type in robustness_result_types):
+            # 使用鲁棒性实验布局
+            from src.utils.result_layout import create_robustness_layout
+            layout = create_robustness_layout(
+                campaign_name=campaign_name,
+                round_type=result_type
+            )
+        else:
+            # 使用原来的布局
+            layout = create_result_layout(experiment_name=experiment_name, result_type=result_type)
         output_dir = str(layout.run_dir)
 
         metrics = self.calculate_metrics()
@@ -938,8 +970,8 @@ class Simulator:
             f.write(f"Total time steps: {self.time_step}\n")
             f.write(f"Charging count: {self.charging_count}\n")
 
-        # 保存 communication_log.csv
-        communication_log_file = layout.artifact_path("communication_log.csv")
+        # 保存 communication_log.csv 到 records 文件夹
+        communication_log_file = layout.record_path("communication_log.csv")
         with open(communication_log_file, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(["timestamp", "sender", "receiver", "message_type", "content"])
@@ -963,8 +995,8 @@ class Simulator:
                     writer.writerow([step, f"Control Center", f"AGV {event['agv_id']}", "CHARGING_COMMAND", f"Charge UAV {event['uav_id']}"])
                     writer.writerow([step, f"AGV {event['agv_id']}", f"UAV {event['uav_id']}", "CHARGING_START", "Start charging"])
 
-        # 保存 event_timeline.txt
-        event_timeline_file = layout.artifact_path("event_timeline.txt")
+        # 保存 event_timeline.txt 到 records 文件夹
+        event_timeline_file = layout.record_path("event_timeline.txt")
         with open(event_timeline_file, "w", encoding="utf-8") as f:
             f.write("Event Timeline\n")
             f.write("================\n")
@@ -1016,7 +1048,7 @@ class Simulator:
 
 
         
-        # 保存 coordination_events.csv
+        # 保存 coordination_events.csv 到 records 文件夹
         coordination_events_file = layout.record_path("coordination_events.csv")
         with open(coordination_events_file, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)

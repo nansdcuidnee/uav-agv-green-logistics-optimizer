@@ -1,0 +1,9 @@
+Experiment: smoke_test
+Strategy: baseline_direct
+Initial tasks: 3
+UAVs: 2
+AGVs: 2
+Completed tasks: 0
+Total energy: 0.0
+Total time steps: 50
+Charging count: 0

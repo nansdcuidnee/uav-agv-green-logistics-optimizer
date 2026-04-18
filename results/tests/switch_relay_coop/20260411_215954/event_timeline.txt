@@ -1,0 +1,21 @@
+Event Timeline
+================
+Step 0:
+  - Task assignment: UAV 1 assigned task 1 with AGV 1
+  - Task start: UAV 1 started task 1
+Step 2:
+  - Task complete: UAV 1 completed task 1
+Step 3:
+  - Task assignment: UAV 1 assigned task 2 with AGV 1
+  - Task start: UAV 1 started task 2
+Step 4:
+  - Charging request: UAV 1 requests charging (battery: 17.2%)
+Step 5:
+  - Task complete: UAV 1 completed task 2
+  - Charging request: UAV 1 requests charging (battery: 0.9%)
+
+Final Statistics:
+- Total tasks completed: 2/2
+- Total energy consumed: 99.09
+- Total charging sessions: 0
+- Simulation completed in: 6 steps

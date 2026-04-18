@@ -1,0 +1,26 @@
+{
+  "experiment_name": "switch_relay_coop",
+  "timestamp": "20260412_105606",
+  "strategy": "relay_coop",
+  "records_granularity": "step",
+  "required_artifacts": [
+    "metrics.json",
+    "records/steps.csv",
+    "records/tasks.csv",
+    "plots/chart.png"
+  ],
+  "plots": [
+    "plots\\task_progress.png",
+    "plots\\battery_status.png",
+    "plots\\energy_curve.png",
+    "plots\\trajectory_map.png",
+    "plots\\environment_state.png",
+    "plots\\coordination_events.png",
+    "plots\\kpi_summary.png"
+  ],
+  "summary": {
+    "initial_task_count": 2,
+    "completed_tasks": 2,
+    "time_steps": 45
+  }
+}

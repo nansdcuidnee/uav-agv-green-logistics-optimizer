@@ -1,4 +1,5 @@
 """仿真器构建辅助模块"""
+from config.config import UAV_INIT_BATTERY, AGV_INIT_BATTERY
 from src.simulation.environment import Environment
 from src.simulation.simulator import Simulator
 from src.energy.energy_model import EnergyModel
@@ -49,7 +50,7 @@ def build_environment(config):
                 id=uav_config['id'],
                 position=tuple(uav_config['position']),
                 max_payload=uav_config.get('max_payload', 5.0),
-                battery=uav_config.get('battery_capacity', 100.0)
+                battery=uav_config.get('battery_capacity', UAV_INIT_BATTERY)
             )
             env.uavs.append(uav)
         
@@ -99,12 +100,14 @@ def build_environment(config):
     return env
 
 
-def build_simulator(environment, strategy_type="baseline_direct"):
+def build_simulator(environment, strategy_type="baseline_direct", scenario_name="default", seed=42):
     """构建仿真器
     
     Args:
         environment: 环境对象
         strategy_type: 策略类型
+        scenario_name: 场景名称
+        seed: 随机种子
     
     Returns:
         Simulator: 仿真器对象
@@ -115,4 +118,6 @@ def build_simulator(environment, strategy_type="baseline_direct"):
         path_planner=PathPlanner(),
         scheduler=Scheduler(),
         strategy_type=strategy_type,
+        scenario_name=scenario_name,
+        seed=seed,
     )

@@ -1,0 +1,9 @@
+Experiment: energy_priority
+Strategy: energy_priority
+Initial tasks: 5
+UAVs: 2
+AGVs: 2
+Completed tasks: 5
+Total energy: 2092.515953765969
+Total time steps: 193
+Charging count: 20

@@ -1,0 +1,5 @@
+experiment_name: tmp_check
+initial_task_count: 2
+num_agvs: 1
+num_uavs: 1
+strategy: baseline_direct

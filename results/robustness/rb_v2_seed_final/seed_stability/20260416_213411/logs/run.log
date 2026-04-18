@@ -1,0 +1,9 @@
+Experiment: seed_42_baseline_direct_seed42
+Strategy: baseline_direct
+Initial tasks: 5
+UAVs: 2
+AGVs: 1
+Completed tasks: 5
+Total energy: 1161.7181095837786
+Total time steps: 92
+Charging count: 10

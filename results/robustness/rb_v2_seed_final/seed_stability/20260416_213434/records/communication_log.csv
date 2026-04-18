@@ -1,0 +1,64 @@
+timestamp,sender,receiver,message_type,content
+0,UAV 1,Control Center,TASK_START,Start task 3
+0,UAV 2,Control Center,TASK_START,Start task 5
+3,UAV 1,Control Center,LOW_BATTERY,Battery level: 27.6%
+3,UAV 2,Control Center,LOW_BATTERY,Battery level: 20.9%
+4,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 9.8%"
+4,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+4,AGV 1,UAV 1,CHARGING_START,Start charging
+4,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 1.4%"
+4,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+4,AGV 1,UAV 2,CHARGING_START,Start charging
+22,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 13.4%"
+22,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+22,AGV 1,UAV 1,CHARGING_START,Start charging
+22,UAV 2,Control Center,TASK_COMPLETE,Complete task 5
+22,UAV 2,Control Center,LOW_BATTERY,Battery level: 23.0%
+23,UAV 2,Control Center,TASK_START,Start task 1
+23,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 3.9%"
+23,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+23,AGV 1,UAV 2,CHARGING_START,Start charging
+39,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 12.5%"
+39,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+39,AGV 1,UAV 1,CHARGING_START,Start charging
+41,UAV 2,Control Center,LOW_BATTERY,Battery level: 28.9%
+42,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 10.7%"
+42,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+42,AGV 1,UAV 2,CHARGING_START,Start charging
+56,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 12.9%"
+56,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+56,AGV 1,UAV 1,CHARGING_START,Start charging
+58,UAV 2,Control Center,TASK_COMPLETE,Complete task 1
+58,UAV 2,Control Center,LOW_BATTERY,Battery level: 26.0%
+59,UAV 2,Control Center,TASK_START,Start task 2
+59,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 7.3%"
+59,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+59,AGV 1,UAV 2,CHARGING_START,Start charging
+73,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 14.2%"
+73,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+73,AGV 1,UAV 1,CHARGING_START,Start charging
+76,UAV 2,Control Center,LOW_BATTERY,Battery level: 29.0%
+77,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 11.3%"
+77,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+77,AGV 1,UAV 2,CHARGING_START,Start charging
+88,UAV 1,Control Center,TASK_COMPLETE,Complete task 3
+89,UAV 1,Control Center,TASK_START,Start task 4
+89,UAV 1,Control Center,LOW_BATTERY,Battery level: 28.6%
+90,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 7.9%"
+90,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+90,AGV 1,UAV 1,CHARGING_START,Start charging
+93,UAV 2,Control Center,LOW_BATTERY,Battery level: 28.3%
+94,UAV 2,Control Center,TASK_COMPLETE,Complete task 2
+94,UAV 2,Control Center,CHARGING_REQUEST,"Request charging, battery: 10.7%"
+94,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 2
+94,AGV 1,UAV 2,CHARGING_START,Start charging
+107,UAV 1,Control Center,LOW_BATTERY,Battery level: 21.8%
+108,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 1.4%"
+108,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+108,AGV 1,UAV 1,CHARGING_START,Start charging
+126,UAV 1,Control Center,LOW_BATTERY,Battery level: 20.6%
+127,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.5%"
+127,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+127,AGV 1,UAV 1,CHARGING_START,Start charging
+145,UAV 1,Control Center,TASK_COMPLETE,Complete task 4
+145,UAV 1,Control Center,LOW_BATTERY,Battery level: 20.8%

@@ -1,20 +1,19 @@
-# 运行产物
+﻿# 杩愯浜х墿
 __pycache__/
 *.py[cod]
 *$py.class
 
-# 测试缓存
+# 娴嬭瘯缂撳瓨
 .pytest_cache/
 pytest-cache-files-*
 
-# 日志文件
+# 鏃ュ織鏂囦欢
 logs/
 debug.log
 
-# 实验结果
-results/
+# 瀹為獙缁撴灉
 
-# 环境文件
+# 鐜鏂囦欢
 .env
 venv/
 env/
@@ -22,13 +21,16 @@ ENV/
 env.bak/
 venv.bak/
 
-# IDE 文件
+# IDE 鏂囦欢
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 
-# 操作系统文件
+# 鎿嶄綔绯荤粺鏂囦欢
 .DS_Store
 Thumbs.db
+
+!results/
+!results/**

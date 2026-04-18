@@ -1,0 +1,59 @@
+Event Timeline
+================
+Step 0:
+  - AGV move start: AGV 1 starts moving to relay point for task 1
+  - Relay request: Relay support requested for task 1 with AGV 1
+  - Relay request: Relay support requested for task 2 with AGV 1
+  - Wait for AGV start: Task 1 starts waiting for AGV
+  - Wait for AGV start: Task 2 starts waiting for AGV
+Step 19:
+  - AGV arrive relay: AGV 1 arrived at relay point for task 2
+Step 20:
+  - Wait for AGV end: Task 2 stops waiting for AGV
+Step 21:
+  - Task complete: UAV 2 completed task 2
+Step 22:
+  - AGV move start: AGV 1 starts moving to relay point for task 3
+  - Relay request: Relay support requested for task 3 with AGV 1
+  - Wait for AGV start: Task 3 starts waiting for AGV
+Step 41:
+  - AGV arrive relay: AGV 1 arrived at relay point for task 3
+  - Low battery alert: UAV 2 battery at 25.5%
+Step 42:
+  - Wait for AGV end: Task 3 stops waiting for AGV
+  - Charging request: UAV 2 requests charging (battery: 9.2%)
+  - Charging start: AGV 1 starts charging UAV 2
+Step 57:
+  - Charging end: UAV 2 finished charging
+  - Task complete: UAV 2 completed task 3
+Step 58:
+  - AGV move start: AGV 1 starts moving to relay point for task 4
+  - Relay request: Relay support requested for task 4 with AGV 1
+  - Wait for AGV start: Task 4 starts waiting for AGV
+Step 77:
+  - AGV arrive relay: AGV 1 arrived at relay point for task 4
+Step 78:
+  - Wait for AGV end: Task 4 stops waiting for AGV
+Step 79:
+  - Task complete: UAV 2 completed task 4
+  - Charging request: UAV 2 requests charging (battery: 16.2%)
+  - Charging start: AGV 1 starts charging UAV 2
+Step 80:
+  - AGV move start: AGV 1 starts moving to relay point for task 5
+  - Relay request: Relay support requested for task 5 with AGV 1
+  - Wait for AGV start: Task 5 starts waiting for AGV
+Step 92:
+  - Charging end: UAV 2 finished charging
+Step 99:
+  - AGV arrive relay: AGV 1 arrived at relay point for task 5
+Step 100:
+  - Wait for AGV end: Task 5 stops waiting for AGV
+Step 101:
+  - Task complete: UAV 2 completed task 5
+  - Charging request: UAV 2 requests charging (battery: 16.8%)
+  - Charging start: AGV 1 starts charging UAV 2
+Step 114:
+  - Charging end: UAV 2 finished charging
+
+Final Statistics:
+- Total tasks completed: 4/5
