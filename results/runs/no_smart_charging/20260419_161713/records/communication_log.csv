@@ -1,0 +1,6 @@
+timestamp,sender,receiver,message_type,content
+0,UAV 1,Control Center,TASK_START,Start task 1
+0,UAV 1,Control Center,LOW_BATTERY,Battery level: 21.4%
+0,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 21.4%"
+0,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+0,AGV 1,UAV 1,CHARGING_START,Start charging

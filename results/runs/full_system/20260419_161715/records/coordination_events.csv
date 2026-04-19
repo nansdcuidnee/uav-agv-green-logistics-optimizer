@@ -1,0 +1,7 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,TASK_ASSIGNED,1,1,,,,Task assigned to UAV
+0,0,TASK_START,1,1,,,,Task starts execution
+0,0,LOW_BATTERY,,1,,,,
+1,1,TASK_COMPLETE,1,1,,,,
+1,1,CHARGING_REQUEST,,1,,,,UAV requests charging
+1,1,CHARGING_START,,1,1,6,189,Charging started

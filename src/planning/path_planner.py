@@ -1,7 +1,7 @@
 import math
 import heapq
 import random
-
+import time
 class Node:
     """节点类，用于A*算法和RRT算法
     
@@ -61,7 +61,9 @@ class PathPlanner:
             if len(point1) != len(point2):
                 raise ValueError("Points must have the same dimension")
             
-            squared_distance = sum((p1 - p2) ** 2 for p1, p2 in zip(point1, point2))
+            if point1 is None or point2 is None or len(point1)!=len(point2):
+                return float('inf')
+            squared_distance = sum((float(p1) - float(p2)) ** 2 for p1, p2 in zip(point1, point2))
             return math.sqrt(squared_distance)
         except (TypeError, AttributeError):
             raise TypeError("Points must be iterable objects with numeric coordinates")
@@ -356,9 +358,21 @@ class PathPlanner:
         rounded_start = (round(start_point[0], 1), round(start_point[1], 1))
         heapq.heappush(open_list, start_node)
         open_dict[rounded_start] = start_node
-        
-        # 主循环
-        while open_list:
+
+        # 添加超时保护
+        start_time = time.time()
+        max_iterations = 10000
+        time_limit = 5.0  # 5秒超时
+        iteration = 0
+
+# 主循环
+        while open_list and iteration < max_iterations:
+    # 检查超时
+            if time.time() - start_time > time_limit:
+                print(f"A*算法超时({time_limit}秒)，返回直线路径")
+                return [start_point, end_point]
+  
+            iteration += 1
             # 从开放列表中取出f值最小的节点
             current_node = heapq.heappop(open_list)
             current_pos = current_node.position
@@ -406,7 +420,14 @@ class PathPlanner:
                     open_dict[rounded_neighbor_pos] = neighbor
         
         # 如果没有找到路径，返回空列表
-        return []
+        # 如果达到最大迭代次数仍未找到路径，返回直线路径
+        if iteration >= max_iterations:
+            print(f"A*算法达到最大迭代次数({max_iterations})，返回直线路径")
+            return [start_point, end_point]
+
+        # 如果没有找到路径，返回直线路径而不是空列表
+        print(f"A*算法未找到路径，返回直线路径")
+        return [start_point, end_point]
     
     def rrt(self, start_point, end_point, obstacles=None, max_iterations=1000, step_size=1.0, goal_radius=1.0):
         """RRT路径规划算法
