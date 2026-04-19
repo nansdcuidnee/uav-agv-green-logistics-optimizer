@@ -11,9 +11,6 @@ pytest-cache-files-*
 logs/
 debug.log
 
-# 实验结果
-results/
-
 # 环境文件
 .env
 venv/
@@ -32,3 +29,6 @@ venv.bak/
 # 操作系统文件
 .DS_Store
 Thumbs.db
+
+!results/
+!results/**
