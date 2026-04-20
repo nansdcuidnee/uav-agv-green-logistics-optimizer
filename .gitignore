@@ -11,7 +11,8 @@ pytest-cache-files-*
 logs/
 debug.log
 
-# 瀹為獙缁撴灉
+# 实验结果
+results/
 
 # 鐜鏂囦欢
 .env
