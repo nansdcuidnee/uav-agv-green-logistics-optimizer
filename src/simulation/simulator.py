@@ -38,6 +38,11 @@ class Simulator:
         self.initial_task_count = len(environment.tasks)
         self.total_distance = 0.0
 
+        # 新增：记录各种距离
+        self.uav_flight_distance = 0.0
+        self.relay_distance = 0.0
+        self.direct_distance = 0.0
+
         self.energy_history = []
         self.task_history = []
         self.battery_history = []
@@ -62,14 +67,35 @@ class Simulator:
 
         for uav in self.environment.uavs:
             if uav.task and not uav.path:
-                uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point)
+                task = uav.task
+                # 检查任务是否使用中继点
+                if hasattr(task, 'use_relay') and task.use_relay and task.relay_point:
+                    # 使用中继点：先飞到中继点，再飞到任务点
+                    relay_point = task.relay_point
+                    path_to_relay = self.path_planner.plan_path(uav.position, relay_point)
+                    path_to_start = self.path_planner.plan_path(relay_point, task.start_point)
+                    path_to_end = self.path_planner.plan_path(task.start_point, task.end_point)
+
+                    # 合并路径
+                    if path_to_relay:
+                        uav.path = path_to_relay[1:] + path_to_start[1:] + path_to_end
+                    else:
+                        uav.path = path_to_start[1:] + path_to_end
+
+                    # 记录中继距离
+                    if path_to_relay:
+                        relay_dist = ((uav.position[0] - relay_point[0])**2 + (uav.position[1] - relay_point[1])**2)**0.5
+                        self.relay_distance += relay_dist
+                else:
+                    # 直接飞行
+                    uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point)
+                    self.direct_distance += ((uav.position[0] - uav.task.end_point[0])**2 + (uav.position[1] - uav.task.end_point[1])**2)**0.5
 
             if uav.path:
                 next_point = uav.path[0]
-                distance = (
-                    (uav.position[0] - next_point[0]) ** 2 + (uav.position[1] - next_point[1]) ** 2
-                ) ** 0.5
+                distance = ((uav.position[0] - next_point[0])**2 + (uav.position[1] - next_point[1])**2)**0.5
                 self.total_distance += distance
+                self.uav_flight_distance += distance
 
                 uav.update_position(next_point)
                 uav.path.pop(0)
@@ -79,28 +105,13 @@ class Simulator:
                 step_energy += cost
 
                 if not uav.path and uav.task:
-<<<<<<< HEAD
-                    task_id = uav.task['id']
-                    uav.task['status'] = 'completed'
-=======
                     task = uav.task
                     task.status = "completed"
                     task_id = task.id
                     uav.complete_task()
->>>>>>> dev
                     self.completed_tasks += 1
-<<<<<<< HEAD
-                    uav.complete_task()
-                    print(f"UAV {uav.id} 完成任务 {task_id}")
-<<<<<<< HEAD
-            
-            # 8. 判断电量是否低于阈值
-=======
-=======
                     print(f"UAV {uav.id} completed task {task_id}")
->>>>>>> dev
 
->>>>>>> dev
             if uav.needs_charging():
                 agv = self.strategy.select_charging_station(uav, self.environment)
                 if agv:
@@ -115,21 +126,26 @@ class Simulator:
         return step_energy
 
     def print_results(self):
-        task_completion_rate = (
-            (self.completed_tasks / self.initial_task_count) * 100 if self.initial_task_count > 0 else 0.0
-        )
+        task_completion_rate = (self.completed_tasks / self.initial_task_count) * 100 if self.initial_task_count > 0 else 0.0
 
-        print("\n=== Results ===")
-        print(f"total_energy: {self.total_energy}")
-        print(f"total_time: {self.time_step}")
+        print("\n" + "=" * 60)
+        print(f"Strategy: {self.strategy.name}")
+        print("=" * 60)
+        print(f"total_energy: {self.total_energy:.2f} J")
+        print(f"total_time: {self.time_step} steps")
         print(f"task_completion_rate: {task_completion_rate:.2f}%")
         print(f"completed_tasks: {self.completed_tasks}/{self.initial_task_count}")
         print(f"charging_count: {self.charging_count}")
+        print("-" * 60)
+        print("Distance Statistics:")
+        print(f"  total_flight_distance: {self.total_distance:.2f} m")
+        print(f"  uav_flight_distance: {self.uav_flight_distance:.2f} m")
+        print(f"  relay_distance: {self.relay_distance:.2f} m")
+        print(f"  direct_distance: {self.direct_distance:.2f} m")
+        print("=" * 60)
 
     def calculate_metrics(self):
-        task_completion_rate = (
-            (self.completed_tasks / self.initial_task_count) * 100 if self.initial_task_count > 0 else 0.0
-        )
+        task_completion_rate = (self.completed_tasks / self.initial_task_count) * 100 if self.initial_task_count > 0 else 0.0
         avg_energy_per_task = self.total_energy / self.completed_tasks if self.completed_tasks > 0 else 0.0
 
         total_distance_km = self.total_distance / 1000.0
@@ -155,6 +171,10 @@ class Simulator:
             "charging_count": int(self.charging_count),
             "total_distance_km": float(total_distance_km),
             "baseline_energy": float(baseline_energy),
+            "total_flight_distance": float(self.total_distance),
+            "uav_flight_distance": float(self.uav_flight_distance),
+            "relay_distance": float(self.relay_distance),
+            "direct_distance": float(self.direct_distance),
         }
 
     def save_results(self, experiment_name="default"):
