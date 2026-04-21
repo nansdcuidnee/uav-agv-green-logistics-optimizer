@@ -1,7 +1,0 @@
-[2026-04-03 14:33:10] [INFO] 开始验证模块: energy_model
-[2026-04-03 14:33:10] [INFO] 开始环境检查
-[2026-04-03 14:33:10] [INFO] 检查 Python 版本
-Python 3.13.12
-[2026-04-03 14:33:10] [INFO] 检查 pytest 版本
-D:\miniconda3\python.exe: No module named pytest
-[2026-04-03 14:33:11] [ERROR] pytest 未安装

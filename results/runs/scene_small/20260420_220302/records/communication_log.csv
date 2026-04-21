@@ -1,0 +1,11 @@
+timestamp,sender,receiver,message_type,content
+21,UAV 2,Control Center,TASK_COMPLETE,Complete task 2
+42,UAV 2,Control Center,TASK_COMPLETE,Complete task 3
+42,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+43,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+44,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+45,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+46,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+47,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+48,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%
+49,UAV 2,Control Center,LOW_BATTERY,Battery level: 25.3%

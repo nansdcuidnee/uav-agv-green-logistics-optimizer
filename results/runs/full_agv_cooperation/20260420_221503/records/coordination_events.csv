@@ -1,0 +1,32 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,AGV_MOVE_START,1,,1,147.29424283280247,135.33989748458225,AGV starts moving to relay point
+0,0,TASK_ASSIGNED,1,1,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,1,,1,,,Relay support requested for task
+0,0,WAIT_FOR_AGV_START,1,1,,,,Task starts waiting for AGV
+1,1,TASK_ASSIGNED,2,2,1,,,Task assigned to UAV
+1,1,RELAY_REQUEST,2,,1,,,Relay support requested for task
+1,1,WAIT_FOR_AGV_START,2,2,,,,Task starts waiting for AGV
+7,7,AGV_ARRIVE_RELAY,2,,1,85.37100358145334,138.2226267787315,AGV arrived at relay point
+7,7,RELAY_COOP_START,2,2,1,,,
+7,7,LOW_BATTERY,,2,,,,
+8,8,WAIT_FOR_AGV_END,2,2,,,,Task stops waiting for AGV
+8,8,TASK_COMPLETE,2,2,,,,
+8,8,CHARGING_REQUEST,,2,,,,UAV requests charging
+8,8,CHARGING_START,,2,1,108,8,Charging started
+9,9,AGV_MOVE_START,3,,1,85.37100358145334,138.2226267787315,AGV starts moving to relay point
+9,9,TASK_ASSIGNED,3,2,1,,,Task assigned to UAV
+9,9,RELAY_REQUEST,3,,1,,,Relay support requested for task
+9,9,WAIT_FOR_AGV_START,3,2,,,,Task starts waiting for AGV
+10,10,RELAY_FALLBACK,1,1,,,,"AGV took too long, falling back to direct delivery"
+11,11,WAIT_FOR_AGV_END,1,1,,,,Task stops waiting for AGV
+13,13,AGV_ARRIVE_RELAY,3,,1,125.68550179072668,158.61131338936576,AGV arrived at relay point
+13,13,RELAY_COOP_START,1,1,1,,,
+13,13,LOW_BATTERY,,1,,,,
+14,14,WAIT_FOR_AGV_END,3,2,,,,Task stops waiting for AGV
+14,14,TASK_COMPLETE,1,1,,,,
+14,14,CHARGING_REQUEST,,1,,,,UAV requests charging
+14,14,CHARGING_START,,1,1,6,189,Charging started
+15,15,AGV_MOVE_START,4,,1,125.68550179072668,158.61131338936576,AGV starts moving to relay point
+15,15,TASK_ASSIGNED,4,1,1,,,Task assigned to UAV
+15,15,RELAY_REQUEST,4,,1,,,Relay support requested for task
+15,15,WAIT_FOR_AGV_START,4,1,,,,Task starts waiting for AGV

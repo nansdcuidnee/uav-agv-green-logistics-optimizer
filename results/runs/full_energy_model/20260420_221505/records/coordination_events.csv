@@ -1,0 +1,23 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,TASK_ASSIGNED,2,2,,,,Task assigned to UAV
+0,0,TASK_ASSIGNED,4,1,,,,Task assigned to UAV
+0,0,TASK_START,2,2,,,,Task starts execution
+0,0,TASK_START,4,1,,,,Task starts execution
+0,0,LOW_BATTERY,,1,,,,
+0,0,LOW_BATTERY,,2,,,,
+1,1,TASK_COMPLETE,4,1,,,,
+1,1,CHARGING_REQUEST,,1,,,,UAV requests charging
+1,1,CHARGING_START,,1,1,195,86,Charging started
+1,1,TASK_COMPLETE,2,2,,,,
+1,1,CHARGING_REQUEST,,2,,,,UAV requests charging
+1,1,CHARGING_START,,2,1,108,8,Charging started
+2,2,TASK_ASSIGNED,5,1,,,,Task assigned to UAV
+2,2,TASK_ASSIGNED,10,2,,,,Task assigned to UAV
+2,2,TASK_START,5,1,,,,Task starts execution
+2,2,TASK_START,10,2,,,,Task starts execution
+16,16,CHARGING_END,,1,1,195,86,Charging ended
+16,16,CHARGING_END,,2,1,108,8,Charging ended
+18,18,CHARGING_REQUEST,,1,,,,UAV requests charging
+18,18,CHARGING_START,,1,1,138.75672899886803,32.66611066809739,Charging started
+18,18,CHARGING_REQUEST,,2,,,,UAV requests charging
+18,18,CHARGING_START,,2,1,19.255897195304676,52.38518921809728,Charging started

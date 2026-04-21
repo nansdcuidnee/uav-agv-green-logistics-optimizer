@@ -14,6 +14,9 @@ from src.simulation.environment import Environment
 from src.core.task import Task
 
 
+# 警告：此文件是旧版实现，仅用于向后兼容。新代码应使用 src/simulation/simulator.py 的 calculate_metrics() 方法
+
+
 class ResultGenerator:
     """结果生成器类"""
     

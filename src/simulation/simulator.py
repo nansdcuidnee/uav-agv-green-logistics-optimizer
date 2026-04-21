@@ -260,6 +260,12 @@ class Simulator:
                 })
                 # 更新任务状态
                 self.task_states[task_id] = "ASSIGNED"
+                
+                # 设置任务分配时间
+                task = self._get_task_by_id(task_id)
+                if task:
+                    self._ensure_task_stats(task)
+                    task.assigned_time = self.time_step
             
             # 发送任务分配消息
             self.network_manager.send_message(
@@ -523,15 +529,37 @@ class Simulator:
                 continue
                 
             if uav.task and not uav.path:
-                # 只有当任务状态为 in_progress 时才规划路径
+                # 检查等待AGV的时间，如果超时则回退到直接配送
+                if uav.task.status == "waiting_for_agv":
+                    # 增加等待时间
+                    if hasattr(uav.task, 'assigned_time'):
+                        uav.task.assigned_time += 1
+                    else:
+                        uav.task.assigned_time = 1
+                    
+                    # 如果等待时间超过10步，回退到直接配送
+                    if uav.task.assigned_time > 10:
+                        uav.task.status = "in_progress"
+                        # 记录回退事件
+                        self.events.append({
+                            "step": self.time_step,
+                            "type": "RELAY_FALLBACK",
+                            "task_id": uav.task.id,
+                            "uav_id": uav.id,
+                            "details": "AGV took too long, falling back to direct delivery"
+                        })
+                
+                # 当任务状态为 in_progress 时规划路径
                 if uav.task.status == "in_progress":
-                    # 对于 relay_coop 策略，需要等待 AGV 到达中继点
+                    # 对于 relay_coop 策略，如果任务已 fallback 或 AGV 已到达，直接规划路径
                     if self.strategy.name == "relay_coop" and hasattr(uav.task, "relay_point") and hasattr(uav.task, "assigned_agv"):
                         agv = uav.task.assigned_agv
-                        # 检查 AGV 是否到达中继点
-                        if hasattr(agv, 'status') and agv.status == "idle":
-                            # AGV 已到达，规划路径
-                            relay_point = uav.task.relay_point
+                        # 检查是否已经 fallback 或 AGV 已到达
+                        fallback_triggered = hasattr(uav.task, 'assigned_time') and uav.task.assigned_time > 10
+                        agv_ready = hasattr(agv, 'status') and agv.status == "idle"
+                        
+                        # 如果已 fallback 或 AGV 已到达，直接规划路径
+                        if fallback_triggered or agv_ready:
                             # 转换障碍物为 (x, y, radius) 列表格式
                             obstacles = []
                             if hasattr(self.environment, 'obstacles'):
@@ -540,18 +568,18 @@ class Simulator:
                                         obstacles.append((obstacle.position[0], obstacle.position[1], obstacle.radius))
                                     elif isinstance(obstacle, (list, tuple)) and len(obstacle) >= 3:
                                         obstacles.append((obstacle[0], obstacle[1], obstacle[2]))
-                            # 直接使用直线算法，避免A*算法可能的性能问题
-                            path = [uav.position, relay_point, uav.task.end_point]
-                            uav.path = path
-                            # 记录中继协同事件
+                            # 使用 A* 算法规划路径，确保时间步与距离成正比
+                            uav.path = self.path_planner.plan_path(uav.position, uav.task.end_point, obstacles)
+                            # 记录事件
                             if not hasattr(uav.task, "relay_event_recorded"):
+                                event_type = "RELAY_FALLBACK_START" if fallback_triggered else "RELAY_COOP_START"
                                 self.events.append({
                                     "step": self.time_step,
-                                    "type": "RELAY_COOP_START",
+                                    "type": event_type,
                                     "task_id": uav.task.id,
                                     "uav_id": uav.id,
-                                    "agv_id": agv.id,
-                                    "relay_point": relay_point
+                                    "agv_id": agv.id if agv_ready else None,
+                                    "relay_point": getattr(uav.task, "relay_point", None)
                                 })
                                 uav.task.relay_event_recorded = True
                     else:
@@ -573,6 +601,10 @@ class Simulator:
                 ) ** 0.5
                 self.total_distance += distance
                 step_uav_distance += distance
+                
+                # 更新任务的 UAV 移动距离
+                if uav.task:
+                    self._add_task_stat(uav.task, 'uav_distance', distance)
 
                 uav.update_position(next_point)
                 uav.path.pop(0)
@@ -598,6 +630,10 @@ class Simulator:
                 step_energy += cost
                 step_uav_energy += cost
                 self.total_uav_energy += cost
+                
+                # 更新任务的 UAV 能耗
+                if uav.task:
+                    self._add_task_stat(uav.task, 'uav_energy', cost)
 
                 if not uav.path and uav.task:
                     task = uav.task
@@ -699,14 +735,14 @@ class Simulator:
 
 
     def print_results(self):
-        task_completion_rate = (
-            (self.completed_tasks / self.initial_task_count) * 100 if self.initial_task_count > 0 else 0.0
+        completion_rate = (
+            self.completed_tasks / self.initial_task_count if self.initial_task_count > 0 else 0.0
         )
 
         print("\n=== Results ===")
         print(f"total_energy: {self.total_energy}")
         print(f"total_time: {self.time_step}")
-        print(f"task_completion_rate: {task_completion_rate:.2f}%")
+        print(f"completion_rate: {completion_rate:.2%}")
         print(f"completed_tasks: {self.completed_tasks}/{self.initial_task_count}")
         print(f"charging_count: {self.charging_count}")
 

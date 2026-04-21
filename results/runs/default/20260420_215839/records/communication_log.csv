@@ -1,0 +1,2 @@
+timestamp,sender,receiver,message_type,content
+3,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
