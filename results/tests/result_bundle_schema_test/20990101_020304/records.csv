@@ -1,3 +1,0 @@
-task_id,task_type,start_time,completion_time,execution_time,assigned_to,start_point,end_point,payload,priority,time_window,status,path_distance
-1,delivery,,,,,"(10, 10)","(20, 20)",1.0,1,"(0.0, 1440.0)",pending,0.0
-2,delivery,,,,,"(15, 15)","(25, 25)",1.5,2,"(0.0, 1440.0)",pending,0.0

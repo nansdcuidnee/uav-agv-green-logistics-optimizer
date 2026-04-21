@@ -1,0 +1,20 @@
+Event Timeline
+================
+Step 0:
+  - AGV move start: AGV 1 starts moving to relay point for task 1
+  - AGV move start: AGV 2 starts moving to relay point for task 2
+  - Relay request: Relay support requested for task 1 with AGV 1
+  - Relay request: Relay support requested for task 2 with AGV 2
+  - Wait for AGV start: Task 1 starts waiting for AGV
+  - Wait for AGV start: Task 2 starts waiting for AGV
+  - AGV arrive relay: AGV 1 arrived at relay point for task 1
+  - AGV arrive relay: AGV 2 arrived at relay point for task 2
+Step 1:
+  - Wait for AGV end: Task 1 stops waiting for AGV
+  - Wait for AGV end: Task 2 stops waiting for AGV
+Step 3:
+  - Task complete: UAV 1 completed task 1
+  - Task complete: UAV 2 completed task 2
+
+Final Statistics:
+- Total tasks completed: 2/2

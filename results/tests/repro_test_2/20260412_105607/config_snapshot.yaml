@@ -1,5 +1,0 @@
-experiment_name: repro_test_2
-initial_task_count: 2
-num_agvs: 1
-num_uavs: 1
-strategy: baseline_direct

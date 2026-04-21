@@ -1,0 +1,11 @@
+task_id,strategy_name,start_time,assigned_time,finish_time,execution_time,completed,on_time,deadline,uav_distance,agv_distance,wait_time_at_relay,uav_energy,agv_energy,charge_loss_energy,total_energy
+1,relay_coop,11,11,17,6,True,True,67.00128673418017,80.18088796821212,0.0,11.0,79.51516182007146,0.0,0.0,79.51516182007146
+2,relay_coop,11,11,14,3,True,True,288.9735268760145,487.57563515827985,0.0,10.0,37.619564275644805,0.0,0.0,37.619564275644805
+3,relay_coop,16,16,25,9,True,True,603.667414650472,245.93698379869588,0.0,1.0,37.07752575367141,0.0,0.0,37.07752575367141
+4,relay_coop,19,19,,,False,False,541.4159166037545,0.0,0.0,1.0,21.10945862567366,0.0,0.0,21.10945862567366
+5,relay_coop,27,27,,,False,False,179.085312972858,0.0,0.0,1.0,0.0,0.0,0.0,0.0
+6,relay_coop,,,,,False,False,181.80078526677676,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+7,relay_coop,,,,,False,False,324.7956211251161,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+8,relay_coop,,,,,False,False,145.4342738755807,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+9,relay_coop,,,,,False,False,760.5244171923729,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+10,relay_coop,,,,,False,False,494.04356017772614,0.0,0.0,0.0,0.0,0.0,0.0,0.0

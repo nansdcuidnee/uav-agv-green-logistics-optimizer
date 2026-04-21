@@ -413,19 +413,8 @@ class AblationExperimentRunner:
             with open(metrics_file, 'r', encoding='utf-8') as f:
                 metrics = json.load(f)
         else:
-            # 从仿真器对象直接获取
-            metrics = {
-                "completion_rate": simulator.completed_tasks / max(simulator.initial_task_count, 1),
-                "on_time_rate": getattr(simulator, 'on_time_rate', 0.0),
-                "avg_delivery_time": getattr(simulator, 'avg_delivery_time', 0.0),
-                "total_energy": simulator.total_energy,
-                "avg_energy_per_task": simulator.total_energy / max(simulator.completed_tasks, 1),
-                "energy_per_km": simulator.total_energy / max(simulator.total_distance, 1),
-                "total_distance": simulator.total_distance,
-                "total_distance_agv": getattr(simulator, 'total_distance_agv', 0.0),
-                "charging_count": simulator.charging_count,
-                "avg_wait_time_at_relay": getattr(simulator, 'avg_wait_time_at_relay', None),
-            }
+            # 从仿真器 calculate_metrics() 获取（而不是从对象属性获取）
+            metrics = simulator.calculate_metrics()
         
         return metrics
     
@@ -590,6 +579,7 @@ class AblationExperimentRunner:
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(description="UAV-AGV 消融实验")
+    parser.add_argument("--config", type=str, default=None, help="配置文件路径")
     parser.add_argument("--num-uavs", type=int, default=3, help="UAV数量")
     parser.add_argument("--num-agvs", type=int, default=2, help="AGV数量")
     parser.add_argument("--num-tasks", type=int, default=6, help="任务数量")
@@ -600,6 +590,20 @@ def main():
     
     args = parser.parse_args()
     
+    # 从配置文件读取参数（如果提供）
+    if args.config:
+        config = load_config(args.config)
+        # 从配置中提取参数
+        num_uavs = config.get('num_uavs', args.num_uavs)
+        num_agvs = config.get('num_agvs', args.num_agvs)
+        num_tasks = config.get('num_tasks', args.num_tasks)
+        max_steps = config.get('max_steps', args.max_steps)
+    else:
+        num_uavs = args.num_uavs
+        num_agvs = args.num_agvs
+        num_tasks = args.num_tasks
+        max_steps = args.max_steps
+    
     # 创建并运行实验
     runner = AblationExperimentRunner(
         base_seed=args.seed,
@@ -607,10 +611,10 @@ def main():
     )
     
     results = runner.run_all_experiments(
-        num_uavs=args.num_uavs,
-        num_agvs=args.num_agvs,
-        num_tasks=args.num_tasks,
-        max_steps=args.max_steps,
+        num_uavs=num_uavs,
+        num_agvs=num_agvs,
+        num_tasks=num_tasks,
+        max_steps=max_steps,
         num_runs=args.num_runs
     )
     

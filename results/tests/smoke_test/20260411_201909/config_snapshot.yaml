@@ -1,5 +1,0 @@
-experiment_name: smoke_test
-initial_task_count: 3
-num_agvs: 2
-num_uavs: 2
-strategy: baseline_direct

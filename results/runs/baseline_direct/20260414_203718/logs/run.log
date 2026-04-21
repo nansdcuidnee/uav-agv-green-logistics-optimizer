@@ -1,9 +1,0 @@
-Experiment: baseline_direct
-Strategy: baseline_direct
-Initial tasks: 6
-UAVs: 2
-AGVs: 2
-Completed tasks: 6
-Total energy: 2397.2145055999913
-Total time steps: 199
-Charging count: 22

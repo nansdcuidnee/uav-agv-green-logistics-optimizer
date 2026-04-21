@@ -1,0 +1,27 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,TASK_ASSIGNED,2,2,,,,Task assigned to UAV
+0,0,TASK_ASSIGNED,4,1,,,,Task assigned to UAV
+0,0,TASK_START,2,2,,,,Task starts execution
+0,0,TASK_START,4,1,,,,Task starts execution
+1,1,TASK_COMPLETE,4,1,,,,
+1,1,TASK_COMPLETE,2,2,,,,
+2,2,TASK_ASSIGNED,5,1,,,,Task assigned to UAV
+2,2,TASK_ASSIGNED,10,2,,,,Task assigned to UAV
+2,2,TASK_START,5,1,,,,Task starts execution
+2,2,TASK_START,10,2,,,,Task starts execution
+7,7,TASK_COMPLETE,5,1,,,,
+7,7,TASK_COMPLETE,10,2,,,,
+8,8,TASK_ASSIGNED,3,1,,,,Task assigned to UAV
+8,8,TASK_ASSIGNED,7,2,,,,Task assigned to UAV
+8,8,TASK_START,3,1,,,,Task starts execution
+8,8,TASK_START,7,2,,,,Task starts execution
+13,13,TASK_COMPLETE,3,1,,,,
+13,13,TASK_COMPLETE,7,2,,,,
+14,14,TASK_ASSIGNED,8,2,,,,Task assigned to UAV
+14,14,TASK_ASSIGNED,9,1,,,,Task assigned to UAV
+14,14,TASK_START,8,2,,,,Task starts execution
+14,14,TASK_START,9,1,,,,Task starts execution
+18,18,TASK_COMPLETE,9,1,,,,
+19,19,TASK_ASSIGNED,1,1,,,,Task assigned to UAV
+19,19,TASK_START,1,1,,,,Task starts execution
+19,19,TASK_COMPLETE,8,2,,,,

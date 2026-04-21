@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 
-REQUIRED_ARTIFACTS = ("metrics.json", "records/steps.csv", "records/tasks.csv", "plots/chart.png")
+REQUIRED_ARTIFACTS = ("metrics.json", "records/steps.csv", "records/tasks.csv", "records/event_timeline.txt")
 
 
 def sanitize_experiment_name(experiment_name: str) -> str:

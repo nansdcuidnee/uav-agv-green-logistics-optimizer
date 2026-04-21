@@ -1,0 +1,12 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,AGV_MOVE_START,1,,1,-100,-100,AGV starts moving to relay point
+0,0,TASK_ASSIGNED,1,1,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,1,,1,,,Relay support requested for task
+0,0,WAIT_FOR_AGV_START,1,1,,,,Task starts waiting for AGV
+19,19,AGV_ARRIVE_RELAY,1,,1,41.42135623730948,41.42135623730948,AGV arrived at relay point
+19,19,RELAY_COOP_START,1,1,1,,,
+20,20,WAIT_FOR_AGV_END,1,1,,,,Task stops waiting for AGV
+24,24,TASK_COMPLETE,1,1,,,,
+24,24,CHARGING_REQUEST,,1,,,,UAV requests charging
+24,24,CHARGING_START,,1,1,50.0,50.0,Charging started
+37,37,CHARGING_END,,1,1,50.0,50.0,Charging ended
