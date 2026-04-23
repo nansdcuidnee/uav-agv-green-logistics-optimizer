@@ -71,37 +71,47 @@ def run_simulation_for_strategy(config, strategy_type):
     strategy_frames_dir = f'frames_{strategy_type}'
     os.makedirs(strategy_frames_dir, exist_ok=True)
 
-    # 统计变量
+# 统计变量
     total_distance = 0.0
     total_energy = 0.0
     completed_tasks = 0
 
-    # 记录每一步的移动距离用于后续统计
-    step_distances = []
+# 记录所有已统计过的位置（全局去重）
+    all_positions = set()
 
     for step in range(int(simulation_time / time_step)):
         # 执行策略分配
         strategy.assign_tasks(env)
 
-        # 更新环境前记录UAV位置
-        uav_positions_before = {uav.id: uav.position for uav in env.uavs}
-
         # 更新环境
         env.update(time_step)
         current_time = step * time_step
 
-        # 计算UAV在这次更新中移动的距离
-        for uav in env.uavs:
-            if uav.id in uav_positions_before:
-                old_pos = uav_positions_before[uav.id]
-                new_pos = uav.position
-                move_dist = ((new_pos[0] - old_pos[0])**2 + (new_pos[1] - old_pos[1])**2)**0.5
-                if move_dist > 0.1:  # 忽略微小移动
-                    total_distance += move_dist
-                    # 能耗 = 距离 * 能耗系数(0.5 J/m)
-                    total_energy += move_dist * 0.5
+        # 检查是否有UAV完成任务变成空闲，如果是，重新分配任务
+        idle_uavs = [uav for uav in env.uavs if uav.status == "idle"]
+        pending_tasks = [task for task in env.tasks if task.status == "pending"]
 
-# 统计已完成的任务数量
+        # 如果有空闲UAV和待处理任务，重新分配
+        if idle_uavs and pending_tasks:
+            strategy.assign_tasks(env)
+
+        # 计算UAV实际飞行的距离（全局去重统计）
+        # 每个位置只计算一次距离
+        for uav in env.uavs:
+            if uav.path and len(uav.path) > 1:
+                # 遍历路径，计算相邻两点之间的距离
+                for i in range(1, len(uav.path)):
+                    pos = uav.path[i]
+                    # 将位置转换为整数坐标（用于去重）
+                    pos_key = (int(pos[0] * 10), int(pos[1] * 10))  # 精度0.1m
+                    if pos_key not in all_positions:
+                        prev_pos = uav.path[i-1]
+                        dist = ((pos[0] - prev_pos[0])**2 + (pos[1] - prev_pos[1])**2)**0.5
+                        total_distance += dist
+                        total_energy += dist * 0.5
+                        all_positions.add(pos_key)
+
+        # 统计已完成的任务数量
         completed_tasks = len([t for t in env.tasks if t.status == "completed"])
 
         if step % save_interval == 0:
@@ -118,7 +128,7 @@ def run_simulation_for_strategy(config, strategy_type):
                 circle = plt.Circle(obstacle.position, obstacle.radius, color='gray', alpha=0.5)
                 ax.add_patch(circle)
 
-# 绘制任务点
+            # 绘制任务点
             for task in env.tasks:
                 if task.status == "pending":
                     ax.plot(task.start_point[0], task.start_point[1], 'bo', markersize=6)
