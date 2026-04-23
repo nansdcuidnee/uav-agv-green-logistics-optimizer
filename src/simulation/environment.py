@@ -1417,7 +1417,7 @@ class Environment:
                     (uav.position[1] - task.end_point[1]) ** 2
                 )
                 
-                if distance < 10:  # 到达目标位置
+                if distance < 50:  # 到达目标位置（增加距离阈值）
                     task.complete(self.current_time)
                     uav.complete_task()
                 else:
