@@ -1,9 +1,10 @@
 """Relay cooperative strategy."""
 
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple
 import numpy as np
 
 from .base import BaseStrategy
+from ..planning.relay_selector import DynamicRelaySelector
 
 
 class RelayCoopStrategy(BaseStrategy):
@@ -15,11 +16,13 @@ class RelayCoopStrategy(BaseStrategy):
     3. UAV从中继点起飞执行任务（而非从原点），减少飞行距离
     """
 
-    def __init__(self, relay_distance: float = 200.0):
+    def __init__(self, relay_distance: float = 200.0, relay_method: str = "weighted_centroid"):
         super().__init__("relay_coop")
         self.relay_distance = relay_distance
         # 中继阈值：超过此比例的任务使用中继
         self.relay_ratio = 0.7
+        # 动态中继点选择器
+        self.relay_selector = DynamicRelaySelector(method=relay_method)
 
     def _calculate_task_centroid(self, tasks) -> Tuple[float, float]:
         """计算所有任务点的几何中心"""
@@ -53,16 +56,22 @@ class RelayCoopStrategy(BaseStrategy):
 
         assignments = []
 
-# 1. 计算任务点几何中心作为中继位置
-        relay_center = self._calculate_task_centroid(pending_tasks)
-        print(f"[RELAY_COOP] Relay center: {relay_center}")
+        # 1. 获取所有UAV和AGV的当前位置
+        uav_positions = [(uav.position[0], uav.position[1]) for uav in environment.uavs]
+        agv_positions = [(agv.position[0], agv.position[1]) for agv in environment.agvs]
 
-        # 2. 让AGV移动到中继位置
+        # 2. 使用动态中继点选择算法计算最优中继位置
+        relay_center = self.relay_selector.select_relay_point(
+            pending_tasks, uav_positions, agv_positions
+        )
+        print(f"[RELAY_COOP] Dynamic relay center: {relay_center} (method: {self.relay_selector.method})")
+
+        # 3. 让AGV移动到中继位置
         if environment.agvs:
             for agv in environment.agvs:
                 agv.move_to(relay_center)
 
-        # 3. 为每个任务分配UAV - 强制使用中继策略
+        # 4. 为每个任务分配UAV - 强制使用中继策略
         for task in pending_tasks:
             if not idle_uavs:
                 break
