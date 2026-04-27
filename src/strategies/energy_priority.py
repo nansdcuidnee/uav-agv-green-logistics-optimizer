@@ -3,6 +3,7 @@
 from typing import Any, Dict, List, Tuple
 
 from .base import BaseStrategy
+from ..planning.relay_selector import DynamicRelaySelector
 
 
 class EnergyPriorityStrategy(BaseStrategy):
@@ -17,10 +18,12 @@ class EnergyPriorityStrategy(BaseStrategy):
     # 距离阈值：超过此距离使用中继更省能
     RELAY_THRESHOLD = 300.0
 
-    def __init__(self, energy_model=None, relay_threshold: float = 300.0):
+    def __init__(self, energy_model=None, relay_threshold: float = 300.0, relay_method: str = "weighted_centroid"):
         super().__init__("energy_priority")
         self.energy_model = energy_model
         self.RELAY_THRESHOLD = relay_threshold
+        # 动态中继点选择器
+        self.relay_selector = DynamicRelaySelector(method=relay_method)
 
     def _calculate_distance(self, pos1, pos2) -> float:
         """计算两点之间的距离"""
@@ -54,9 +57,15 @@ class EnergyPriorityStrategy(BaseStrategy):
 
         assignments = []
 
-        # 计算中继中心（用于长距离任务）
-        relay_center = self._calculate_task_centroid(pending_tasks)
-        print(f"[ENERGY_PRIORITY] Relay center: {relay_center}, threshold: {self.RELAY_THRESHOLD}m")
+        # 获取所有UAV和AGV的当前位置
+        uav_positions = [(uav.position[0], uav.position[1]) for uav in environment.uavs]
+        agv_positions = [(agv.position[0], agv.position[1]) for agv in environment.agvs]
+
+        # 使用动态中继点选择算法计算最优中继位置
+        relay_center = self.relay_selector.select_relay_point(
+            pending_tasks, uav_positions, agv_positions
+        )
+        print(f"[ENERGY_PRIORITY] Dynamic relay center: {relay_center} (method: {self.relay_selector.method}), threshold: {self.RELAY_THRESHOLD}m")
 
         # 移动AGV到中继位置
         if environment.agvs:
