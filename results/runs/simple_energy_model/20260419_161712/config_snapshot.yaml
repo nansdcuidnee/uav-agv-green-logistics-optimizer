@@ -1,5 +1,0 @@
-experiment_name: simple_energy_model
-initial_task_count: 1
-num_agvs: 1
-num_uavs: 1
-strategy: energy_priority

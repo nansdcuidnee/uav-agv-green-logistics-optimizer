@@ -1,5 +1,0 @@
-timestamp,sender,receiver,message_type,content
-0,UAV 1,Control Center,TASK_START,Start task 1
-0,UAV 1,Control Center,LOW_BATTERY,Battery level: 21.4%
-1,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
-1,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 4.1%"

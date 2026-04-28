@@ -52,13 +52,19 @@ def export_final_package(run_dir, comparison_dir, package_name):
     else:
         print("event_timeline.txt not found")
     
-    # Copy chart.png as trajectory.png
-    trajectory_file = Path(run_dir) / "plots" / "chart.png"
+    # Copy trajectory map as trajectory.png
+    # 优先使用 trajectory_map.png，如果不存在再兼容旧的 chart.png
+    trajectory_file = Path(run_dir) / "plots" / "trajectory_map.png"
     if trajectory_file.exists():
         shutil.copy2(trajectory_file, layout.plot_path("trajectory.png"))
-        print("Copied trajectory.png")
+        print("Copied trajectory_map.png as trajectory.png")
     else:
-        print("chart.png not found")
+        trajectory_file = Path(run_dir) / "plots" / "chart.png"
+        if trajectory_file.exists():
+            shutil.copy2(trajectory_file, layout.plot_path("trajectory.png"))
+            print("Copied chart.png as trajectory.png (fallback)")
+        else:
+            print("Warning: trajectory_map.png and chart.png not found, trajectory.png will not be copied")
     
     # Copy records directory
     records_dir = Path(run_dir) / "records"

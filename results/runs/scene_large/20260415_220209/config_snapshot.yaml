@@ -1,5 +1,0 @@
-experiment_name: scene_large
-initial_task_count: 50
-num_agvs: 5
-num_uavs: 10
-strategy: baseline_direct

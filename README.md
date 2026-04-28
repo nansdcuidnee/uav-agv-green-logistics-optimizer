@@ -18,16 +18,15 @@ uav-agv-green-logistics-optimizer/
 ├── scripts/                 # 辅助脚本
 ├── src/                     # 源代码
 │   ├── core/                # 核心实体（UAV、AGV、Task）
+│   ├── communication/       # 通信模块
 │   ├── energy/              # 能耗模型
 │   ├── planning/            # 路径规划
 │   ├── scheduling/          # 调度系统
 │   ├── simulation/          # 仿真系统
-│   ├── strategy/            # 充电相关策略（legacy保留）
 │   ├── strategies/          # 配送策略集合
-│   ├── utils/               # 工具函数
-│   └── visualization/       # 可视化
+│   └── utils/               # 工具函数
 ├── tests/                   # 测试文件
-├── test-strategy.py         # 充电策略演示脚本（legacy）
+├── main.py                  # 主程序入口
 ├── README.md                # 项目说明
 ├── requirements.txt         # 依赖项
 └── .gitignore               # Git忽略文件

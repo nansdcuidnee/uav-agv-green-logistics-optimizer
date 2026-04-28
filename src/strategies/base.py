@@ -1,4 +1,4 @@
-﻿"""Strategy base class for pluggable scheduling policies."""
+"""Strategy base class for pluggable scheduling policies."""
 
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional

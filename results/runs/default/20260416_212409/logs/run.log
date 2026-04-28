@@ -1,9 +1,0 @@
-Experiment: default
-Strategy: relay_coop
-Initial tasks: 1
-UAVs: 1
-AGVs: 1
-Completed tasks: 1
-Total energy: 89.95278282274302
-Total time steps: 35
-Charging count: 1

@@ -1,5 +1,0 @@
-timestamp,sender,receiver,message_type,content
-24,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
-24,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 18.4%"
-24,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
-24,AGV 1,UAV 1,CHARGING_START,Start charging

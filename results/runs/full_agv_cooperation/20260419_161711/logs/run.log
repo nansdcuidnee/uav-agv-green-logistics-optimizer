@@ -1,9 +1,0 @@
-Experiment: full_agv_cooperation
-Strategy: relay_coop
-Initial tasks: 1
-UAVs: 1
-AGVs: 1
-Completed tasks: 0
-Total energy: 5.0
-Total time steps: 10
-Charging count: 0

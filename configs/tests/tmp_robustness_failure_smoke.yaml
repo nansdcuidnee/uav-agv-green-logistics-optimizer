@@ -1,4 +1,4 @@
-﻿experiment_type: failure
+experiment_type: failure
 strategies:
   - baseline_direct
 seed: 42
