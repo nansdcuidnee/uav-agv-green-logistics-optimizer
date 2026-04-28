@@ -1,8 +1,0 @@
-timestamp,sender,receiver,message_type,content
-0,UAV 1,Control Center,TASK_START,Start task 1
-0,UAV 2,Control Center,TASK_START,Start task 2
-1,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
-1,UAV 2,Control Center,TASK_COMPLETE,Complete task 2
-2,UAV 1,Control Center,TASK_START,Start task 3
-3,UAV 1,Control Center,TASK_COMPLETE,Complete task 3
-3,UAV 1,Control Center,LOW_BATTERY,Battery level: 28.7%

@@ -1,0 +1,4 @@
+timestamp,sender,receiver,message_type,content
+10,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 12.0%"
+11,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
+11,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"

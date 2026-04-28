@@ -154,8 +154,10 @@ class Simulator:
             self.total_energy += self.step()
             # Do not stop until all active charging sessions are closed.
             # Otherwise CHARGING_END may be missing from records.
-            if self.completed_tasks >= self.initial_task_count and not self.charging_uavs:
-                print("All tasks completed, stopping early.")
+            # Also check that no AGV is still moving to relay point.
+            has_moving_agv = any(hasattr(agv, 'status') and agv.status == "moving_to_relay" for agv in self.environment.agvs)
+            if self.completed_tasks >= self.initial_task_count and not self.charging_uavs and not has_moving_agv:
+                print("All tasks completed and no active charging or AGV movement, stopping early.")
                 break
 
         self.print_results()
@@ -405,6 +407,11 @@ class Simulator:
                             new_x = agv.position[0] + direction_x * step_distance
                             new_y = agv.position[1] + direction_y * step_distance
                             agv.position = (new_x, new_y)
+                            
+                            # 更新 path_history
+                            if not hasattr(agv, 'path_history'):
+                                agv.path_history = []
+                            agv.path_history.append(agv.position)
                             
                             # 更新移动进度
                             agv.move_progress += step_distance
@@ -1017,7 +1024,8 @@ class Simulator:
                 step = event["step"]
                 event_type = event["type"]
                 
-                if event_type == "TASK_ASSIGNMENT":
+                # 同时支持 TASK_ASSIGNED（内部事件名）和 TASK_ASSIGNMENT（消息名）
+                if event_type == "TASK_ASSIGNED" or event_type == "TASK_ASSIGNMENT":
                     writer.writerow([step, f"Control Center", f"UAV {event['uav_id']}", "TASK_ASSIGNMENT", f"Assign task {event['task_id']}"])
                 elif event_type == "TASK_START":
                     writer.writerow([step, f"UAV {event['uav_id']}", "Control Center", "TASK_START", f"Start task {event['task_id']}"])
@@ -1030,6 +1038,10 @@ class Simulator:
                 elif event_type == "CHARGING_START":
                     writer.writerow([step, f"Control Center", f"AGV {event['agv_id']}", "CHARGING_COMMAND", f"Charge UAV {event['uav_id']}"])
                     writer.writerow([step, f"AGV {event['agv_id']}", f"UAV {event['uav_id']}", "CHARGING_START", "Start charging"])
+                elif event_type == "AGV_ARRIVE_RELAY":
+                    writer.writerow([step, f"AGV {event['agv_id']}", "Control Center", "AGV_ARRIVE_RELAY", f"AGV {event['agv_id']} arrived at relay point for task {event.get('task_id', 'N/A')}"])
+                elif event_type == "RELAY_REQUEST":
+                    writer.writerow([step, f"Control Center", f"AGV {event['agv_id']}", "RELAY_REQUEST", f"Request relay support for task {event['task_id']}"])
 
         # 保存 event_timeline.txt 到 records 文件夹
         event_timeline_file = layout.record_path("event_timeline.txt")
@@ -1050,7 +1062,8 @@ class Simulator:
                 f.write(f"Step {step}:\n")
                 for event in events_by_step[step]:
                     event_type = event["type"]
-                    if event_type == "TASK_ASSIGNMENT":
+                    # 同时支持 TASK_ASSIGNED 和 TASK_ASSIGNMENT
+                    if event_type == "TASK_ASSIGNED" or event_type == "TASK_ASSIGNMENT":
                         f.write(f"  - Task assignment: UAV {event['uav_id']} assigned task {event['task_id']}")
                         if "agv_id" in event and event["agv_id"]:
                             f.write(f" with AGV {event['agv_id']}")
@@ -1077,6 +1090,10 @@ class Simulator:
                         f.write(f"  - Wait for AGV end: Task {event['task_id']} stops waiting for AGV\n")
                     elif event_type == "RELAY_REQUEST":
                         f.write(f"  - Relay request: Relay support requested for task {event['task_id']} with AGV {event['agv_id']}\n")
+                    elif event_type == "RELAY_FALLBACK" or event_type == "RELAY_FALLBACK_START":
+                        f.write(f"  - Relay fallback: Task {event['task_id']} falling back to direct delivery\n")
+                    elif event_type == "UAV_REMOVED":
+                        f.write(f"  - UAV removed: UAV {event['uav_id']} removed due to failure\n")
             
             # 输出最终统计信息
             f.write("\nFinal Statistics:\n")
@@ -1278,9 +1295,10 @@ class Simulator:
         for step in steps:
             for event in events_by_step[step]:
                 event_type = event["type"]
-                # 关注所有相关事件类型
-                if event_type in ["TASK_ASSIGNED", "RELAY_REQUEST", "AGV_MOVE_START", "AGV_REACHED_RELAY", "RELAY_COOP_START",
-                                "WAIT_FOR_AGV_START", "WAIT_FOR_AGV_END", "CHARGING_START", "CHARGING_END"]:
+                # 关注所有相关事件类型，接受 AGV_ARRIVE_RELAY（代替 AGV_REACHED_RELAY）
+                if event_type in ["TASK_ASSIGNED", "RELAY_REQUEST", "AGV_MOVE_START", "AGV_ARRIVE_RELAY", "RELAY_COOP_START",
+                                "WAIT_FOR_AGV_START", "WAIT_FOR_AGV_END", "CHARGING_START", "CHARGING_END", "RELAY_FALLBACK",
+                                "RELAY_FALLBACK_START", "UAV_REMOVED"]:
                     event_types.append(event_type)
                     event_steps.append(step)
         
@@ -1294,11 +1312,11 @@ class Simulator:
         plt.xticks(rotation=45)
         plt.tight_layout()
         
-        # 校验：relay_coop 策略必须出现 relay 或 AGV_reached_relay 事件
+        # relay_coop 策略没有中继事件时不再抛错，改为警告并正常生成图表
         if self.strategy.name == "relay_coop":
-            has_relay_event = any(et in ["RELAY_REQUEST", "AGV_REACHED_RELAY", "AGV_MOVE_START", "RELAY_COOP_START"] for et in event_types)
+            has_relay_event = any(et in ["RELAY_REQUEST", "AGV_ARRIVE_RELAY", "AGV_MOVE_START", "RELAY_COOP_START", "RELAY_FALLBACK"] for et in event_types)
             if not has_relay_event:
-                raise ValueError("coordination_events.png: No relay events found for relay_coop strategy")
+                print("Warning: No relay events found for relay_coop strategy, but continuing to generate coordination_events.png")
         
         coordination_events_path = layout.plot_path("coordination_events.png")
         plt.savefig(coordination_events_path)

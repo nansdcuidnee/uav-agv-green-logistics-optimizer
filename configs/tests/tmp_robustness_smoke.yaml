@@ -1,4 +1,4 @@
-﻿experiment_type: seed_stability
+experiment_type: seed_stability
 strategies:
   - baseline_direct
 seeds:

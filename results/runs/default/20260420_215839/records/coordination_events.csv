@@ -1,9 +1,0 @@
-step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
-0,0,AGV_MOVE_START,1,,1,0,0,AGV starts moving to relay point
-0,0,TASK_ASSIGNED,1,1,1,,,Task assigned to UAV
-0,0,RELAY_REQUEST,1,,1,,,Relay support requested for task
-0,0,WAIT_FOR_AGV_START,1,1,,,,Task starts waiting for AGV
-0,0,AGV_ARRIVE_RELAY,1,,1,0,0,AGV arrived at relay point
-0,0,RELAY_COOP_START,1,1,1,,,
-1,1,WAIT_FOR_AGV_END,1,1,,,,Task stops waiting for AGV
-3,3,TASK_COMPLETE,1,1,,,,

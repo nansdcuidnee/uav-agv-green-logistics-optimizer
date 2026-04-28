@@ -1,5 +1,0 @@
-experiment_name: strategy_baseline_direct
-initial_task_count: 1
-num_agvs: 0
-num_uavs: 1
-strategy: baseline_direct

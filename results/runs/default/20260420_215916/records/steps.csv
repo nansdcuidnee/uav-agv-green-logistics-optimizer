@@ -1,5 +1,0 @@
-step,sim_time,active_tasks,completed_tasks_cumulative,charging_count_cumulative,uav_distance_cumulative,agv_distance_cumulative,total_distance_cumulative,uav_energy_cumulative,agv_energy_cumulative,charge_loss_energy_cumulative,total_energy_cumulative
-0,1,2,0,0,0.0,0.0,0.0,34.30271312909721,0.0,0.0,34.30271312909721
-1,2,2,0,0,336.0373924007841,0.0,336.0373924007841,67.22294510225272,0.0,0.0,67.22294510225272
-2,3,2,0,0,400.9254210158398,0.0,400.9254210158398,99.89333906135985,0.0,0.0,99.89333906135985
-3,4,0,2,0,412.61876970473037,0.0,412.61876970473037,132.49333906135985,0.0,0.0,132.49333906135985

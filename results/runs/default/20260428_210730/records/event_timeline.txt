@@ -1,0 +1,38 @@
+Event Timeline
+================
+Step 0:
+  - AGV move start: AGV 1 starts moving to relay point for task 1
+  - Task assignment: UAV 1 assigned task 1 with AGV 1
+  - Relay request: Relay support requested for task 1 with AGV 1
+  - Wait for AGV start: Task 1 starts waiting for AGV
+Step 10:
+  - Relay fallback: Task 1 falling back to direct delivery
+  - Relay fallback: Task 1 falling back to direct delivery
+  - Charging request: UAV 1 requests charging (battery: 12.0%)
+Step 11:
+  - Wait for AGV end: Task 1 stops waiting for AGV
+  - Task complete: UAV 1 completed task 1
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 12:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 13:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 14:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 15:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 16:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 17:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 18:
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+Step 19:
+  - AGV arrive relay: AGV 1 arrived at relay point for task 1
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+  - Charging start: AGV 1 starts charging UAV 1
+Step 35:
+  - Charging end: UAV 1 finished charging
+
+Final Statistics:
+- Total tasks completed: 1/1

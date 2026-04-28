@@ -1,9 +1,0 @@
-Event Timeline
-================
-Step 0:
-  - Task start: UAV 1 started task 1
-Step 1:
-  - Task complete: UAV 1 completed task 1
-
-Final Statistics:
-- Total tasks completed: 1/1

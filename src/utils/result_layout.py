@@ -8,7 +8,25 @@ from pathlib import Path
 from typing import Any, Mapping, Sequence
 
 
-REQUIRED_ARTIFACTS = ("metrics.json", "records/steps.csv", "records/tasks.csv", "records/event_timeline.txt")
+REQUIRED_ARTIFACTS = (
+    "metrics.json", 
+    "records/steps.csv", 
+    "records/tasks.csv", 
+    "records/event_timeline.txt",
+    "records/coordination_events.csv",
+    "records/communication_log.csv",
+    "plots/chart.png"
+)
+
+KEY_PLOTS = (
+    "trajectory_map.png",
+    "task_progress.png",
+    "battery_status.png",
+    "energy_curve.png",
+    "kpi_summary.png",
+    "coordination_events.png",
+    "environment_state.png"
+)
 
 
 def sanitize_experiment_name(experiment_name: str) -> str:

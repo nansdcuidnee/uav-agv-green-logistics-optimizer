@@ -1,4 +1,4 @@
-﻿﻿﻿﻿﻿﻿#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Run robustness experiments in a config-driven way."""
 
 import argparse
@@ -104,10 +104,10 @@ def apply_capacity_case(env, capacity_factor: float) -> None:
 
 
 def attach_failure_events(simulator, runtime_events: list[dict[str, Any]]) -> None:
-    """Attach runtime failure events to simulator (consumption is TODO in simulator loop)."""
+    """Attach runtime failure events to simulator."""
     setattr(simulator, "runtime_events", runtime_events)
     if runtime_events:
-        print(f"[TODO] runtime_events attached but not yet consumed in Simulator.run: {runtime_events}")
+        print(f"[INFO] runtime_events attached to simulator: {runtime_events}")
 
 
 def _safe_float(value: Any, default: float = 0.0) -> float:

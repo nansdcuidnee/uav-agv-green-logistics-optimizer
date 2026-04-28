@@ -1,37 +1,42 @@
-﻿# 杩愯浜х墿
+﻿# Python artifacts
 __pycache__/
 *.py[cod]
 *$py.class
 
-# 娴嬭瘯缂撳瓨
+# Test cache
 .pytest_cache/
 pytest-cache-files-*
 
-# 鏃ュ織鏂囦欢
+# Log files
 logs/
 debug.log
 
-# 实验结果
-results/
+# Experimental results
+results/tests/
+results/runs_backup_*/
 
-# 鐜鏂囦欢
+# Virtual environment
 .env
 venv/
 env/
 ENV/
 env.bak/
 venv.bak/
+.venv/
 
-# IDE 鏂囦欢
+# IDE files
 .idea/
 .vscode/
 *.swp
 *.swo
 *~
 
-# 鎿嶄綔绯荤粺鏂囦欢
+# OS files
 .DS_Store
 Thumbs.db
 
-!results/
-!results/**
+# Keep specific results directories
+!results/runs/
+!results/comparisons/
+!results/robustness/
+!results/finals/
