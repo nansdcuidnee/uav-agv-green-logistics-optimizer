@@ -1,0 +1,4 @@
+strategy,completion_rate,on_time_rate,avg_delivery_time,total_energy,avg_energy_per_task,energy_per_km,total_distance_agv,avg_wait_time_at_relay,charging_count
+baseline_direct,0.7,0.7,5.571428571428571,428.8196359481037,61.25994799258625,0.22574304451383967,0.0,,4
+relay_coop,1.0,1.0,0.6,497.0080509353447,49.70080509353447,0.1869319519677882,240.0,2.9,0
+energy_priority,0.6,0.6,6.833333333333333,438.8620521401416,73.14367535669027,0.2721472566213288,0.0,,4

@@ -1,0 +1,26 @@
+{
+  "experiment_name": "default",
+  "timestamp": "20260428_204813",
+  "strategy": "energy_priority",
+  "records_granularity": "step",
+  "required_artifacts": [
+    "metrics.json",
+    "records/steps.csv",
+    "records/tasks.csv",
+    "records/event_timeline.txt"
+  ],
+  "plots": [
+    "plots\\task_progress.png",
+    "plots\\battery_status.png",
+    "plots\\energy_curve.png",
+    "plots\\trajectory_map.png",
+    "plots\\environment_state.png",
+    "plots\\coordination_events.png",
+    "plots\\kpi_summary.png"
+  ],
+  "summary": {
+    "initial_task_count": 1,
+    "completed_tasks": 1,
+    "time_steps": 19
+  }
+}

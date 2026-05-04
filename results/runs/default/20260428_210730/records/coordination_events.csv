@@ -1,0 +1,22 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,AGV_MOVE_START,1,,1,500,500,AGV starts moving to relay point
+0,0,TASK_ASSIGNED,1,1,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,1,,1,,,Relay support requested for task
+0,0,WAIT_FOR_AGV_START,1,1,,,,Task starts waiting for AGV
+10,10,RELAY_FALLBACK,1,1,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,1,1,,,,
+10,10,CHARGING_REQUEST,,1,,,,UAV requests charging
+11,11,WAIT_FOR_AGV_END,1,1,,,,Task stops waiting for AGV
+11,11,TASK_COMPLETE,1,1,,,,
+11,11,CHARGING_REQUEST,,1,,,,UAV requests charging
+12,12,CHARGING_REQUEST,,1,,,,UAV requests charging
+13,13,CHARGING_REQUEST,,1,,,,UAV requests charging
+14,14,CHARGING_REQUEST,,1,,,,UAV requests charging
+15,15,CHARGING_REQUEST,,1,,,,UAV requests charging
+16,16,CHARGING_REQUEST,,1,,,,UAV requests charging
+17,17,CHARGING_REQUEST,,1,,,,UAV requests charging
+18,18,CHARGING_REQUEST,,1,,,,UAV requests charging
+19,19,AGV_ARRIVE_RELAY,1,,1,358.5786437626905,358.5786437626905,AGV arrived at relay point
+19,19,CHARGING_REQUEST,,1,,,,UAV requests charging
+19,19,CHARGING_START,,1,1,200.0,200.0,Charging started
+35,35,CHARGING_END,,1,1,200.0,200.0,Charging ended

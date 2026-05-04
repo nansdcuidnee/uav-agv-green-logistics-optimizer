@@ -1,0 +1,26 @@
+experiment_type: failure
+strategies:
+  - baseline_direct
+seed: 42
+failures:
+  - name: no_failure
+    events: []
+  - name: uav_failure_step30
+    events:
+      - type: uav_removal
+        step: 30
+        uav_id: 1
+base_config:
+  num_tasks: 6
+  num_uavs: 2
+  num_agvs: 1
+  max_steps: 60
+  map_size:
+    width: 600
+    height: 600
+  obstacles:
+    count: 2
+  time_window:
+    min: 0
+    max: 80
+    enabled: true

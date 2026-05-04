@@ -1,4 +1,4 @@
-﻿"""Baseline direct strategy."""
+"""Baseline direct strategy."""
 
 from typing import Any, Dict
 

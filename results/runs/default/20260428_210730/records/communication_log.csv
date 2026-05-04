@@ -1,0 +1,17 @@
+timestamp,sender,receiver,message_type,content
+0,Control Center,UAV 1,TASK_ASSIGNMENT,Assign task 1
+0,Control Center,AGV 1,RELAY_REQUEST,Request relay support for task 1
+10,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 12.0%"
+11,UAV 1,Control Center,TASK_COMPLETE,Complete task 1
+11,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+12,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+13,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+14,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+15,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+16,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+17,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+18,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+19,AGV 1,Control Center,AGV_ARRIVE_RELAY,AGV 1 arrived at relay point for task 1
+19,UAV 1,Control Center,CHARGING_REQUEST,"Request charging, battery: 0.0%"
+19,Control Center,AGV 1,CHARGING_COMMAND,Charge UAV 1
+19,AGV 1,UAV 1,CHARGING_START,Start charging

@@ -1,0 +1,24 @@
+# 默认实验配置
+experiment_name: default
+time_limit: 3600  # 实验时间限制（秒）
+max_runs: 10  # 最大运行次数
+
+# 策略配置
+strategies:
+  - baseline_direct
+  - relay_coop
+  - energy_priority
+
+# 场景配置
+scenarios:
+  - configs/generated/scene_small.yaml
+  - configs/generated/scene_medium.yaml
+  - configs/generated/scene_large.yaml
+
+# 评估指标
+metrics:
+  - completion_rate
+  - on_time_rate
+  - total_energy
+  - total_time
+  - charging_count

@@ -1,0 +1,45 @@
+# 大型场景配置
+# 继承基础配置
+extends: ../base/base.yaml
+
+description: "大型场景配置，测试系统在高负载下的性能和稳定性"
+scene_type: generated
+
+# 任务数量
+num_tasks: 50
+
+# 地图大小
+map_size:
+  width: 2000
+  height: 2000
+
+# 无人机数量
+num_uavs: 10
+
+# AGV数量
+num_agvs: 5
+
+# 任务点分布密度（每平方公里任务点数）
+task_density: 12.5
+
+# 障碍物数量与类型
+obstacles:
+  count: 30
+  types:
+    - building
+    - tree
+    - wall
+    - tower
+
+# 禁飞区配置
+no_fly_zones:
+  count: 10
+
+# 时间窗口范围（分钟）
+time_window:
+  min: 15
+  max: 240
+  enabled: true
+
+# 随机种子
+seed: 44
