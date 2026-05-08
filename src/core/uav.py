@@ -1,6 +1,7 @@
 import math
 from dataclasses import dataclass, field
 from typing import List, Tuple, Optional
+from config.config import UAV_CHARGE_THRESHOLD
 
 
 @dataclass
@@ -79,7 +80,7 @@ class UAV:
         Returns:
             bool: 是否需要充电
         """
-        return self.battery < 20
+        return self.battery < UAV_CHARGE_THRESHOLD
     
     def assign_task(self, task):
         """分配任务
