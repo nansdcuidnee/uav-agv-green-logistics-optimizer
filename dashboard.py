@@ -52,6 +52,73 @@ def load_metrics(run_dir: Path) -> Optional[dict]:
     return None
 
 
+def generate_sample_comparison_data() -> dict:
+    """Generate sample comparison data for demonstration."""
+    return {
+        "experiment_name": "Sample Strategy Comparison",
+        "timestamp": "2024-01-15 14:30:00",
+        "strategies": {
+            "baseline_direct": {
+                "completion_rate": 0.72,
+                "on_time_rate": 0.65,
+                "total_energy": 1850.50,
+                "avg_energy_per_task": 123.37,
+                "avg_delivery_time": 45.2,
+                "charging_count": 12,
+                "energy_saving_rate_vs_baseline": 0.0,
+            },
+            "relay_coop": {
+                "completion_rate": 0.85,
+                "on_time_rate": 0.78,
+                "total_energy": 1620.30,
+                "avg_energy_per_task": 108.02,
+                "avg_delivery_time": 38.5,
+                "charging_count": 8,
+                "energy_saving_rate_vs_baseline": 0.124,
+            },
+            "energy_priority": {
+                "completion_rate": 0.92,
+                "on_time_rate": 0.88,
+                "total_energy": 1450.80,
+                "avg_energy_per_task": 96.72,
+                "avg_delivery_time": 42.1,
+                "charging_count": 6,
+                "energy_saving_rate_vs_baseline": 0.216,
+            },
+        },
+        "summary": {
+            "best_completion": "energy_priority",
+            "best_energy": "energy_priority",
+            "best_time": "relay_coop",
+        },
+    }
+
+
+def generate_sample_robustness_data() -> dict:
+    """Generate sample robustness data for demonstration."""
+    return {
+        "experiment_name": "Sample Robustness Test",
+        "timestamp": "2024-01-15 15:00:00",
+        "total_runs": 10,
+        "avg_completion_rate": 0.86,
+        "std_completion_rate": 0.085,
+        "avg_total_energy": 1580.40,
+        "avg_charging_count": 8.5,
+        "runs": [
+            {"completion_rate": 0.90, "total_energy": 1520.0, "charging_count": 7, "avg_delivery_time": 40.0},
+            {"completion_rate": 0.88, "total_energy": 1560.0, "charging_count": 8, "avg_delivery_time": 41.5},
+            {"completion_rate": 0.85, "total_energy": 1600.0, "charging_count": 9, "avg_delivery_time": 42.0},
+            {"completion_rate": 0.92, "total_energy": 1480.0, "charging_count": 6, "avg_delivery_time": 39.0},
+            {"completion_rate": 0.82, "total_energy": 1650.0, "charging_count": 10, "avg_delivery_time": 43.5},
+            {"completion_rate": 0.87, "total_energy": 1590.0, "charging_count": 9, "avg_delivery_time": 41.0},
+            {"completion_rate": 0.89, "total_energy": 1540.0, "charging_count": 8, "avg_delivery_time": 40.5},
+            {"completion_rate": 0.84, "total_energy": 1620.0, "charging_count": 9, "avg_delivery_time": 42.5},
+            {"completion_rate": 0.91, "total_energy": 1500.0, "charging_count": 7, "avg_delivery_time": 39.5},
+            {"completion_rate": 0.86, "total_energy": 1580.0, "charging_count": 8, "avg_delivery_time": 41.0},
+        ],
+    }
+
+
 def load_metadata(run_dir: Path) -> Optional[dict]:
     """Load metadata.json from a run directory."""
     metadata_file = run_dir / "metadata.json"
@@ -329,18 +396,20 @@ def render_comparison_view():
     
     comparison_dirs = scan_comparison_dirs(COMPARISONS_DIR)
     
+    # 使用模拟数据或真实数据
     if not comparison_dirs:
-        st.info("No comparison results found. Please run run_strategy_comparison.py first.")
-        return
-    
-    # 选择对比实验
-    comparison_options = [str(p.relative_to(COMPARISONS_DIR)) for p in comparison_dirs]
-    selected = st.selectbox("Select comparison experiment", comparison_options)
-    
-    if selected:
+        st.info("⚠️ No comparison results found. Showing sample data for demonstration.")
+        metrics = generate_sample_comparison_data()
+        selected_dir = Path("sample_data")
+        show_content = True
+    else:
+        comparison_options = [str(p.relative_to(COMPARISONS_DIR)) for p in comparison_dirs]
+        selected = st.selectbox("Select comparison experiment", comparison_options)
         selected_dir = COMPARISONS_DIR / selected
         metrics = load_metrics(selected_dir)
-        
+        show_content = selected is not None
+    
+    if show_content and metrics:
         # 策略颜色映射
         strategy_colors = {
             "baseline_direct": "#FF6B6B",
@@ -366,7 +435,7 @@ def render_comparison_view():
                                 <h4 style="color: white; margin: 0 0 8px 0;">{strategy_key.replace('_', ' ').title()}</h4>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                                     <div style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 8px; text-align: center;">
-                                        <div style="color: #FFD93D; font-size: 18px; font-weight: bold;">{strategy_data.get('completion_rate', 0) * 100:.1f}%</div>
+                                        <div style="color: #FFFFFF; font-size: 18px; font-weight: bold;">{strategy_data.get('completion_rate', 0) * 100:.1f}%</div>
                                         <div style="color: #b8d4e3; font-size: 10px;">Completion</div>
                                     </div>
                                     <div style="background: rgba(255,255,255,0.1); padding: 8px; border-radius: 8px; text-align: center;">
@@ -446,42 +515,171 @@ def render_comparison_view():
 
 
 def render_robustness_view():
-    """Render robustness view."""
+    """Render robustness view with comprehensive analysis."""
     st.header("🔬 Robustness Analysis", divider="blue")
     
     robustness_dirs = scan_experiment_dirs(ROBUSTNESS_DIR)
     
+    # 使用模拟数据或真实数据
     if not robustness_dirs:
-        st.info("No robustness results found.")
-        return
-    
-    robustness_options = [str(p.relative_to(ROBUSTNESS_DIR)) for p in robustness_dirs]
-    selected = st.selectbox("Select robustness experiment", robustness_options)
-    
-    if selected:
+        st.info("⚠️ No robustness results found. Showing sample data for demonstration.")
+        metrics = generate_sample_robustness_data()
+        show_content = True
+    else:
+        robustness_options = [str(p.relative_to(ROBUSTNESS_DIR)) for p in robustness_dirs]
+        selected = st.selectbox("Select robustness experiment", robustness_options)
         selected_dir = ROBUSTNESS_DIR / selected
         metrics = load_metrics(selected_dir)
-        
-        if metrics:
-            render_kpi_section(metrics)
+        show_content = selected is not None
+    
+    if show_content and metrics:
+            # 1. 鲁棒性概览卡片
+            st.subheader("📊 Robustness Overview")
+            
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 100%);
+                                border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">📊</div>
+                        <div style="color: white; font-size: 20px; font-weight: bold;">{metrics.get('total_runs', 'N/A')}</div>
+                        <div style="color: #b8d4e3; font-size: 12px;">Total Runs</div>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            with col2:
+                avg_completion = metrics.get('avg_completion_rate', 0)
+                st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #2d5a87 0%, #3d7ab7 100%);
+                                border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">✅</div>
+                        <div style="color: white; font-size: 20px; font-weight: bold;">{avg_completion * 100:.1f}%</div>
+                        <div style="color: #b8d4e3; font-size: 12px;">Avg Completion</div>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            with col3:
+                st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #3d7ab7 0%, #4d8ac7 100%);
+                                border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">⚡</div>
+                        <div style="color: white; font-size: 20px; font-weight: bold;">{metrics.get('avg_total_energy', 0):.1f}</div>
+                        <div style="color: #b8d4e3; font-size: 12px;">Avg Energy</div>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            with col4:
+                std_completion = metrics.get('std_completion_rate', 0)
+                st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #4d8ac7 0%, #5d9ad7 100%);
+                                border-radius: 12px; padding: 16px; text-align: center;">
+                        <div style="font-size: 24px; margin-bottom: 8px;">📈</div>
+                        <div style="color: white; font-size: 20px; font-weight: bold;">{std_completion * 100:.2f}%</div>
+                        <div style="color: #b8d4e3; font-size: 12px;">Std Deviation</div>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            # 2. 详细运行数据
+            st.subheader("📈 Run Details")
+            
+            if "runs" in metrics and isinstance(metrics["runs"], list):
+                run_data = []
+                for i, run in enumerate(metrics["runs"]):
+                    completion_rate = run.get('completion_rate', 0)
+                    run_data.append({
+                        "Run #": i + 1,
+                        "Completion Rate": f"{completion_rate * 100:.2f}%",
+                        "Total Energy": f"{run.get('total_energy', 0):.2f}",
+                        "Charging Count": run.get('charging_count', 0),
+                        "Avg Time": f"{run.get('avg_delivery_time', 0):.1f}",
+                        "Status": "✅ Good" if completion_rate >= 0.7 else ("⚠️ Medium" if completion_rate >= 0.5 else "🔴 Low"),
+                    })
+                
+                st.dataframe(pd.DataFrame(run_data), use_container_width=True, hide_index=True)
+            
+            # 3. 鲁棒性评估
+            st.subheader("🔍 Robustness Assessment")
+            
+            avg_completion = metrics.get('avg_completion_rate', 0)
+            std_completion = metrics.get('std_completion_rate', 0)
+            
+            if avg_completion >= 0.8 and std_completion < 0.1:
+                st.success("✅ **High Robustness**: The strategy shows stable and consistent performance across all runs.")
+            elif avg_completion >= 0.6 and std_completion < 0.2:
+                st.info("⚠️ **Moderate Robustness**: The strategy performs adequately but with some variability.")
+            else:
+                st.warning("🔴 **Low Robustness**: The strategy performance varies significantly. Consider parameter tuning.")
+            
+            # 4. 原始数据
+            with st.expander("📄 Raw Data"):
+                st.json(metrics, expanded=False)
+    else:
+        st.info("No metrics data found for this experiment.")
 
 
 def main():
     """Main function to render the dashboard."""
+    # 页面配置
     st.set_page_config(
         page_title="UAV-AGV Logistics Dashboard",
-        page_icon="📊",
+        page_icon="🚁",
         layout="wide",
+        initial_sidebar_state="expanded",
     )
     
-    st.title("📊 UAV-AGV Green Logistics Optimizer")
-    st.markdown("Visualization dashboard for simulation results")
+    # 添加自定义CSS样式
+    st.markdown("""
+        <style>
+        .stApp {
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%);
+            min-height: 100vh;
+        }
+        h1, h2, h3 {
+            color: #1e293b;
+        }
+        h4 {
+            color: #334155;
+        }
+        p {
+            color: #475569;
+        }
+        .stMetric {
+            background: rgba(30, 41, 59, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(30, 41, 59, 0.1);
+        }
+        .css-1d391kg {
+            background: rgba(248, 250, 252, 0.95);
+        }
+        </style>
+    """, unsafe_allow_html=True)
     
-    view_mode = st.sidebar.radio(
-        "View Mode",
-        ["Single Experiment", "Comparisons", "Robustness"],
-        index=0,
-    )
+    # 页面头部
+    st.markdown("""
+        <div style="background: linear-gradient(90deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%); 
+                    padding: 30px; border-radius: 16px; margin-bottom: 20px; text-align: center;">
+            <div style="font-size: 48px; margin-bottom: 10px;">🚁🤖</div>
+            <h1 style="color: white; font-size: 36px; margin-bottom: 8px;">UAV-AGV Green Logistics Optimizer</h1>
+            <p style="color: #e2e8f0; font-size: 16px;">Advanced Simulation & Optimization Dashboard</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # 侧边栏
+    with st.sidebar:
+        st.markdown("""
+            <div style="text-align: center; padding: 20px;">
+                <div style="font-size: 40px; margin-bottom: 10px;">📡</div>
+                <h3 style="color: #1e293b;">Control Panel</h3>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        view_mode = st.radio(
+            "Select View Mode",
+            ["Single Experiment", "Comparisons", "Robustness"],
+            index=0,
+        )
     
     # 主内容区域
     if view_mode == "Single Experiment":
