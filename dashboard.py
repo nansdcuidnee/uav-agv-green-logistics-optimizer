@@ -24,8 +24,15 @@ def scan_experiment_dirs(base_dir: Path) -> list[Path]:
     for sub_dir in base_dir.iterdir():
         if sub_dir.is_dir() and not sub_dir.name.startswith("."):
             for timestamp_dir in sub_dir.iterdir():
-                if timestamp_dir.is_dir() and (timestamp_dir / "metrics.json").exists():
-                    experiment_dirs.append(timestamp_dir)
+                if timestamp_dir.is_dir():
+                    # 检查当前层级是否包含 metrics.json
+                    if (timestamp_dir / "metrics.json").exists():
+                        experiment_dirs.append(timestamp_dir)
+                    else:
+                        # 如果没有，继续向下扫描一层（支持更深的目录结构）
+                        for nested_dir in timestamp_dir.iterdir():
+                            if nested_dir.is_dir() and (nested_dir / "metrics.json").exists():
+                                experiment_dirs.append(nested_dir)
     return sorted(experiment_dirs, key=lambda p: p.stat().st_mtime, reverse=True)
 
 
@@ -38,9 +45,39 @@ def scan_comparison_dirs(base_dir: Path) -> list[Path]:
     for sub_dir in base_dir.iterdir():
         if sub_dir.is_dir() and not sub_dir.name.startswith("."):
             for timestamp_dir in sub_dir.iterdir():
-                if timestamp_dir.is_dir() and (timestamp_dir / "metrics.json").exists():
-                    comparison_dirs.append(timestamp_dir)
+                if timestamp_dir.is_dir():
+                    # 检查 comparison_summary.json 或 metrics.json
+                    if (timestamp_dir / "comparison_summary.json").exists():
+                        comparison_dirs.append(timestamp_dir)
+                    elif (timestamp_dir / "metrics.json").exists():
+                        comparison_dirs.append(timestamp_dir)
     return sorted(comparison_dirs, key=lambda p: p.stat().st_mtime, reverse=True)
+
+
+def load_comparison_metrics(run_dir: Path) -> Optional[dict]:
+    """Load comparison summary data from directory."""
+    # 优先加载 comparison_summary.json
+    summary_file = run_dir / "comparison_summary.json"
+    if summary_file.exists():
+        with open(summary_file, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            # 转换为统一格式
+            if "metrics" in data and isinstance(data["metrics"], dict):
+                return {
+                    "experiment_name": data.get("scenario_name", "Comparison"),
+                    "timestamp": "",
+                    "strategies": data["metrics"],
+                    "summary": {},
+                }
+            return data
+    
+    # 后备加载 metrics.json
+    metrics_file = run_dir / "metrics.json"
+    if metrics_file.exists():
+        with open(metrics_file, "r", encoding="utf-8") as f:
+            return json.load(f)
+    
+    return None
 
 
 def load_metrics(run_dir: Path) -> Optional[dict]:
@@ -406,7 +443,7 @@ def render_comparison_view():
         comparison_options = [str(p.relative_to(COMPARISONS_DIR)) for p in comparison_dirs]
         selected = st.selectbox("Select comparison experiment", comparison_options)
         selected_dir = COMPARISONS_DIR / selected
-        metrics = load_metrics(selected_dir)
+        metrics = load_comparison_metrics(selected_dir)
         show_content = selected is not None
     
     if show_content and metrics:
@@ -514,23 +551,72 @@ def render_comparison_view():
                                     st.download_button("📥 Download", f, file_name=plot_file)
 
 
+def aggregate_robustness_data(campaign_dir: Path) -> dict:
+    """Aggregate metrics from all runs in a robustness campaign."""
+    runs_data = []
+    
+    # 递归查找所有包含 metrics.json 的目录
+    for run_dir in campaign_dir.rglob("*"):
+        if run_dir.is_dir():
+            metrics_file = run_dir / "metrics.json"
+            if metrics_file.exists():
+                with open(metrics_file, "r", encoding="utf-8") as f:
+                    run_metrics = json.load(f)
+                    runs_data.append({
+                        "completion_rate": run_metrics.get("completion_rate", 0),
+                        "total_energy": run_metrics.get("total_energy", 0),
+                        "charging_count": run_metrics.get("charging_count", 0),
+                        "avg_delivery_time": run_metrics.get("avg_delivery_time", 0),
+                    })
+    
+    if not runs_data:
+        return None
+    
+    completion_rates = [r["completion_rate"] for r in runs_data]
+    total_energies = [r["total_energy"] for r in runs_data]
+    
+    return {
+        "experiment_name": campaign_dir.name,
+        "timestamp": "",
+        "total_runs": len(runs_data),
+        "avg_completion_rate": sum(completion_rates) / len(completion_rates),
+        "std_completion_rate": (sum((x - sum(completion_rates)/len(completion_rates))**2 for x in completion_rates) / len(completion_rates))**0.5,
+        "avg_total_energy": sum(total_energies) / len(total_energies),
+        "runs": runs_data,
+    }
+
+
+def scan_robustness_campaigns(base_dir: Path) -> list[Path]:
+    """Scan for robustness campaign directories."""
+    if not base_dir.exists():
+        return []
+    
+    campaigns = []
+    for campaign_dir in base_dir.iterdir():
+        if campaign_dir.is_dir() and not campaign_dir.name.startswith("."):
+            # 检查是否包含子目录
+            if any(campaign_dir.iterdir()):
+                campaigns.append(campaign_dir)
+    return sorted(campaigns, key=lambda p: p.stat().st_mtime, reverse=True)
+
+
 def render_robustness_view():
     """Render robustness view with comprehensive analysis."""
     st.header("🔬 Robustness Analysis", divider="blue")
     
-    robustness_dirs = scan_experiment_dirs(ROBUSTNESS_DIR)
+    robustness_campaigns = scan_robustness_campaigns(ROBUSTNESS_DIR)
     
     # 使用模拟数据或真实数据
-    if not robustness_dirs:
+    if not robustness_campaigns:
         st.info("⚠️ No robustness results found. Showing sample data for demonstration.")
         metrics = generate_sample_robustness_data()
         show_content = True
     else:
-        robustness_options = [str(p.relative_to(ROBUSTNESS_DIR)) for p in robustness_dirs]
+        robustness_options = [str(p.relative_to(ROBUSTNESS_DIR)) for p in robustness_campaigns]
         selected = st.selectbox("Select robustness experiment", robustness_options)
         selected_dir = ROBUSTNESS_DIR / selected
-        metrics = load_metrics(selected_dir)
-        show_content = selected is not None
+        metrics = aggregate_robustness_data(selected_dir)
+        show_content = selected is not None and metrics is not None
     
     if show_content and metrics:
             # 1. 鲁棒性概览卡片
