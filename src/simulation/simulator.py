@@ -11,6 +11,7 @@ import numpy as np
 from src.strategies.baseline_direct import BaselineDirectStrategy
 from src.strategies.energy_priority import EnergyPriorityStrategy
 from src.strategies.relay_coop import RelayCoopStrategy
+from src.strategies.alns_unified import ALNSUnifiedStrategy
 from src.utils.result_layout import REQUIRED_ARTIFACTS, create_result_layout, write_metadata
 from src.communication.network_manager import NetworkManager
 from src.communication.message_dispatch import MessageDispatcher
@@ -33,6 +34,10 @@ class Simulator:
             "baseline_direct": lambda: BaselineDirectStrategy(),
             "relay_coop": lambda: RelayCoopStrategy(),
             "energy_priority": lambda: EnergyPriorityStrategy(energy_model=self.energy_model),
+            "alns_unified": lambda: ALNSUnifiedStrategy(
+                energy_model=self.energy_model,
+                path_planner=self.path_planner
+            ),
         }
         self.strategy = strategy_factory.get(strategy_type, strategy_factory["baseline_direct"])()
 
@@ -291,6 +296,16 @@ class Simulator:
                     "RELAY_REQUEST",
                     f"AGV {agv_id} requested for relay support for task {task_id}"
                 )
+        
+        # 处理策略返回的事件（ALNS 等策略可返回自定义事件）
+        if 'events' in assignment_result:
+            for event in assignment_result['events']:
+                self.events.append({
+                    "step": self.time_step,
+                    "type": event.get('type'),
+                    "task_id": event.get('task_id'),
+                    "details": event.get('details', '')
+                })
         
         # 处理任务状态变化
         for task in self.environment.tasks:
@@ -814,6 +829,10 @@ class Simulator:
             "energy_per_km": energy_per_km,
             "carbon_emission": float(carbon_emission),
             "charging_count": int(self.charging_count),
+            "fallback_count": getattr(self.strategy, 'fallback_count', 0),
+            "replan_count": getattr(self.strategy, 'replan_count', 0),
+            "relay_count": getattr(self.strategy, 'relay_count', 0),
+            "direct_count": getattr(self.strategy, 'direct_count', 0),
             "baseline_strategy_name": None,
             "baseline_run_dir": None,
             "baseline_total_energy": None,
