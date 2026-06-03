@@ -256,10 +256,11 @@ class TestModeCounts:
         strategy = ALNSUnifiedStrategy()
         env = MockEnvironment()
         env.uavs = []
-        env.uavs.append(make_uav(1, (50, 50)))
+        env.uavs.append(make_uav(1, (0, 0), battery=100))
         env.agvs = []
-        task = make_task(1, end=(200, 200))
+        task = make_task(1, end=(50, 50))
         task.status = "pending"
+        task.start_point = (0, 0)
         env.tasks.append(task)
         env.depot_position = (0, 0)
 

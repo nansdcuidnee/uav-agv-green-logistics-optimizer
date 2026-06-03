@@ -44,7 +44,10 @@ pip install -r requirements.txt
 ### 运行主程序
 
 ```bash
-# 从仓库根目录运行
+# 使用 ALNS 统一策略运行 pickup_delivery_generated 场景
+python main.py --config configs/generated/pickup_delivery_generated.yaml --strategy alns_unified --max-steps 100
+
+# 使用默认配置运行
 python main.py
 ```
 
@@ -113,6 +116,14 @@ Dashboard 启动后可以在浏览器中查看实验结果，包括：
 - **baseline_direct.py**：基线直送策略
 - **relay_coop.py**：协同中继策略
 - **energy_priority.py**：能耗优先策略
+- **alns_unified.py**：ALNS 统一策略（单总站模型，直送与中继方案统一评分，动态回退）
+
+### ALNS 统一策略特性
+
+- 候选中继点动态生成（AGV位置、连线关键点、航程边界点）
+- 直送与中继方案统一评分（时间、能耗、碳排放、等待惩罚）
+- ALNS 搜索选择最优方案
+- 执行期动态回退（中继点重选、切换直送、不可行任务记录）
 
 ## 核心指标定义
 

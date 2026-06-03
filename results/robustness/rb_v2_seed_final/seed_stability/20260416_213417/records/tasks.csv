@@ -1,6 +1,0 @@
-task_id,strategy_name,start_time,assigned_time,finish_time,execution_time,completed,on_time,deadline,uav_distance,agv_distance,wait_time_at_relay,uav_energy,agv_energy,charge_loss_energy,total_energy
-1,energy_priority,77,,146,69,True,True,576.4415877149806,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-2,energy_priority,0,,35,35,True,True,38.98966324104666,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-3,energy_priority,36,,85,49,True,True,536.6854160433226,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-4,energy_priority,0,,76,76,True,True,670.5685469068602,0.0,0.0,0.0,0.0,0.0,0.0,0.0
-5,energy_priority,86,,105,19,True,True,480.4097209420229,0.0,0.0,0.0,0.0,0.0,0.0,0.0

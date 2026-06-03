@@ -13,7 +13,7 @@ DEFAULT_SIMULATION_STEPS = 50  # 默认模拟步数
 MAX_SIMULATION_STEPS = 1000  # 最大模拟步数（硬上限）
 
 # UAV配置
-UAV_INIT_BATTERY = 40  # 初始电量
+UAV_INIT_BATTERY = 100  # 初始电量
 UAV_MAX_BATTERY = 100  # 最大电量
 UAV_PAYLOAD_CAPACITY = 5  # 最大负载能力
 UAV_SPEED = 10  # 飞行速度

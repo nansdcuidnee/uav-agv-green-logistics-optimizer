@@ -96,6 +96,12 @@ class Simulator:
         for agv in self.environment.agvs:
             self.agv_states[agv.id] = "IDLE"
         
+        # 追踪 ALNS 策略的累计统计（在 assign_tasks 被调用后更新）
+        self._cumulative_direct_count = 0
+        self._cumulative_relay_count = 0
+        self._cumulative_fallback_count = 0
+        self._cumulative_replan_count = 0
+        
         self.communication_logger = None  # 稍后在 save_results 中初始化
     
     def _ensure_task_stats(self, task):
@@ -214,6 +220,12 @@ class Simulator:
         # 分配任务并记录开始时间
         assignment_result = self.strategy.assign_tasks(self.environment)
         
+        # 更新累计的 ALNS 统计（在 assign_tasks 内部被重置后累加）
+        self._cumulative_direct_count += getattr(self.strategy, 'direct_count', 0)
+        self._cumulative_relay_count += getattr(self.strategy, 'relay_count', 0)
+        self._cumulative_fallback_count += getattr(self.strategy, 'fallback_count', 0)
+        self._cumulative_replan_count += getattr(self.strategy, 'replan_count', 0)
+        
         # 处理策略返回的行动意图
         if 'actions' in assignment_result:
             for action in assignment_result['actions']:
@@ -314,22 +326,24 @@ class Simulator:
             # 检查任务状态变化
             if task.status == "waiting_for_agv" and current_task_state != "WAITING_FOR_AGV":
                 # 记录等待 AGV 开始事件
+                uav_id = task.assigned_uav.id if (hasattr(task, 'assigned_uav') and task.assigned_uav) else None
                 self.events.append({
                     "step": self.time_step,
                     "type": "WAIT_FOR_AGV_START",
                     "task_id": task.id,
-                    "uav_id": task.assigned_uav.id if hasattr(task, 'assigned_uav') else None,
+                    "uav_id": uav_id,
                     "details": "Task starts waiting for AGV"
                 })
                 # 更新任务状态
                 self.task_states[task.id] = "WAITING_FOR_AGV"
             elif task.status == "in_progress" and current_task_state == "WAITING_FOR_AGV":
                 # 记录等待 AGV 结束事件
+                uav_id = task.assigned_uav.id if (hasattr(task, 'assigned_uav') and task.assigned_uav) else None
                 self.events.append({
                     "step": self.time_step,
                     "type": "WAIT_FOR_AGV_END",
                     "task_id": task.id,
-                    "uav_id": task.assigned_uav.id if hasattr(task, 'assigned_uav') else None,
+                    "uav_id": uav_id,
                     "details": "Task stops waiting for AGV"
                 })
                 # 更新任务状态
@@ -402,6 +416,27 @@ class Simulator:
                             if task_id:
                                 task = next((t for t in self.environment.tasks if t.id == task_id), None)
                                 if task and task.status == "waiting_for_agv":
+                                    # 将 UAV 位置更新到 relay_point
+                                    if hasattr(task, 'assigned_uav') and task.assigned_uav:
+                                        uav = task.assigned_uav
+                                        # 记录更新前的位置
+                                        old_position = uav.position
+                                        # 使用统一的位置更新逻辑
+                                        uav.update_position(agv.position)
+                                        # 记录 UAV 被部署到中继点的事件
+                                        self.events.append({
+                                            "step": self.time_step,
+                                            "type": "UAV_DEPLOYED_AT_RELAY",
+                                            "uav_id": uav.id,
+                                            "task_id": task.id,
+                                            "agv_id": agv.id,
+                                            "old_x": old_position[0],
+                                            "old_y": old_position[1],
+                                            "new_x": agv.position[0],
+                                            "new_y": agv.position[1],
+                                            "details": "UAV position updated to relay point"
+                                        })
+                                    # 更新任务状态
                                     task.status = "in_progress"
                             
                             # 移除移动相关属性
@@ -454,6 +489,23 @@ class Simulator:
                                 if task_id:
                                     task = next((t for t in self.environment.tasks if t.id == task_id), None)
                                     if task and task.status == "waiting_for_agv":
+                                        # 将 UAV 位置更新到 relay_point
+                                        if hasattr(task, 'assigned_uav') and task.assigned_uav:
+                                            uav = task.assigned_uav
+                                            old_position = uav.position
+                                            uav.update_position(agv.position)
+                                            self.events.append({
+                                                "step": self.time_step,
+                                                "type": "UAV_DEPLOYED_AT_RELAY",
+                                                "uav_id": uav.id,
+                                                "task_id": task.id,
+                                                "agv_id": agv.id,
+                                                "old_x": old_position[0],
+                                                "old_y": old_position[1],
+                                                "new_x": agv.position[0],
+                                                "new_y": agv.position[1],
+                                                "details": "UAV position updated to relay point"
+                                            })
                                         task.status = "in_progress"
                                 
                                 # 移除移动相关属性
@@ -497,6 +549,23 @@ class Simulator:
                         if task_id:
                             task = next((t for t in self.environment.tasks if t.id == task_id), None)
                             if task and task.status == "waiting_for_agv":
+                                # 将 UAV 位置更新到 relay_point
+                                if hasattr(task, 'assigned_uav') and task.assigned_uav:
+                                    uav = task.assigned_uav
+                                    old_position = uav.position
+                                    uav.update_position(agv.position)
+                                    self.events.append({
+                                        "step": self.time_step,
+                                        "type": "UAV_DEPLOYED_AT_RELAY",
+                                        "uav_id": uav.id,
+                                        "task_id": task.id,
+                                        "agv_id": agv.id,
+                                        "old_x": old_position[0],
+                                        "old_y": old_position[1],
+                                        "new_x": agv.position[0],
+                                        "new_y": agv.position[1],
+                                        "details": "UAV position updated to relay point"
+                                    })
                                 task.status = "in_progress"
                         
                         # 移除移动相关属性
@@ -573,8 +642,8 @@ class Simulator:
                 
                 # 当任务状态为 in_progress 时规划路径
                 if uav.task.status == "in_progress":
-                    # 对于 relay_coop 策略，如果任务已 fallback 或 AGV 已到达，直接规划路径
-                    if self.strategy.name == "relay_coop" and hasattr(uav.task, "relay_point") and hasattr(uav.task, "assigned_agv"):
+                    # 对于 relay 模式的任务（无论使用哪种策略），如果任务已 fallback 或 AGV 已到达，直接规划路径
+                    if hasattr(uav.task, "relay_point") and hasattr(uav.task, "assigned_agv"):
                         agv = uav.task.assigned_agv
                         # 检查是否已经 fallback 或 AGV 已到达
                         fallback_triggered = hasattr(uav.task, 'assigned_time') and uav.task.assigned_time > 10
@@ -829,10 +898,10 @@ class Simulator:
             "energy_per_km": energy_per_km,
             "carbon_emission": float(carbon_emission),
             "charging_count": int(self.charging_count),
-            "fallback_count": getattr(self.strategy, 'fallback_count', 0),
-            "replan_count": getattr(self.strategy, 'replan_count', 0),
-            "relay_count": getattr(self.strategy, 'relay_count', 0),
-            "direct_count": getattr(self.strategy, 'direct_count', 0),
+            "fallback_count": int(self._cumulative_fallback_count),
+            "replan_count": int(self._cumulative_replan_count),
+            "relay_count": int(self._cumulative_relay_count),
+            "direct_count": int(self._cumulative_direct_count),
             "baseline_strategy_name": None,
             "baseline_run_dir": None,
             "baseline_total_energy": None,
@@ -1060,7 +1129,7 @@ class Simulator:
                 elif event_type == "AGV_ARRIVE_RELAY":
                     writer.writerow([step, f"AGV {event['agv_id']}", "Control Center", "AGV_ARRIVE_RELAY", f"AGV {event['agv_id']} arrived at relay point for task {event.get('task_id', 'N/A')}"])
                 elif event_type == "RELAY_REQUEST":
-                    writer.writerow([step, f"Control Center", f"AGV {event['agv_id']}", "RELAY_REQUEST", f"Request relay support for task {event['task_id']}"])
+                    writer.writerow([step, f"Control Center", f"AGV {event.get('agv_id', 'N/A')}", "RELAY_REQUEST", f"Request relay support for task {event.get('task_id', 'N/A')}"])
 
         # 保存 event_timeline.txt 到 records 文件夹
         event_timeline_file = layout.record_path("event_timeline.txt")
@@ -1108,7 +1177,7 @@ class Simulator:
                     elif event_type == "WAIT_FOR_AGV_END":
                         f.write(f"  - Wait for AGV end: Task {event['task_id']} stops waiting for AGV\n")
                     elif event_type == "RELAY_REQUEST":
-                        f.write(f"  - Relay request: Relay support requested for task {event['task_id']} with AGV {event['agv_id']}\n")
+                        f.write(f"  - Relay request: Relay support requested for task {event.get('task_id', 'N/A')} with AGV {event.get('agv_id', 'N/A')}\n")
                     elif event_type == "RELAY_FALLBACK" or event_type == "RELAY_FALLBACK_START":
                         f.write(f"  - Relay fallback: Task {event['task_id']} falling back to direct delivery\n")
                     elif event_type == "UAV_REMOVED":

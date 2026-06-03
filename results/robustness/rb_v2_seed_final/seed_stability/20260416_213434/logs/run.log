@@ -1,9 +1,0 @@
-Experiment: seed_456_energy_priority_seed456
-Strategy: energy_priority
-Initial tasks: 5
-UAVs: 2
-AGVs: 1
-Completed tasks: 5
-Total energy: 1547.4325411355685
-Total time steps: 146
-Charging count: 14
