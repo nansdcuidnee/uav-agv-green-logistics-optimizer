@@ -1,7 +1,6 @@
 import logging
 import heapq
-from collections import OrderedDict
-from src.utils.math_utils import calculate_distance, round_point
+from src.utils.math_utils import calculate_distance
 from src.planning.path_planner import PathPlanner
 from config.config import (
     UAV_CHARGE_THRESHOLD, ALPHA, BETA, GAMMA, DELTA,
@@ -9,82 +8,6 @@ from config.config import (
     BASE_ENERGY_CONSUMPTION, PAYLOAD_ENERGY_FACTOR,
     WIND_SPEED, WIND_ENERGY_FACTOR
 )
-
-
-class LRUCache:
-    """LRU缓存实现（最近最少使用淘汰策略）"""
-    
-    def __init__(self, max_size: int):
-        self._max_size = max_size
-        self._cache = OrderedDict()
-        self._access_count = {}
-    
-    def get(self, key):
-        if key in self._cache:
-            self._access_count[key] = self._access_count.get(key, 0) + 1
-            return self._cache[key]
-        return None
-    
-    def set(self, key, value):
-        if len(self._cache) >= self._max_size:
-            self._evict()
-        self._cache[key] = value
-        self._access_count[key] = 1
-    
-    def _evict(self):
-        if not self._cache:
-            return
-        min_access = min(self._access_count.values())
-        candidates = [k for k, v in self._access_count.items() if v == min_access]
-        for key in list(self._cache.keys()):
-            if key in candidates:
-                del self._cache[key]
-                del self._access_count[key]
-                break
-    
-    def __contains__(self, key):
-        return key in self._cache
-    
-    def __len__(self):
-        return len(self._cache)
-
-
-class LRUCache:
-    """LRU缓存实现（最近最少使用淘汰策略）"""
-    
-    def __init__(self, max_size: int):
-        self._max_size = max_size
-        self._cache = OrderedDict()
-        self._access_count = {}
-    
-    def get(self, key):
-        if key in self._cache:
-            self._access_count[key] = self._access_count.get(key, 0) + 1
-            return self._cache[key]
-        return None
-    
-    def set(self, key, value):
-        if len(self._cache) >= self._max_size:
-            self._evict()
-        self._cache[key] = value
-        self._access_count[key] = 1
-    
-    def _evict(self):
-        if not self._cache:
-            return
-        min_access = min(self._access_count.values())
-        candidates = [k for k, v in self._access_count.items() if v == min_access]
-        for key in list(self._cache.keys()):
-            if key in candidates:
-                del self._cache[key]
-                del self._access_count[key]
-                break
-    
-    def __contains__(self, key):
-        return key in self._cache
-    
-    def __len__(self):
-        return len(self._cache)
 
 
 class Scheduler:
@@ -146,15 +69,18 @@ class Scheduler:
             ))
             self.logger.addHandler(handler)
 
-        # ==================== 性能优化缓存（使用LRU策略） ====================
+        # ==================== 性能优化缓存 ====================
         # A* 路径缓存: (start, end) -> distance
-        self._astar_cache = LRUCache(max_size=1000)
+        self._astar_cache = {}
+        self._astar_cache_max_size = 1000  # 缓存上限
 
         # 能耗计算缓存: (uav_id, task_id) -> energy
-        self._energy_cache = LRUCache(max_size=500)
+        self._energy_cache = {}
+        self._energy_cache_max_size = 500
 
         # 时间计算缓存: (uav_id, task_id) -> time
-        self._time_cache = LRUCache(max_size=500)
+        self._time_cache = {}
+        self._time_cache_max_size = 500
 
     # ==================== 路径规划算法 ====================
 
@@ -169,16 +95,15 @@ class Scheduler:
         Returns:
             float: 路径距离，如果无法找到路径返回inf
         """
-        # 构建缓存键（使用统一精度）
+        # 构建缓存键（使用tuple和round避免浮点数精度问题）
         cache_key = (
-            round_point(start),
-            round_point(end)
+            (round(start[0], 1), round(start[1], 1)),
+            (round(end[0], 1), round(end[1], 1))
         )
 
         # 检查缓存
-        cached_result = self._astar_cache.get(cache_key)
-        if cached_result is not None:
-            return cached_result
+        if cache_key in self._astar_cache:
+            return self._astar_cache[cache_key]
 
         # 使用PathPlanner的A*算法规划路径
         path = self.path_planner.a_star(start, end, obstacles)
@@ -191,8 +116,9 @@ class Scheduler:
             for i in range(len(path) - 1):
                 distance += calculate_distance(path[i], path[i+1])
 
-        # 更新缓存（LRU自动处理淘汰）
-        self._astar_cache.set(cache_key, distance)
+        # 更新缓存（带上限控制）
+        if len(self._astar_cache) < self._astar_cache_max_size:
+            self._astar_cache[cache_key] = distance
 
         return distance
 
@@ -336,8 +262,8 @@ class Scheduler:
                     assignments.append((task, uav))
             return assignments
 
-        # 适应度缓存（使用LRU策略，限制大小）
-        fitness_cache = LRUCache(max_size=1000)
+        # 适应度缓存
+        fitness_cache = {}
 
         def get_fitness_key(individual):
             """生成个体的唯一键（用于缓存）"""
@@ -347,9 +273,8 @@ class Scheduler:
             """计算适应度 - 多目标优化（带缓存）"""
             # 检查缓存
             fitness_key = get_fitness_key(individual)
-            cached_fitness = fitness_cache.get(fitness_key)
-            if cached_fitness is not None:
-                return cached_fitness
+            if fitness_key in fitness_cache:
+                return fitness_cache[fitness_key]
 
             if agvs is None:
                 agvs = []
@@ -357,7 +282,7 @@ class Scheduler:
             assignments = decode_individual(individual)
 
             if not assignments:
-                fitness_cache.set(fitness_key, 0.0)
+                fitness_cache[fitness_key] = 0.0
                 return 0.0
 
             # 目标1: 最小化总能耗（使用预计算缓存）
@@ -389,7 +314,7 @@ class Scheduler:
             fitness -= penalty
 
             result = max(0, fitness)
-            fitness_cache.set(fitness_key, result)
+            fitness_cache[fitness_key] = result
             return result
 
         def selection(population, fitnesses):
@@ -1042,3 +967,4 @@ class Scheduler:
             list: 路径点列表
         """
         return self.path_planner.plan_path(start_point, end_point, obstacles, algorithm)
+

@@ -1,9 +1,0 @@
-Experiment: seed_789_relay_coop_seed789
-Strategy: relay_coop
-Initial tasks: 5
-UAVs: 2
-AGVs: 1
-Completed tasks: 4
-Total energy: 328.1978885870365
-Total time steps: 300
-Charging count: 2

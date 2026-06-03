@@ -1,0 +1,39 @@
+# Pickup-Delivery Generated Scene Configuration
+# Single depot model with ALNS unified strategy
+
+scene_type: pickup_delivery_generated
+experiment_name: pickup_delivery_generated
+strategy: alns_unified
+seed: 42
+max_steps: 100
+
+map_size:
+  width: 1000
+  height: 1000
+
+depot_position: [100, 100]
+
+num_uavs: 2
+num_agvs: 2
+num_tasks: 5
+
+uav_initialization:
+  mode: depot
+
+agv_initialization:
+  mode: random
+
+task_generation:
+  count: 5
+  start_mode: random
+  end_mode: random
+
+relay_candidate_generation:
+  mode: dynamic
+
+obstacles:
+  count: 0
+  types: []
+
+no_fly_zones:
+  count: 0

@@ -107,7 +107,7 @@ def test_metrics_schema_and_types():
 
 
 def test_strategy_switching_runs_all_strategies():
-    for strategy in ["baseline_direct", "relay_coop", "energy_priority"]:
+    for strategy in ["baseline_direct", "relay_coop", "energy_priority", "alns_unified"]:
         _, metrics = _run_once(strategy_type=strategy, seed=42, experiment_name=f"switch_{strategy}")
         assert metrics["total_time"] > 0, f"strategy did not run: {strategy}"
 

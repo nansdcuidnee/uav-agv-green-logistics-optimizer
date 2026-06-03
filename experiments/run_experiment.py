@@ -76,7 +76,7 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 
         default=None,
 
-        choices=["baseline_direct", "relay_coop", "energy_priority"],
+        choices=["baseline_direct", "relay_coop", "energy_priority", "alns_unified"],
 
     )
 

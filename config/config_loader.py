@@ -1,12 +1,6 @@
 """配置加载模块"""
 import os
 import yaml
-import logging
-from copy import deepcopy
-
-# 配置日志
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
 
 
 def deep_merge(base, override):
@@ -17,66 +11,63 @@ def deep_merge(base, override):
         override: 覆盖字典
     
     Returns:
-        dict: 合并后的字典（新字典，不修改原字典）
+        dict: 合并后的字典
     """
-    result = deepcopy(base)
+    result = base.copy()
     for key, value in override.items():
         if key in result and isinstance(result[key], dict) and isinstance(value, dict):
             result[key] = deep_merge(result[key], value)
         else:
-            result[key] = deepcopy(value) if isinstance(value, (dict, list)) else value
+            result[key] = value
     return result
 
 
 def normalize_config(config):
-    """规范化配置格式（不修改原始输入字典）
+    """规范化配置格式
     
     Args:
-        config: 原始配置（不会被修改）
+        config: 原始配置
     
     Returns:
-        dict: 规范化后的配置（新字典）
+        dict: 规范化后的配置
     """
-    # 创建配置的深拷贝，避免修改原始数据
-    result = deepcopy(config)
-    
     # 规范化 map_size
-    if 'map_size' in result:
-        map_size = result['map_size']
+    if 'map_size' in config:
+        map_size = config['map_size']
         if isinstance(map_size, list) and len(map_size) == 2:
             # 转换旧格式 [width, height] 为新格式 {width: ..., height: ...}
-            result['map_size'] = {
+            config['map_size'] = {
                 'width': map_size[0],
                 'height': map_size[1]
             }
-            logger.warning("[DEPRECATED] map_size 使用了旧格式 [width, height]，已自动转换为新格式")
+            print("[DEPRECATED] map_size 使用了旧格式 [width, height]，已自动转换为新格式")
     
     # 规范化 time_window
-    if 'time_window' in result:
-        time_window = result['time_window']
+    if 'time_window' in config:
+        time_window = config['time_window']
         if isinstance(time_window, dict):
             if 'size' in time_window and 'min' not in time_window and 'max' not in time_window:
                 # 转换旧格式 {size: ...} 为新格式 {min: 0, max: ...}
-                result['time_window'] = {
+                config['time_window'] = {
                     'min': 0,
                     'max': time_window['size']
                 }
-                logger.warning("[DEPRECATED] time_window 使用了旧格式 {size: ...}，已自动转换为新格式")
+                print("[DEPRECATED] time_window 使用了旧格式 {size: ...}，已自动转换为新格式")
     
     # 规范化 no_fly_zones
-    if 'num_no_fly_zones' in result:
+    if 'num_no_fly_zones' in config:
         # 转换旧格式 num_no_fly_zones 为新格式 no_fly_zones.count
-        if 'no_fly_zones' not in result:
-            result['no_fly_zones'] = {
-                'count': result['num_no_fly_zones']
+        if 'no_fly_zones' not in config:
+            config['no_fly_zones'] = {
+                'count': config['num_no_fly_zones']
             }
-            logger.warning("[DEPRECATED] 使用了旧字段 num_no_fly_zones，已自动转换为新格式 no_fly_zones.count")
-    elif 'no_fly_zones' in result and isinstance(result['no_fly_zones'], dict) and 'count' in result['no_fly_zones']:
+            print("[DEPRECATED] 使用了旧字段 num_no_fly_zones，已自动转换为新格式 no_fly_zones.count")
+    elif 'no_fly_zones' in config and isinstance(config['no_fly_zones'], dict) and 'count' in config['no_fly_zones']:
         # 为了向后兼容，添加旧字段
-        result['num_no_fly_zones'] = result['no_fly_zones']['count']
-        logger.info("[DEPRECATED] 为了向后兼容，添加了旧字段 num_no_fly_zones")
+        config['num_no_fly_zones'] = config['no_fly_zones']['count']
+        print("[DEPRECATED] 为了向后兼容，添加了旧字段 num_no_fly_zones")
     
-    return result
+    return config
 
 
 def load_config(config_path, visited=None, path_stack=None):
@@ -114,7 +105,7 @@ def load_config(config_path, visited=None, path_stack=None):
         # 尝试旧路径兼容
         old_path = os.path.join(os.path.dirname(config_path), os.path.basename(config_path))
         if os.path.exists(old_path):
-            logger.warning(f"[DEPRECATED] 配置文件路径已变更，使用旧路径: {old_path}")
+            print(f"[DEPRECATED] 配置文件路径已变更，使用旧路径: {old_path}")
             config_path = old_path
         else:
             # 尝试其他可能的路径
@@ -127,7 +118,7 @@ def load_config(config_path, visited=None, path_stack=None):
             ]
             for path in possible_paths:
                 if os.path.exists(path):
-                    logger.warning(f"[DEPRECATED] 配置文件路径已变更，使用新路径: {path}")
+                    print(f"[DEPRECATED] 配置文件路径已变更，使用新路径: {path}")
                     config_path = path
                     break
             else:
@@ -138,7 +129,7 @@ def load_config(config_path, visited=None, path_stack=None):
         config = yaml.safe_load(f)
     
     # 处理继承
-    if config and 'extends' in config:
+    if 'extends' in config:
         extends_path = config['extends']
         # 构建继承文件的完整路径
         extends_full_path = os.path.join(os.path.dirname(config_path), extends_path)
@@ -147,11 +138,10 @@ def load_config(config_path, visited=None, path_stack=None):
         # 深合并配置（子配置覆盖父配置）
         config = deep_merge(parent_config, config)
         # 移除 extends 字段
-        if 'extends' in config:
-            del config['extends']
+        del config['extends']
     
     # 规范化配置格式
-    config = normalize_config(config) if config else {}
+    config = normalize_config(config)
     
     # 从路径栈中移除当前文件
     path_stack.pop()

@@ -1,0 +1,37 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,TASK_ASSIGNED,1,1,,,,Task assigned to UAV
+0,0,TASK_ASSIGNED,2,2,,,,Task assigned to UAV
+0,0,TASK_START,1,1,,,,Task starts execution
+0,0,TASK_START,2,2,,,,Task starts execution
+1,1,TASK_COMPLETE,1,1,,,,
+1,1,TASK_COMPLETE,2,2,,,,
+2,2,TASK_ASSIGNED,3,1,,,,Task assigned to UAV
+2,2,TASK_ASSIGNED,4,2,,,,Task assigned to UAV
+2,2,TASK_START,3,1,,,,Task starts execution
+2,2,TASK_START,4,2,,,,Task starts execution
+3,3,TASK_COMPLETE,3,1,,,,
+3,3,LOW_BATTERY,,1,,,,
+3,3,TASK_COMPLETE,4,2,,,,
+3,3,LOW_BATTERY,,2,,,,
+4,4,TASK_ASSIGNED,5,1,,,,Task assigned to UAV
+4,4,TASK_START,5,1,,,,Task starts execution
+4,4,CHARGING_REQUEST,,1,,,,UAV requests charging
+4,4,CHARGING_START,,1,1,634.8959940015709,540.4473325428951,Charging started
+4,4,LOW_BATTERY,,2,,,,
+5,5,LOW_BATTERY,,2,,,,
+6,6,LOW_BATTERY,,2,,,,
+7,7,LOW_BATTERY,,2,,,,
+8,8,LOW_BATTERY,,2,,,,
+9,9,LOW_BATTERY,,2,,,,
+10,10,LOW_BATTERY,,2,,,,
+11,11,LOW_BATTERY,,2,,,,
+12,12,LOW_BATTERY,,2,,,,
+13,13,LOW_BATTERY,,2,,,,
+14,14,LOW_BATTERY,,2,,,,
+15,15,LOW_BATTERY,,2,,,,
+16,16,LOW_BATTERY,,2,,,,
+17,17,LOW_BATTERY,,2,,,,
+18,18,LOW_BATTERY,,2,,,,
+19,19,CHARGING_END,,1,1,634.8959940015709,540.4473325428951,Charging ended
+19,19,TASK_COMPLETE,5,1,,,,
+19,19,LOW_BATTERY,,2,,,,

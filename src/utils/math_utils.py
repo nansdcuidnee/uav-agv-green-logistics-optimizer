@@ -1,31 +1,5 @@
 import math
 
-# ==================== 精度配置常量 ====================
-EPSILON = 1e-9                    # 浮点数比较容差
-COORDINATE_PRECISION = 1          # 坐标精度（保留1位小数）
-DISTANCE_EPSILON = 1e-6           # 距离比较容差
-
-
-def is_close(a: float, b: float, epsilon: float = EPSILON) -> bool:
-    """判断两个浮点数是否相等（带容差）"""
-    return abs(a - b) < epsilon
-
-
-def is_close_points(point1, point2, epsilon: float = DISTANCE_EPSILON) -> bool:
-    """判断两个点是否在距离容差范围内相等"""
-    distance = calculate_distance(point1, point2)
-    return distance < epsilon
-
-
-def round_coordinate(coord: float) -> float:
-    """按照统一精度舍入坐标值"""
-    return round(coord, COORDINATE_PRECISION)
-
-
-def round_point(point) -> tuple:
-    """按照统一精度舍入点坐标"""
-    return (round_coordinate(point[0]), round_coordinate(point[1]))
-
 
 def calculate_distance(point1, point2):
     """计算两点之间的欧几里得距离

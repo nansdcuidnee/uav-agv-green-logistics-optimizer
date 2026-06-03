@@ -117,7 +117,7 @@ def main():
     layout = FixedLayout(run_dir=run_dir, plots_dir=plots_dir)
     
     # Strategies to compare
-    strategies = ["baseline_direct", "relay_coop", "energy_priority"]
+    strategies = ["baseline_direct", "relay_coop", "energy_priority", "alns_unified"]
     detailed_results = []
     
     for strategy_type in strategies:
