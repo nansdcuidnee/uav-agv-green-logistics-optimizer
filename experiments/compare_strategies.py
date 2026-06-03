@@ -7,49 +7,12 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import yaml
 from pathlib import Path
 
+from config.config_loader import load_config
+from config.config import DEFAULT_SIMULATION_STEPS, MAX_SIMULATION_STEPS, RANDOM_SEED
 from src.utils.simulator_helper import build_environment, build_simulator
 from src.utils.result_layout import create_comparison_layout
-
-def deep_merge(base, override):
-    """深合并两个字典"""
-    result = base.copy()
-    for key, value in override.items():
-        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
-            result[key] = deep_merge(result[key], value)
-        else:
-            result[key] = value
-    return result
-
-def load_config(config_path, visited=None):
-    """加载场景配置文件，支持继承"""
-    if visited is None:
-        visited = set()
-    
-    # 检测循环继承
-    if config_path in visited:
-        raise ValueError(f"循环继承 detected: {config_path}")
-    visited.add(config_path)
-    
-    # 加载当前配置
-    with open(config_path, 'r', encoding='utf-8') as f:
-        config = yaml.safe_load(f)
-    
-    # 处理继承
-    if 'extends' in config:
-        extends_path = config['extends']
-        # 构建继承文件的完整路径
-        extends_full_path = os.path.join(os.path.dirname(config_path), extends_path)
-        # 递归加载父配置
-        parent_config = load_config(extends_full_path, visited.copy())
-        # 深合并配置（子配置覆盖父配置）
-        config = deep_merge(parent_config, config)
-        # 移除 extends 字段
-        del config['extends']
-    
-    return config
 
 def compute_relative_metrics(strategy_metrics, baseline_metrics):
     """计算相对指标
@@ -107,7 +70,7 @@ def compute_relative_metrics(strategy_metrics, baseline_metrics):
 def main():
     """Compare different strategies."""
     parser = argparse.ArgumentParser(description="Compare different strategies")
-    parser.add_argument("--config", type=str, default="configs/qualification.yaml", help="Configuration file path")
+    parser.add_argument("--config", type=str, default="configs/explicit/qualification.yaml", help="Configuration file path")
     parser.add_argument("--max-steps", type=int, help="Maximum number of steps")
     parser.add_argument("--compare-name", type=str, default="strategy_comparison", help="Comparison name")
     parser.add_argument("--baseline-strategy", type=str, default="baseline_direct", help="Baseline strategy name")
@@ -116,10 +79,6 @@ def main():
     
     config_file = args.config
     
-    if not os.path.exists(config_file):
-        print(f"配置文件不存在: {config_file}")
-        return
-    
     # 加载配置
     config = load_config(config_file)
     
@@ -127,11 +86,38 @@ def main():
     if args.max_steps is not None:
         config['max_steps'] = args.max_steps
     
-    # Create comparison layout
-    layout = create_comparison_layout(compare_name=args.compare_name)
+    # Create comparison layout - 固定使用 strategy_comparison 目录并添加时间戳
+    from pathlib import Path
+    from datetime import datetime
+    base_dir = "results"
+    compare_name = "strategy_comparison"  # 固定使用此名称
+    
+    # 创建带有时间戳的目录结构
+    result_dir = Path(base_dir) / "comparisons"
+    experiment_dir = result_dir / compare_name
+    run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    run_dir = experiment_dir / run_timestamp
+    plots_dir = run_dir / "plots"
+    
+    # 创建目录
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    
+    # 创建简化的布局对象
+    class FixedLayout:
+        def __init__(self, run_dir, plots_dir):
+            self.run_dir = run_dir
+            self.plots_dir = plots_dir
+        
+        def artifact_path(self, filename):
+            return self.run_dir / filename
+        
+        def plot_path(self, filename):
+            return self.plots_dir / filename
+    
+    layout = FixedLayout(run_dir=run_dir, plots_dir=plots_dir)
     
     # Strategies to compare
-    strategies = ["baseline_direct", "relay_coop", "energy_priority"]
+    strategies = ["baseline_direct", "relay_coop", "energy_priority", "alns_unified"]
     detailed_results = []
     
     for strategy_type in strategies:
@@ -144,7 +130,9 @@ def main():
         simulator = build_simulator(env, strategy_type)
         
         # 确定最大步数
-        max_steps = config.get('max_steps', 100)
+        max_steps = config.get('max_steps', DEFAULT_SIMULATION_STEPS)
+        # 裁剪max_steps到最大限制
+        max_steps = min(max_steps, MAX_SIMULATION_STEPS)
         
         # Run simulation
         output_dir = simulator.run(
@@ -253,11 +241,47 @@ def main():
     
     # 1. completion_rate_compare.png
     plt.figure(figsize=(10, 6))
-    completion_rate = [r["completion_rate"] * 100 for r in results]  # 转换为百分比
+    completion_rate = []
+    all_invalid = True
+    
+    # 打印每个策略的 completion_rate 值
+    print("=== Completion Rate Debug Info ===")
+    for i, r in enumerate(results):
+        strategy = r["strategy"]
+        run_dir = r["run_dir"]
+        rate = r.get("completion_rate")
+        
+        print(f"Strategy: {strategy}")
+        print(f"  Run Dir: {run_dir}")
+        print(f"  Completion Rate: {rate}")
+        
+        if rate is not None and rate >= 0:
+            completion_rate.append(rate * 100)  # 转换为百分比
+            all_invalid = False
+        else:
+            completion_rate.append(0.0)
+            print(f"  Warning: Invalid completion_rate value")
+            
+            # 打印 metrics.json 中的实际键
+            metrics_file = Path(run_dir) / "metrics.json"
+            if metrics_file.exists():
+                with open(metrics_file, "r", encoding="utf-8") as f:
+                    metrics_data = json.load(f)
+                print(f"  Metrics keys: {list(metrics_data.keys())}")
+    
+    if all_invalid:
+        raise ValueError("All completion_rate values are invalid")
+    
     plt.bar(strategies, completion_rate)
     plt.xlabel("Strategy")
     plt.ylabel("Completion Rate (%)")
-    plt.title("Completion Rate by Strategy")
+    plt.title("Task Completion Rate by Strategy")
+    plt.ylim(0, 100)  # 设置 y 轴范围为 0 到 100
+    
+    # 在柱子上方显示数值标签
+    for i, v in enumerate(completion_rate):
+        plt.text(i, v + 1, f"{v:.1f}%", ha='center', va='bottom')
+    
     plt.savefig(layout.plot_path("completion_rate_compare.png"))
     plt.close()
     
@@ -341,35 +365,54 @@ def main():
     
     # 7. total_distance_agv_compare.png
     plt.figure(figsize=(10, 6))
-    total_distance_agv = [r["total_distance_agv"] for r in results]
+    total_distance_agv = []
+    for r in results:
+        value = r["total_distance_agv"]
+        # 对于 None 值，显示为 0
+        if value is None:
+            total_distance_agv.append(0)
+        else:
+            total_distance_agv.append(value)
     plt.bar(strategies, total_distance_agv)
     plt.xlabel("Strategy")
     plt.ylabel("Total Distance (AGV)")
     plt.title("Total Distance (AGV) by Strategy")
+    # 添加数值标签
+    for i, v in enumerate(total_distance_agv):
+        if v == 0:
+            # 对于不使用AGV的策略，显示"N/A"
+            plt.text(i, v + 5, "N/A", ha='center', va='bottom')
+        else:
+            plt.text(i, v + 5, f"{v:.1f}", ha='center', va='bottom')
+    # 设置 y 轴范围
+    plt.ylim(0, max(total_distance_agv) * 1.2 if total_distance_agv else 10)
     plt.savefig(layout.plot_path("total_distance_agv_compare.png"))
     plt.close()
     
     # 8. avg_wait_time_at_relay_compare.png
     plt.figure(figsize=(10, 6))
     avg_wait_time_at_relay = []
-    all_none = True
     for r in results:
         value = r["avg_wait_time_at_relay"]
-        # 检查是否所有值都是 None
+        # 对于 None 值，显示为 0
         if value is None:
-            avg_wait_time_at_relay.append(np.nan)
+            avg_wait_time_at_relay.append(0)
         else:
             avg_wait_time_at_relay.append(value)
-    
-    # 检查是否所有值都是 0（表示都是 None）
-    if all(v == 0 for v in avg_wait_time_at_relay):
-        print("错误：avg_wait_time_at_relay 所有值都是 null，无法生成图表")
-        return
     
     plt.bar(strategies, avg_wait_time_at_relay)
     plt.xlabel("Strategy")
     plt.ylabel("Average Wait Time at Relay")
     plt.title("Average Wait Time at Relay by Strategy")
+    # 添加数值标签
+    for i, v in enumerate(avg_wait_time_at_relay):
+        if v == 0:
+            # 对于不使用AGV的策略，显示"N/A"
+            plt.text(i, v + 0.5, "N/A", ha='center', va='bottom')
+        else:
+            plt.text(i, v + 0.5, f"{v:.1f}", ha='center', va='bottom')
+    # 设置 y 轴范围
+    plt.ylim(0, max(avg_wait_time_at_relay) * 1.2 if avg_wait_time_at_relay else 10)
     plt.savefig(layout.plot_path("avg_wait_time_at_relay_compare.png"))
     plt.close()
     

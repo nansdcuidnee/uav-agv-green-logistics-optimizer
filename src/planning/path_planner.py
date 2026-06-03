@@ -1,7 +1,7 @@
 import math
 import heapq
 import random
-
+import time
 class Node:
     """节点类，用于A*算法和RRT算法
     
@@ -61,7 +61,9 @@ class PathPlanner:
             if len(point1) != len(point2):
                 raise ValueError("Points must have the same dimension")
             
-            squared_distance = sum((p1 - p2) ** 2 for p1, p2 in zip(point1, point2))
+            if point1 is None or point2 is None or len(point1)!=len(point2):
+                return float('inf')
+            squared_distance = sum((float(p1) - float(p2)) ** 2 for p1, p2 in zip(point1, point2))
             return math.sqrt(squared_distance)
         except (TypeError, AttributeError):
             raise TypeError("Points must be iterable objects with numeric coordinates")
@@ -353,21 +355,36 @@ class PathPlanner:
         end_node = Node(end_point)
         
         # 将起点加入开放列表
+        rounded_start = (round(start_point[0], 1), round(start_point[1], 1))
         heapq.heappush(open_list, start_node)
-        open_dict[start_point] = start_node
-        
-        # 主循环
-        while open_list:
+        open_dict[rounded_start] = start_node
+
+        # 添加超时保护
+        start_time = time.time()
+        max_iterations = 10000
+        time_limit = 5.0  # 5秒超时
+        iteration = 0
+
+# 主循环
+        while open_list and iteration < max_iterations:
+    # 检查超时
+            if time.time() - start_time > time_limit:
+                print(f"A*算法超时({time_limit}秒)，返回直线路径")
+                return [start_point, end_point]
+  
+            iteration += 1
             # 从开放列表中取出f值最小的节点
             current_node = heapq.heappop(open_list)
             current_pos = current_node.position
             
             # 从开放字典中移除当前节点
-            if current_pos in open_dict:
-                del open_dict[current_pos]
+            rounded_pos = (round(current_pos[0], 1), round(current_pos[1], 1))
+            if rounded_pos in open_dict:
+                del open_dict[rounded_pos]
             
-            # 检查是否到达终点
-            if current_pos == end_point:
+            # 检查是否到达终点（使用容差比较）
+            distance_to_end = self._calculate_distance(current_pos, end_point)
+            if distance_to_end < 1e-6:
                 return self._reconstruct_path(current_node)
             
             # 将当前节点加入关闭集合，对位置进行四舍五入以减少集合大小
@@ -385,10 +402,10 @@ class PathPlanner:
                 if rounded_neighbor_pos in closed_set:
                     continue
                 
-                # 检查邻居节点是否在开放列表中
-                if neighbor_pos in open_dict:
+                # 检查邻居节点是否在开放列表中，使用四舍五入后的位置
+                if rounded_neighbor_pos in open_dict:
                     # 如果当前路径更优，更新节点信息
-                    existing_node = open_dict[neighbor_pos]
+                    existing_node = open_dict[rounded_neighbor_pos]
                     if neighbor.g < existing_node.g:
                         # 更新节点信息
                         existing_node.g = neighbor.g
@@ -400,10 +417,17 @@ class PathPlanner:
                 else:
                     # 如果邻居节点不在开放列表中，加入开放列表
                     heapq.heappush(open_list, neighbor)
-                    open_dict[neighbor_pos] = neighbor
+                    open_dict[rounded_neighbor_pos] = neighbor
         
         # 如果没有找到路径，返回空列表
-        return []
+        # 如果达到最大迭代次数仍未找到路径，返回直线路径
+        if iteration >= max_iterations:
+            print(f"A*算法达到最大迭代次数({max_iterations})，返回直线路径")
+            return [start_point, end_point]
+
+        # 如果没有找到路径，返回直线路径而不是空列表
+        print(f"A*算法未找到路径，返回直线路径")
+        return [start_point, end_point]
     
     def rrt(self, start_point, end_point, obstacles=None, max_iterations=1000, step_size=1.0, goal_radius=1.0):
         """RRT路径规划算法
@@ -443,8 +467,8 @@ class PathPlanner:
                 random_point = end_point
             else:
                 # 在合理范围内随机采样
-                # 这里假设环境范围为 [-10, 10]，实际项目中可能需要根据具体环境调整
-                random_point = (random.uniform(-10, 10), random.uniform(-10, 10))
+                # 使用更大的范围以适应实际地图大小
+                random_point = (random.uniform(0, 1000), random.uniform(0, 1000))
             
             # 找到树中距离随机点最近的节点
             # 优化：使用预计算的位置列表和索引，提高查找效率
@@ -532,7 +556,7 @@ class PathPlanner:
     
     def plan_path(self, start_point, end_point, obstacles=None, algorithm='a_star', smooth=True, simplify=True):
         """规划从起点到终点的路径
-        
+
         Args:
             start_point: 起点位置
             end_point: 终点位置
@@ -540,10 +564,10 @@ class PathPlanner:
             algorithm: 路径规划算法，可选值: 'a_star', 'rrt', 'straight'
             smooth: 是否平滑路径
             simplify: 是否简化路径
-            
+
         Returns:
             list: 路径点列表
-        
+
         Raises:
             TypeError: 如果输入参数类型不正确
             ValueError: 如果算法名称无效
@@ -566,6 +590,8 @@ class PathPlanner:
                     if simplify:
                         path = self._simplify_path(path)
                     return path
+                # A* 算法失败，回退到直线算法
+                return [start_point, end_point]
             elif algorithm == 'rrt':
                 path = self.rrt(start_point, end_point, obstacles)
                 if path:
@@ -574,14 +600,10 @@ class PathPlanner:
                     if simplify:
                         path = self._simplify_path(path)
                     return path
+                # RRT 算法失败，回退到直线算法
+                return [start_point, end_point]
             
-            # 如果算法失败或选择直线算法，返回直线路径
-            # 检查直线是否与障碍物碰撞
-            if obstacles:
-                # 简单的直线碰撞检测
-                # 实际项目中可能需要更复杂的碰撞检测
-                pass
-            
+            # 选择直线算法
             return [start_point, end_point]
         except (TypeError, ValueError) as e:
             raise TypeError(f"Invalid input: {str(e)}")
@@ -597,7 +619,7 @@ class PathPlanner:
             
         Returns:
             list: 路径点列表
-        
+            
         Raises:
             TypeError: 如果输入参数类型不正确
         """
@@ -610,13 +632,17 @@ class PathPlanner:
             path = [start_point]
             current_point = start_point
             
-            # 为每个停靠点添加直线路径
+            # 为每个停靠点规划路径
             for stop in stops:
-                path.append(stop)
-                current_point = stop
+                segment_path = self.plan_path(current_point, stop, obstacles)
+                if segment_path and len(segment_path) > 1:
+                    path.extend(segment_path[1:])  # 避免重复添加起点
+                    current_point = stop
             
-            # 添加到终点的直线路径
-            path.append(end_point)
+            # 添加到终点的路径
+            segment_path = self.plan_path(current_point, end_point, obstacles)
+            if segment_path and len(segment_path) > 1:
+                path.extend(segment_path[1:])  # 避免重复添加起点
             
             return path
         except (TypeError, ValueError) as e:

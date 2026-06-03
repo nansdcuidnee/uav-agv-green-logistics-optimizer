@@ -1,9 +1,9 @@
 import argparse
 import random
-import yaml
 import os
 
-from config.config import AGV_MAX_BATTERY, MAP_SIZE, UAV_MAX_BATTERY
+from config.config_loader import load_config
+from config.config import AGV_MAX_BATTERY, MAP_SIZE, UAV_INIT_BATTERY, UAV_MAX_BATTERY, DEFAULT_SIMULATION_STEPS, MAX_SIMULATION_STEPS, RANDOM_SEED
 from src.core.agv import AGV
 from src.core.uav import UAV
 from src.simulation.environment import Environment
@@ -15,9 +15,9 @@ def run_experiment(
     num_uavs: int = 2,
     num_agvs: int = 2,
     num_tasks: int = 3,
-    max_steps: int = 50,
+    max_steps: int = DEFAULT_SIMULATION_STEPS,
     strategy_type: str = "baseline_direct",
-    seed: int = 42,
+    seed: int = RANDOM_SEED,
 ):
     """Run one simulation experiment with deterministic setup."""
     random.seed(seed)
@@ -35,7 +35,7 @@ def run_experiment(
     for i in range(num_uavs):
         position = generate_random_point(MAP_SIZE)
         uav = UAV(i + 1, position)
-        uav.battery = UAV_MAX_BATTERY
+        uav.battery = UAV_INIT_BATTERY
         environment.uavs.append(uav)
 
     for i in range(num_agvs):
@@ -62,25 +62,25 @@ def _build_arg_parser() -> argparse.ArgumentParser:
 
     parser.add_argument("--experiment-name", default="default_experiment")
 
-    parser.add_argument("--num-uavs", type=int, default=2)
+    parser.add_argument("--num-uavs", type=int, default=None)
 
-    parser.add_argument("--num-agvs", type=int, default=2)
+    parser.add_argument("--num-agvs", type=int, default=None)
 
-    parser.add_argument("--num-tasks", type=int, default=3)
+    parser.add_argument("--num-tasks", type=int, default=None)
 
-    parser.add_argument("--max-steps", type=int, default=50)
+    parser.add_argument("--max-steps", type=int, default=None)
 
     parser.add_argument(
 
         "--strategy",
 
-        default="baseline_direct",
+        default=None,
 
-        choices=["baseline_direct", "relay_coop", "energy_priority"],
+        choices=["baseline_direct", "relay_coop", "energy_priority", "alns_unified"],
 
     )
 
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--seed", type=int, default=None)
 
     return parser
 
@@ -100,25 +100,10 @@ def main() -> None:
 
         config_path = args.config
 
-        if not os.path.isabs(config_path):
+        # 使用统一的配置加载器
+        config = load_config(config_path)
 
-            # 相对路径相对于 experiments 目录
-
-            config_path = os.path.join(os.path.dirname(__file__), config_path)
-
-        
-
-        if os.path.exists(config_path):
-
-            with open(config_path, 'r', encoding='utf-8') as f:
-
-                config = yaml.safe_load(f)
-
-            print(f"Loaded configuration from: {config_path}")
-
-        else:
-
-            print(f"Warning: Configuration file not found: {config_path}")
+        print(f"Loaded configuration from: {config_path}")
 
 
     # 命令行参数覆盖配置文件参数
@@ -131,11 +116,13 @@ def main() -> None:
 
     num_tasks = args.num_tasks if args.num_tasks is not None else config.get('num_tasks', 3)
 
-    max_steps = args.max_steps if args.max_steps is not None else config.get('max_steps', 50)
+    max_steps = args.max_steps if args.max_steps is not None else config.get('max_steps', DEFAULT_SIMULATION_STEPS)
+    # 裁剪max_steps到最大限制
+    max_steps = min(max_steps, MAX_SIMULATION_STEPS)
 
     strategy_type = args.strategy or config.get('strategy', 'baseline_direct')
 
-    seed = args.seed if args.seed is not None else config.get('seed', 42)
+    seed = args.seed if args.seed is not None else config.get('seed', RANDOM_SEED)
 
 
     run_experiment(
