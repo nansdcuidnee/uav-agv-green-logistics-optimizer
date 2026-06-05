@@ -1,0 +1,170 @@
+<svg width="1800" height="1180" viewBox="0 0 1800 1180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow-dark" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#1f2937"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#047857"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#b45309"/>
+    </marker>
+    <style>
+      text {
+        font-family: "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif;
+        letter-spacing: 0;
+      }
+      .title { font-size: 54px; font-weight: 800; fill: #111827; }
+      .section-title { font-size: 36px; font-weight: 800; }
+      .box-title { font-size: 27px; font-weight: 800; }
+      .box-text { font-size: 21px; font-weight: 600; fill: #1f2937; }
+      .small-text { font-size: 18px; font-weight: 600; fill: #1f2937; }
+      .tiny-text { font-size: 15px; font-weight: 600; fill: #1f2937; }
+      .blue { fill: #1d4ed8; }
+      .green { fill: #047857; }
+      .orange { fill: #b45309; }
+      .dark { fill: #1f2937; }
+      .panel-blue { fill: #eff6ff; stroke: #2563eb; stroke-width: 4; stroke-dasharray: 16 12; }
+      .panel-green { fill: #ecfdf5; stroke: #047857; stroke-width: 4; stroke-dasharray: 16 12; }
+      .panel-orange { fill: #fff7ed; stroke: #b45309; stroke-width: 4; stroke-dasharray: 16 12; }
+      .box-blue { fill: #ffffff; stroke: #2563eb; stroke-width: 4; }
+      .box-green { fill: #ffffff; stroke: #047857; stroke-width: 4; }
+      .box-orange { fill: #ffffff; stroke: #b45309; stroke-width: 4; }
+      .box-dark { fill: #ffffff; stroke: #1f2937; stroke-width: 4; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1180" fill="#ffffff"/>
+
+  <text x="900" y="70" text-anchor="middle" class="title">UAV-AGV 绿色物流协同调度优化算法框架</text>
+
+  <rect x="40" y="115" width="1040" height="300" rx="22" class="panel-blue"/>
+  <text x="560" y="170" text-anchor="middle" class="section-title blue">一、物流任务场景与系统状态感知</text>
+
+  <rect x="80" y="205" width="235" height="150" rx="12" class="box-blue"/>
+  <text x="197" y="245" text-anchor="middle" class="box-title blue">配送任务输入</text>
+  <text x="197" y="285" text-anchor="middle" class="box-text">取货点 / 送达点</text>
+  <text x="197" y="318" text-anchor="middle" class="box-text">载重 / 时窗 / 优先级</text>
+
+  <rect x="360" y="205" width="220" height="150" rx="12" class="box-blue"/>
+  <text x="470" y="245" text-anchor="middle" class="box-title blue">UAV 状态</text>
+  <text x="470" y="285" text-anchor="middle" class="box-text">位置 / 电量</text>
+  <text x="470" y="318" text-anchor="middle" class="box-text">载荷 / 航程</text>
+
+  <rect x="625" y="205" width="220" height="150" rx="12" class="box-blue"/>
+  <text x="735" y="245" text-anchor="middle" class="box-title blue">AGV 状态</text>
+  <text x="735" y="285" text-anchor="middle" class="box-text">位置 / 可用性</text>
+  <text x="735" y="318" text-anchor="middle" class="box-text">中继服务能力</text>
+
+  <rect x="890" y="205" width="150" height="150" rx="12" class="box-blue"/>
+  <text x="965" y="245" text-anchor="middle" class="box-title blue">环境约束</text>
+  <text x="965" y="285" text-anchor="middle" class="box-text">障碍物</text>
+  <text x="965" y="318" text-anchor="middle" class="box-text">禁飞区</text>
+
+  <line x1="315" y1="280" x2="355" y2="280" stroke="#1f2937" stroke-width="3" marker-end="url(#arrow-dark)"/>
+  <line x1="580" y1="280" x2="620" y2="280" stroke="#1f2937" stroke-width="3" marker-end="url(#arrow-dark)"/>
+  <line x1="845" y1="280" x2="885" y2="280" stroke="#1f2937" stroke-width="3" marker-end="url(#arrow-dark)"/>
+
+  <circle cx="125" cy="315" r="18" fill="none" stroke="#1f2937" stroke-width="3"/>
+  <line x1="125" y1="297" x2="125" y2="333" stroke="#1f2937" stroke-width="3"/>
+  <line x1="107" y1="315" x2="143" y2="315" stroke="#1f2937" stroke-width="3"/>
+  <circle cx="270" cy="315" r="16" fill="none" stroke="#1f2937" stroke-width="3"/>
+  <path d="M250 335 C260 350, 280 350, 290 335" fill="none" stroke="#1f2937" stroke-width="3"/>
+
+  <circle cx="420" cy="320" r="14" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="470" cy="300" r="14" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="520" cy="320" r="14" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <line x1="420" y1="320" x2="470" y2="300" stroke="#2563eb" stroke-width="3" stroke-dasharray="6 5"/>
+  <line x1="470" y1="300" x2="520" y2="320" stroke="#2563eb" stroke-width="3" stroke-dasharray="6 5"/>
+
+  <rect x="685" y="305" width="100" height="35" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="705" cy="345" r="9" fill="#ffffff" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="765" cy="345" r="9" fill="#ffffff" stroke="#2563eb" stroke-width="3"/>
+
+  <rect x="40" y="440" width="1040" height="560" rx="22" class="panel-green"/>
+  <text x="560" y="500" text-anchor="middle" class="section-title green">二、候选配送方案构建与多目标评价</text>
+
+  <rect x="95" y="540" width="395" height="70" rx="10" class="box-green"/>
+  <text x="292" y="585" text-anchor="middle" class="box-title green">任务-车辆状态编码</text>
+
+  <rect x="610" y="540" width="380" height="70" rx="10" class="box-green"/>
+  <text x="800" y="585" text-anchor="middle" class="box-title green">约束可行性筛选</text>
+  <line x1="490" y1="575" x2="605" y2="575" stroke="#047857" stroke-width="4" marker-end="url(#arrow-green)"/>
+
+  <rect x="95" y="650" width="360" height="125" rx="12" class="box-green"/>
+  <text x="275" y="695" text-anchor="middle" class="box-title green">UAV 直送候选</text>
+  <text x="275" y="735" text-anchor="middle" class="box-text">无人机独立完成配送</text>
+
+  <rect x="585" y="650" width="405" height="125" rx="12" class="box-green"/>
+  <text x="787" y="695" text-anchor="middle" class="box-title green">UAV-AGV 中继候选</text>
+  <text x="787" y="735" text-anchor="middle" class="box-text">AGV 提供中继点协同服务</text>
+
+  <polygon points="330,825 825,825 755,915 400,915" fill="#ffffff" stroke="#047857" stroke-width="4"/>
+  <text x="577" y="865" text-anchor="middle" class="box-title green">统一候选池构建</text>
+  <text x="577" y="898" text-anchor="middle" class="box-text">直送 / 中继 / 兜底候选集合</text>
+
+  <line x1="275" y1="775" x2="430" y2="825" stroke="#047857" stroke-width="4" marker-end="url(#arrow-green)"/>
+  <line x1="787" y1="775" x2="720" y2="825" stroke="#047857" stroke-width="4" marker-end="url(#arrow-green)"/>
+
+  <rect x="95" y="925" width="395" height="55" rx="10" class="box-green"/>
+  <text x="292" y="962" text-anchor="middle" class="box-text green">能耗 - 时间 - 距离综合代价</text>
+
+  <rect x="610" y="925" width="380" height="55" rx="10" class="box-green"/>
+  <text x="800" y="962" text-anchor="middle" class="box-text green">电量 / 载重 / 时窗约束</text>
+
+  <line x1="465" y1="915" x2="350" y2="925" stroke="#047857" stroke-width="3" marker-end="url(#arrow-green)"/>
+  <line x1="690" y1="915" x2="750" y2="925" stroke="#047857" stroke-width="3" marker-end="url(#arrow-green)"/>
+
+  <rect x="1125" y="115" width="635" height="885" rx="22" class="panel-orange"/>
+  <text x="1442" y="170" text-anchor="middle" class="section-title orange">三、ALNS 自适应优化搜索</text>
+
+  <rect x="1180" y="215" width="525" height="70" rx="10" class="box-orange"/>
+  <text x="1442" y="260" text-anchor="middle" class="box-title orange">初始协同调度解生成</text>
+
+  <rect x="1180" y="330" width="235" height="175" rx="12" class="box-orange"/>
+  <text x="1297" y="375" text-anchor="middle" class="box-title orange">破坏算子</text>
+  <text x="1297" y="420" text-anchor="middle" class="box-text">随机移除</text>
+  <text x="1297" y="455" text-anchor="middle" class="box-text">最差移除</text>
+  <text x="1297" y="490" text-anchor="middle" class="box-text">高能耗移除</text>
+
+  <rect x="1470" y="330" width="235" height="175" rx="12" class="box-orange"/>
+  <text x="1587" y="375" text-anchor="middle" class="box-title orange">修复算子</text>
+  <text x="1587" y="420" text-anchor="middle" class="box-text">贪婪插入</text>
+  <text x="1587" y="455" text-anchor="middle" class="box-text">后悔插入</text>
+  <text x="1587" y="490" text-anchor="middle" class="box-text">中继感知插入</text>
+
+  <line x1="1442" y1="285" x2="1442" y2="315" stroke="#b45309" stroke-width="4" marker-end="url(#arrow-orange)"/>
+  <line x1="1415" y1="417" x2="1465" y2="417" stroke="#b45309" stroke-width="4" marker-end="url(#arrow-orange)"/>
+
+  <rect x="1235" y="560" width="415" height="70" rx="10" class="box-orange"/>
+  <text x="1442" y="605" text-anchor="middle" class="box-title orange">新解评价与约束校验</text>
+  <line x1="1587" y1="505" x2="1500" y2="555" stroke="#b45309" stroke-width="4" marker-end="url(#arrow-orange)"/>
+
+  <rect x="1235" y="680" width="415" height="70" rx="10" class="box-orange"/>
+  <text x="1442" y="725" text-anchor="middle" class="box-title orange">接受准则与算子权重更新</text>
+  <line x1="1442" y1="630" x2="1442" y2="675" stroke="#b45309" stroke-width="4" marker-end="url(#arrow-orange)"/>
+
+  <path d="M1235 715 C1135 715, 1135 420, 1175 420" fill="none" stroke="#b45309" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrow-orange)"/>
+  <text x="1145" y="555" text-anchor="middle" class="small-text orange" transform="rotate(-90 1145 555)">迭代搜索</text>
+
+  <rect x="1235" y="805" width="415" height="70" rx="10" class="box-orange"/>
+  <text x="1442" y="850" text-anchor="middle" class="box-title orange">终止判断与最优解输出</text>
+  <line x1="1442" y1="750" x2="1442" y2="800" stroke="#b45309" stroke-width="4" marker-end="url(#arrow-orange)"/>
+
+  <rect x="1125" y="1025" width="635" height="95" rx="18" class="box-dark" stroke-dasharray="14 10"/>
+  <text x="1442" y="1065" text-anchor="middle" class="box-title dark">协同调度方案输出</text>
+  <text x="1442" y="1100" text-anchor="middle" class="box-text">UAV任务分配、AGV中继协同、充电调度、路径与能耗指标</text>
+  <line x1="1442" y1="875" x2="1442" y2="1020" stroke="#1f2937" stroke-width="4" marker-end="url(#arrow-dark)"/>
+
+  <line x1="1040" y1="280" x2="1120" y2="250" stroke="#1f2937" stroke-width="4" marker-end="url(#arrow-dark)"/>
+  <text x="1085" y="245" class="small-text">状态输入</text>
+
+  <line x1="990" y1="865" x2="1120" y2="595" stroke="#1f2937" stroke-width="4" marker-end="url(#arrow-dark)"/>
+  <text x="1035" y="760" class="small-text" transform="rotate(-64 1035 760)">候选解输入</text>
+
+  <path d="M1442 1120 L1442 1150 L80 1150 L80 360" fill="none" stroke="#374151" stroke-width="3" stroke-dasharray="12 10" marker-end="url(#arrow-dark)"/>
+  <text x="700" y="1138" text-anchor="middle" class="box-text">执行反馈至环境：车辆位置、电量、任务状态、中继关系与配送完成情况更新</text>
+</svg>

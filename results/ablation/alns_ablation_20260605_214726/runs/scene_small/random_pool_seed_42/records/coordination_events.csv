@@ -1,0 +1,93 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,TASK_ASSIGNED,1,1,,,,Task assigned to UAV
+0,0,TASK_ASSIGNED,7,2,,,,Task assigned to UAV
+0,0,TASK_START,1,1,,,,Task starts execution
+0,0,TASK_START,7,2,,,,Task starts execution
+1,1,TASK_COMPLETE,1,1,,,,
+1,1,TASK_COMPLETE,7,2,,,,
+2,2,TASK_ASSIGNED,2,1,,,,Task assigned to UAV
+2,2,TASK_ASSIGNED,9,2,,,,Task assigned to UAV
+2,2,TASK_START,2,1,,,,Task starts execution
+2,2,TASK_START,9,2,,,,Task starts execution
+3,3,TASK_COMPLETE,2,1,,,,
+3,3,TASK_COMPLETE,9,2,,,,
+3,3,CHARGING_REQUEST,,2,,,,UAV requests charging
+3,3,CHARGING_START,,2,1,388,58,Charging started
+4,4,AGV_MOVE_START,3,,1,140,125,AGV starts moving to relay point
+4,4,TASK_ASSIGNED,8,1,,,,Task assigned to UAV
+4,4,TASK_ASSIGNED,3,2,1,,,Task assigned to UAV
+4,4,RELAY_REQUEST,3,,1,,,Relay support requested for task
+4,4,RELAY_REQUEST,3,,,,,Relay via AGV 1
+4,4,WAIT_FOR_AGV_START,3,2,,,,Task starts waiting for AGV
+4,4,TASK_START,8,1,,,,Task starts execution
+4,4,AGV_ARRIVE_RELAY,3,,1,140,116,AGV arrived at relay point
+4,4,UAV_DEPLOYED_AT_RELAY,3,2,1,,,UAV position updated to relay point
+4,4,CHARGING_REQUEST,,1,,,,UAV requests charging
+4,4,CHARGING_START,,1,1,379,58,Charging started
+5,5,WAIT_FOR_AGV_END,3,2,,,,Task stops waiting for AGV
+16,16,CHARGING_END,,2,1,140,116,Charging ended
+16,16,RELAY_COOP_START,3,2,1,,,
+17,17,TASK_COMPLETE,3,2,,,,
+18,18,TASK_ASSIGNED,6,2,,,,Task assigned to UAV
+18,18,TASK_START,6,2,,,,Task starts execution
+18,18,CHARGING_END,,1,1,379,58,Charging ended
+18,18,TASK_COMPLETE,8,1,,,,
+19,19,TASK_ASSIGNED,4,1,,,,Task assigned to UAV
+19,19,TASK_START,4,1,,,,Task starts execution
+19,19,TASK_COMPLETE,6,2,,,,
+19,19,CHARGING_REQUEST,,2,,,,UAV requests charging
+19,19,CHARGING_START,,2,1,148,115,Charging started
+20,20,AGV_MOVE_START,10,,1,140,116,AGV starts moving to relay point
+20,20,TASK_ASSIGNED,10,2,1,,,Task assigned to UAV
+20,20,RELAY_REQUEST,10,,1,,,Relay support requested for task
+20,20,RELAY_REQUEST,10,,,,,Relay via AGV 1
+20,20,WAIT_FOR_AGV_START,10,2,,,,Task starts waiting for AGV
+20,20,AGV_ARRIVE_RELAY,10,,1,140,116,AGV arrived at relay point
+20,20,UAV_DEPLOYED_AT_RELAY,10,2,1,,,UAV position updated to relay point
+20,20,TASK_COMPLETE,4,1,,,,
+20,20,LOW_BATTERY,,1,,,,
+21,21,AGV_MOVE_START,5,,1,140,116,AGV starts moving to relay point
+21,21,TASK_ASSIGNED,5,1,1,,,Task assigned to UAV
+21,21,RELAY_REQUEST,5,,1,,,Relay support requested for task
+21,21,RELAY_REQUEST,5,,,,,Relay via AGV 1
+21,21,WAIT_FOR_AGV_START,5,1,,,,Task starts waiting for AGV
+21,21,WAIT_FOR_AGV_END,10,2,,,,Task stops waiting for AGV
+21,21,RELAY_FALLBACK,5,1,,,,"AGV took too long, falling back to direct delivery"
+21,21,RELAY_FALLBACK_START,5,1,,,,
+21,21,CHARGING_REQUEST,,1,,,,UAV requests charging
+22,22,WAIT_FOR_AGV_END,5,1,,,,Task stops waiting for AGV
+22,22,TASK_COMPLETE,5,1,,,,
+22,22,CHARGING_REQUEST,,1,,,,UAV requests charging
+23,23,CHARGING_REQUEST,,1,,,,UAV requests charging
+24,24,CHARGING_REQUEST,,1,,,,UAV requests charging
+25,25,CHARGING_REQUEST,,1,,,,UAV requests charging
+26,26,CHARGING_REQUEST,,1,,,,UAV requests charging
+27,27,CHARGING_REQUEST,,1,,,,UAV requests charging
+28,28,CHARGING_REQUEST,,1,,,,UAV requests charging
+29,29,CHARGING_REQUEST,,1,,,,UAV requests charging
+30,30,CHARGING_REQUEST,,1,,,,UAV requests charging
+31,31,CHARGING_REQUEST,,1,,,,UAV requests charging
+32,32,CHARGING_REQUEST,,1,,,,UAV requests charging
+33,33,CHARGING_END,,2,1,140,116,Charging ended
+33,33,CHARGING_REQUEST,,1,,,,UAV requests charging
+33,33,RELAY_FALLBACK_START,10,2,,,,
+34,34,CHARGING_REQUEST,,1,,,,UAV requests charging
+34,34,TASK_COMPLETE,10,2,,,,
+35,35,CHARGING_REQUEST,,1,,,,UAV requests charging
+36,36,CHARGING_REQUEST,,1,,,,UAV requests charging
+37,37,CHARGING_REQUEST,,1,,,,UAV requests charging
+38,38,CHARGING_REQUEST,,1,,,,UAV requests charging
+39,39,CHARGING_REQUEST,,1,,,,UAV requests charging
+40,40,CHARGING_REQUEST,,1,,,,UAV requests charging
+41,41,CHARGING_REQUEST,,1,,,,UAV requests charging
+42,42,CHARGING_REQUEST,,1,,,,UAV requests charging
+43,43,CHARGING_REQUEST,,1,,,,UAV requests charging
+44,44,CHARGING_REQUEST,,1,,,,UAV requests charging
+45,45,CHARGING_REQUEST,,1,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,1,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,1,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,1,,,,UAV requests charging
+49,49,AGV_ARRIVE_RELAY,5,,1,24,376,AGV arrived at relay point
+49,49,CHARGING_REQUEST,,1,,,,UAV requests charging
+49,49,CHARGING_START,,1,1,2,374,Charging started
+65,65,CHARGING_END,,1,1,2,374,Charging ended

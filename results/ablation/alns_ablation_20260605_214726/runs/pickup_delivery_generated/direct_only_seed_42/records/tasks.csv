@@ -1,0 +1,6 @@
+task_id,strategy_name,start_time,assigned_time,finish_time,execution_time,completed,on_time,deadline,uav_distance,agv_distance,wait_time_at_relay,uav_energy,agv_energy,charge_loss_energy,total_energy
+1,alns_unified,,,,,False,False,1440.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+2,alns_unified,0,0,1,1,True,True,1440.0,430.6061967075932,0.0,0.0,35.19224930417971,0.0,0.0,35.19224930417971
+3,alns_unified,0,0,1,1,True,True,1440.0,692.8979557936942,0.0,0.0,36.77124569387804,0.0,0.0,36.77124569387804
+4,alns_unified,,,,,False,False,1440.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+5,alns_unified,,,,,False,False,1440.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
