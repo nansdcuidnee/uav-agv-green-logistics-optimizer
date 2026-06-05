@@ -1,0 +1,114 @@
+Event Timeline
+================
+Step 0:
+  - Task assignment: UAV 1 assigned task 3
+  - Task assignment: UAV 2 assigned task 2
+  - Task start: UAV 2 started task 2
+  - Task start: UAV 1 started task 3
+Step 1:
+  - Task complete: UAV 1 completed task 3
+  - Task complete: UAV 2 completed task 2
+Step 2:
+  - Task assignment: UAV 2 assigned task 5
+  - Task assignment: UAV 1 assigned task 1
+  - Task start: UAV 1 started task 1
+  - Task start: UAV 2 started task 5
+Step 3:
+  - Task complete: UAV 1 completed task 1
+  - Low battery alert: UAV 1 battery at 27.8%
+  - Task complete: UAV 2 completed task 5
+Step 4:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 5:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 6:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 7:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 8:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 9:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 10:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 11:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 12:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 13:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 14:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 15:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 16:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 17:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 18:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 19:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 20:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 21:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 22:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 23:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 24:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 25:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 26:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 27:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 28:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 29:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 30:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 31:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 32:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 33:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 34:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 35:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 36:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 37:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 38:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 39:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 40:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 41:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 42:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 43:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 44:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 45:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 46:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 47:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 48:
+  - Low battery alert: UAV 1 battery at 27.8%
+Step 49:
+  - Low battery alert: UAV 1 battery at 27.8%
+
+Final Statistics:
+- Total tasks completed: 4/5

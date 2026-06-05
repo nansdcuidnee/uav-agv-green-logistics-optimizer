@@ -168,7 +168,7 @@ def _build_pickup_delivery_generated(config):
     return env
 
 
-def build_simulator(environment, strategy_type="baseline_direct", scenario_name="default", seed=42):
+def build_simulator(environment, strategy_type="baseline_direct", scenario_name="default", seed=42, strategy_kwargs=None):
     """构建仿真器
     
     Args:
@@ -176,6 +176,7 @@ def build_simulator(environment, strategy_type="baseline_direct", scenario_name=
         strategy_type: 策略类型
         scenario_name: 场景名称
         seed: 随机种子
+        strategy_kwargs: 策略参数（用于消融实验）
     
     Returns:
         Simulator: 仿真器对象
@@ -188,4 +189,5 @@ def build_simulator(environment, strategy_type="baseline_direct", scenario_name=
         strategy_type=strategy_type,
         scenario_name=scenario_name,
         seed=seed,
+        strategy_kwargs=strategy_kwargs or {},
     )

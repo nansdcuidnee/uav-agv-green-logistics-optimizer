@@ -44,6 +44,14 @@ class ALNSUnifiedStrategy(BaseStrategy):
         repair_count: int = 1,
         wait_timeout: int = 10,
         battery_low_threshold: float = 20.0,
+        # Ablation parameters
+        allow_direct: bool = True,
+        allow_relay: bool = True,
+        candidate_pool_strategy: str = "diverse_topk",
+        candidate_pool_k: int = 5,
+        destroy_operator_set: List[str] = None,
+        repair_operator_set: List[str] = None,
+        adaptive_operator_weights: bool = True,
     ):
         super().__init__("alns_unified")
         self.energy_model = energy_model
@@ -65,7 +73,15 @@ class ALNSUnifiedStrategy(BaseStrategy):
 
         self._rng = random.Random(seed)
         self._scorer = CostScorer(energy_model)
-        self._operators = ALNSOperators(energy_model, seed)
+        self._operators = ALNSOperators(energy_model, seed, adaptive_operator_weights)
+
+        self.allow_direct = allow_direct
+        self.allow_relay = allow_relay
+        self.candidate_pool_strategy = candidate_pool_strategy
+        self.candidate_pool_k = candidate_pool_k
+        self.destroy_operator_set = destroy_operator_set
+        self.repair_operator_set = repair_operator_set
+        self.adaptive_operator_weights = adaptive_operator_weights
 
     def assign_tasks(self, environment) -> Dict[str, Any]:
         """Main task assignment method."""
@@ -446,16 +462,8 @@ class ALNSUnifiedStrategy(BaseStrategy):
         best = current.copy()
         temperature = self.initial_temperature
 
-        destroy_ops = [
-            DestroyOperator.RANDOM_REMOVE,
-            DestroyOperator.WORST_REMOVE,
-            DestroyOperator.HIGH_ENERGY_REMOVE
-        ]
-        repair_ops = [
-            RepairOperator.GREEDY_INSERT,
-            RepairOperator.REGRET_INSERT,
-            RepairOperator.RELAY_AWARE_REGRET_INSERT
-        ]
+        destroy_ops = self._get_destroy_operators()
+        repair_ops = self._get_repair_operators()
 
         for iteration in range(self.max_iterations):
             prev_cost = current.total_cost
@@ -487,6 +495,40 @@ class ALNSUnifiedStrategy(BaseStrategy):
 
         return best
 
+    def _get_destroy_operators(self):
+        """Get destroy operators based on ablation config."""
+        all_ops = {
+            "random_remove": DestroyOperator.RANDOM_REMOVE,
+            "worst_remove": DestroyOperator.WORST_REMOVE,
+            "high_energy_remove": DestroyOperator.HIGH_ENERGY_REMOVE
+        }
+
+        if self.destroy_operator_set:
+            return [all_ops.get(op) for op in self.destroy_operator_set if all_ops.get(op)]
+
+        return [
+            DestroyOperator.RANDOM_REMOVE,
+            DestroyOperator.WORST_REMOVE,
+            DestroyOperator.HIGH_ENERGY_REMOVE
+        ]
+
+    def _get_repair_operators(self):
+        """Get repair operators based on ablation config."""
+        all_ops = {
+            "greedy_insert": RepairOperator.GREEDY_INSERT,
+            "regret_insert": RepairOperator.REGRET_INSERT,
+            "relay_aware_regret_insert": RepairOperator.RELAY_AWARE_REGRET_INSERT
+        }
+
+        if self.repair_operator_set:
+            return [all_ops.get(op) for op in self.repair_operator_set if all_ops.get(op)]
+
+        return [
+            RepairOperator.GREEDY_INSERT,
+            RepairOperator.REGRET_INSERT,
+            RepairOperator.RELAY_AWARE_REGRET_INSERT
+        ]
+
     def _can_uav_complete_direct(self, uav, task, depot_pos):
         """Check if UAV can complete direct delivery with pickup-delivery semantics.
 
@@ -509,7 +551,7 @@ class ALNSUnifiedStrategy(BaseStrategy):
         tasks: List,
         environment,
         depot_pos: Tuple[float, float],
-        k: int = 5
+        k: int = None
     ) -> CandidatePools:
         """Build candidate pools per (task_id, uav_id).
 
@@ -524,8 +566,15 @@ class ALNSUnifiedStrategy(BaseStrategy):
         4. Deduplicated by relay_point (rounded to 0.1 precision)
         5. Sorted by (cost_delta, mode_risk, predicted_wait)
         6. Selected top-K with diversity (prefer different AGVs)
+
+        Ablation parameters:
+        - allow_direct: whether to include direct delivery options
+        - allow_relay: whether to include relay delivery options
+        - candidate_pool_strategy: diverse_topk / greedy_topk / random_topk
+        - candidate_pool_k: number of candidates to select
         """
         pools: CandidatePools = {}
+        pool_k = k if k is not None else self.candidate_pool_k
 
         for task in tasks:
             for uav in uavs:
@@ -534,41 +583,69 @@ class ALNSUnifiedStrategy(BaseStrategy):
                     "relay": []
                 }
 
-                direct_result = self._scorer.evaluate_direct_insertion_unified(
-                    uav, task, [], 0, depot_pos
-                )
-                if direct_result.feasibility:
-                    pool["direct"] = True
-
-                relay_candidates = RelayCandidateGenerator.generate_bound_candidates(
-                    uav, task, environment, depot_pos
-                )
-
-                scored_candidates = []
-                for relay_point, agv in relay_candidates:
-                    result = self._scorer.evaluate_relay_insertion_unified(
-                        uav, task, agv, relay_point,
-                        [], [], 0, 0, depot_pos
+                if self.allow_direct:
+                    direct_result = self._scorer.evaluate_direct_insertion_unified(
+                        uav, task, [], 0, depot_pos
                     )
-                    if result.feasibility:
-                        scored_candidates.append({
-                            "relay_point": relay_point,
-                            "agv": agv,
-                            "cost_delta": result.cost_delta,
-                            "mode_risk": result.mode_risk,
-                            "predicted_wait": result.predicted_wait
-                        })
+                    if direct_result.feasibility:
+                        pool["direct"] = True
 
-                deduplicated = self._deduplicate_relay_candidates(scored_candidates)
-                sorted_candidates = sorted(deduplicated, key=lambda x: (
-                    x["cost_delta"], x["mode_risk"], x["predicted_wait"]
-                ))
+                if self.allow_relay:
+                    relay_candidates = RelayCandidateGenerator.generate_bound_candidates(
+                        uav, task, environment, depot_pos
+                    )
 
-                pool["relay"] = self._select_top_k_with_diversity(sorted_candidates, k)
+                    scored_candidates = []
+                    for relay_point, agv in relay_candidates:
+                        result = self._scorer.evaluate_relay_insertion_unified(
+                            uav, task, agv, relay_point,
+                            [], [], 0, 0, depot_pos
+                        )
+                        if result.feasibility:
+                            scored_candidates.append({
+                                "relay_point": relay_point,
+                                "agv": agv,
+                                "cost_delta": result.cost_delta,
+                                "mode_risk": result.mode_risk,
+                                "predicted_wait": result.predicted_wait
+                            })
+
+                    deduplicated = self._deduplicate_relay_candidates(scored_candidates)
+                    sorted_candidates = sorted(deduplicated, key=lambda x: (
+                        x["cost_delta"], x["mode_risk"], x["predicted_wait"]
+                    ))
+
+                    pool["relay"] = self._select_top_k_candidates(
+                        sorted_candidates, pool_k, self.candidate_pool_strategy
+                    )
 
                 pools[(task.id, uav.id)] = pool
 
         return pools
+
+    def _select_top_k_candidates(
+        self,
+        candidates: List[Dict[str, Any]],
+        k: int,
+        strategy: str
+    ) -> List[Tuple[Tuple[float, float], Any]]:
+        """Select top-K relay candidates based on strategy."""
+        if not candidates:
+            return []
+
+        if strategy == "greedy_topk":
+            sorted_by_cost = sorted(candidates, key=lambda x: (
+                x["cost_delta"], x["mode_risk"], x["predicted_wait"]
+            ))
+            return [(c["relay_point"], c["agv"]) for c in sorted_by_cost[:k]]
+
+        elif strategy == "random_topk":
+            shuffled = candidates.copy()
+            self._rng.shuffle(shuffled)
+            return [(c["relay_point"], c["agv"]) for c in shuffled[:k]]
+
+        else:  # diverse_topk (default)
+            return self._select_top_k_with_diversity(candidates, k)
 
     def _deduplicate_relay_candidates(self, candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Deduplicate relay candidates by rounded relay_point."""
