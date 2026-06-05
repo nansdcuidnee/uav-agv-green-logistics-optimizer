@@ -1,8 +1,0 @@
-variant_name,seed,completion_rate,total_energy,avg_delivery_time,avg_wait_time_at_relay,fallback_count,charging_count,relay_count,direct_count,total_time,total_tasks,completed_tasks,failed_tasks,on_time_rate,total_distance,total_distance_uav,total_distance_agv,run_dir
-unified_full,42,1.0,226.42237156912472,1.0,12.0,0,2,1,4,20,5,5,0,1.0,2787.9686991901435,2727.9686991901435,60.0,results\ablation\alns_ablation_20260604_204754\runs\unified_full_seed_42
-direct_only,42,0.6,129.25920890437135,1.0,,0,1,0,3,100,5,3,2,0.6,1571.2971601945767,1571.2971601945767,0.0,results\ablation\alns_ablation_20260604_204754\runs\direct_only_seed_42
-relay_only,42,0.6,109.57135243084463,0.3333333333333333,4.666666666666667,0,0,3,0,100,5,3,2,0.6,1517.0352875157175,1457.0352875157175,60.0,results\ablation\alns_ablation_20260604_204754\runs\relay_only_seed_42
-greedy_pool,42,1.0,226.42237156912472,1.0,12.0,0,2,1,4,20,5,5,0,1.0,2787.9686991901435,2727.9686991901435,60.0,results\ablation\alns_ablation_20260604_204754\runs\greedy_pool_seed_42
-random_pool,42,1.0,200.2029322500906,1.0,12.0,0,1,1,4,17,5,5,0,1.0,2087.065157822359,2027.0651578223592,60.0,results\ablation\alns_ablation_20260604_204754\runs\random_pool_seed_42
-fixed_weights,42,1.0,226.42237156912472,1.0,12.0,0,2,1,4,20,5,5,0,1.0,2787.9686991901435,2727.9686991901435,60.0,results\ablation\alns_ablation_20260604_204754\runs\fixed_weights_seed_42
-simple_ops,42,1.0,226.42237156912472,1.0,12.0,0,2,1,4,20,5,5,0,1.0,2787.9686991901435,2727.9686991901435,60.0,results\ablation\alns_ablation_20260604_204754\runs\simple_ops_seed_42

@@ -1,0 +1,29 @@
+{
+  "experiment_name": "simple_ops_seed_42",
+  "timestamp": "20260605_212856",
+  "strategy": "alns_unified",
+  "records_granularity": "step",
+  "required_artifacts": [
+    "metrics.json",
+    "records/steps.csv",
+    "records/tasks.csv",
+    "records/event_timeline.txt",
+    "records/coordination_events.csv",
+    "records/communication_log.csv",
+    "plots/chart.png"
+  ],
+  "plots": [
+    "plots\\task_progress.png",
+    "plots\\battery_status.png",
+    "plots\\energy_curve.png",
+    "plots\\trajectory_map.png",
+    "plots\\environment_state.png",
+    "plots\\coordination_events.png",
+    "plots\\kpi_summary.png"
+  ],
+  "summary": {
+    "initial_task_count": 50,
+    "completed_tasks": 50,
+    "time_steps": 189
+  }
+}

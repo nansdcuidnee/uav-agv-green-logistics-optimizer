@@ -1,0 +1,5 @@
+experiment_name: simple_ops_seed_789
+initial_task_count: 10
+num_agvs: 1
+num_uavs: 2
+strategy: alns_unified

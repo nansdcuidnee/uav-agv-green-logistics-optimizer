@@ -345,6 +345,14 @@ class PathPlanner:
         if self._is_collision(start_point, obstacles) or self._is_collision(end_point, obstacles):
             return []
         
+        # Fast path: if no obstacles, return direct line
+        if obstacles is None or len(obstacles) == 0:
+            return [start_point, end_point]
+        
+        # Fast path: if direct line has no collision, return direct line
+        if not self._is_segment_collision(start_point, end_point, obstacles):
+            return [start_point, end_point]
+        
         # 初始化开放列表和关闭列表
         open_list = []
         closed_set = set()  # 使用集合提高查询效率
@@ -364,13 +372,18 @@ class PathPlanner:
         max_iterations = 10000
         time_limit = 5.0  # 5秒超时
         iteration = 0
+        step_size = 1.0  # 步长
 
 # 主循环
         while open_list and iteration < max_iterations:
     # 检查超时
             if time.time() - start_time > time_limit:
-                print(f"A*算法超时({time_limit}秒)，返回直线路径")
-                return [start_point, end_point]
+                print(f"A*算法超时({time_limit}秒)")
+                # Only return direct line if it has no collision
+                if not self._is_segment_collision(start_point, end_point, obstacles):
+                    return [start_point, end_point]
+                else:
+                    return []
   
             iteration += 1
             # 从开放列表中取出f值最小的节点
@@ -382,10 +395,14 @@ class PathPlanner:
             if rounded_pos in open_dict:
                 del open_dict[rounded_pos]
             
-            # 检查是否到达终点（使用容差比较）
+            # 检查是否到达终点（使用合理的容差，一个步长大小）
             distance_to_end = self._calculate_distance(current_pos, end_point)
-            if distance_to_end < 1e-6:
-                return self._reconstruct_path(current_node)
+            if distance_to_end < step_size:
+                # 到达终点附近，将终点添加到路径中
+                path = self._reconstruct_path(current_node)
+                if path[-1] != end_point:
+                    path.append(end_point)
+                return path
             
             # 将当前节点加入关闭集合，对位置进行四舍五入以减少集合大小
             rounded_pos = (round(current_pos[0], 1), round(current_pos[1], 1))
@@ -419,15 +436,22 @@ class PathPlanner:
                     heapq.heappush(open_list, neighbor)
                     open_dict[rounded_neighbor_pos] = neighbor
         
-        # 如果没有找到路径，返回空列表
-        # 如果达到最大迭代次数仍未找到路径，返回直线路径
+        # 如果没有找到路径
         if iteration >= max_iterations:
-            print(f"A*算法达到最大迭代次数({max_iterations})，返回直线路径")
-            return [start_point, end_point]
+            print(f"A*算法达到最大迭代次数({max_iterations})")
+            # Only return direct line if it has no collision
+            if not self._is_segment_collision(start_point, end_point, obstacles):
+                return [start_point, end_point]
+            else:
+                return []
 
-        # 如果没有找到路径，返回直线路径而不是空列表
-        print(f"A*算法未找到路径，返回直线路径")
-        return [start_point, end_point]
+        # 如果没有找到路径
+        print(f"A*算法未找到路径")
+        # Only return direct line if it has no collision
+        if not self._is_segment_collision(start_point, end_point, obstacles):
+            return [start_point, end_point]
+        else:
+            return []
     
     def rrt(self, start_point, end_point, obstacles=None, max_iterations=1000, step_size=1.0, goal_radius=1.0):
         """RRT路径规划算法
