@@ -17,9 +17,10 @@ from src.planning.relay_candidate_generator import RelayCandidateGenerator
 class ALNSOperators:
     """ALNS operators manager."""
 
-    def __init__(self, energy_model=None, seed: int = 42):
+    def __init__(self, energy_model=None, seed: int = 42, adaptive_weights: bool = True):
         self._rng = random.Random(seed)
         self._scorer = CostScorer(energy_model)
+        self._adaptive_weights = adaptive_weights
 
         self._operator_weights = {
             DestroyOperator.RANDOM_REMOVE: 1.0,
@@ -348,6 +349,9 @@ class ALNSOperators:
             self._operator_stats[destroy_op]["use"] += 1
         if repair_op in self._operator_stats:
             self._operator_stats[repair_op]["use"] += 1
+
+        if not self._adaptive_weights:
+            return
 
         if best_improved:
             if destroy_op in self._operator_weights:

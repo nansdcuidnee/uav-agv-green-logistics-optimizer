@@ -21,7 +21,7 @@ from src.communication.communication_logger import CommunicationLogger
 class Simulator:
     """Main simulation runner for UAV-AGV charging experiments."""
 
-    def __init__(self, environment, energy_model, path_planner, scheduler, strategy_type="baseline_direct", scenario_name="default", seed=42):
+    def __init__(self, environment, energy_model, path_planner, scheduler, strategy_type="baseline_direct", scenario_name="default", seed=42, strategy_kwargs=None):
         self.environment = environment
         self.energy_model = energy_model
         self.path_planner = path_planner
@@ -29,6 +29,7 @@ class Simulator:
         self.time_step = 0
         self.scenario_name = scenario_name
         self.seed = seed
+        self.strategy_kwargs = strategy_kwargs or {}
 
         strategy_factory = {
             "baseline_direct": lambda: BaselineDirectStrategy(),
@@ -36,7 +37,9 @@ class Simulator:
             "energy_priority": lambda: EnergyPriorityStrategy(energy_model=self.energy_model),
             "alns_unified": lambda: ALNSUnifiedStrategy(
                 energy_model=self.energy_model,
-                path_planner=self.path_planner
+                path_planner=self.path_planner,
+                seed=seed,
+                **self.strategy_kwargs
             ),
         }
         self.strategy = strategy_factory.get(strategy_type, strategy_factory["baseline_direct"])()
