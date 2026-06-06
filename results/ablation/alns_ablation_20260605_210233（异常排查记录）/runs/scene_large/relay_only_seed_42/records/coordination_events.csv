@@ -1,0 +1,771 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,x,y,details
+0,0,AGV_MOVE_START,29,,1,620,1420,AGV starts moving to relay point
+0,0,TASK_ASSIGNED,29,2,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,29,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,12,4,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,12,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,9,6,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,9,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,30,5,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,30,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,50,1,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,50,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,24,9,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,24,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,19,10,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,19,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,37,7,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,37,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,21,8,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,21,,1,,,Relay support requested for task
+0,0,TASK_ASSIGNED,6,3,1,,,Task assigned to UAV
+0,0,RELAY_REQUEST,6,,1,,,Relay support requested for task
+0,0,RELAY_REQUEST,29,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,12,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,9,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,30,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,50,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,24,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,19,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,37,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,21,,,,,Relay via AGV 1
+0,0,RELAY_REQUEST,6,,,,,Relay via AGV 1
+0,0,WAIT_FOR_AGV_START,6,3,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,9,6,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,12,4,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,19,10,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,21,8,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,24,9,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,29,2,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,30,5,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,37,7,,,,Task starts waiting for AGV
+0,0,WAIT_FOR_AGV_START,50,1,,,,Task starts waiting for AGV
+10,10,RELAY_FALLBACK,50,1,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,50,1,,,,
+10,10,RELAY_FALLBACK,29,2,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,29,2,,,,
+10,10,RELAY_FALLBACK,6,3,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,6,3,,,,
+10,10,RELAY_FALLBACK,12,4,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,12,4,,,,
+10,10,RELAY_FALLBACK,30,5,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,30,5,,,,
+10,10,RELAY_FALLBACK,9,6,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,9,6,,,,
+10,10,RELAY_FALLBACK,37,7,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,37,7,,,,
+10,10,RELAY_FALLBACK,21,8,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,21,8,,,,
+10,10,RELAY_FALLBACK,24,9,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,24,9,,,,
+10,10,RELAY_FALLBACK,19,10,,,,"AGV took too long, falling back to direct delivery"
+10,10,RELAY_FALLBACK_START,19,10,,,,
+11,11,WAIT_FOR_AGV_END,6,3,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,9,6,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,12,4,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,19,10,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,21,8,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,24,9,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,29,2,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,30,5,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,37,7,,,,Task stops waiting for AGV
+11,11,WAIT_FOR_AGV_END,50,1,,,,Task stops waiting for AGV
+11,11,TASK_COMPLETE,50,1,,,,
+11,11,TASK_COMPLETE,29,2,,,,
+11,11,TASK_COMPLETE,6,3,,,,
+11,11,TASK_COMPLETE,12,4,,,,
+11,11,TASK_COMPLETE,30,5,,,,
+11,11,TASK_COMPLETE,9,6,,,,
+11,11,TASK_COMPLETE,37,7,,,,
+11,11,TASK_COMPLETE,21,8,,,,
+11,11,TASK_COMPLETE,24,9,,,,
+11,11,TASK_COMPLETE,19,10,,,,
+12,12,AGV_MOVE_START,13,,2,1298,775,AGV starts moving to relay point
+12,12,TASK_ASSIGNED,13,10,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,13,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,20,5,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,20,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,33,3,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,33,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,7,7,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,7,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,49,2,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,49,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,26,6,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,26,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,1,8,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,1,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,11,1,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,11,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,45,4,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,45,,2,,,Relay support requested for task
+12,12,TASK_ASSIGNED,2,9,2,,,Task assigned to UAV
+12,12,RELAY_REQUEST,2,,2,,,Relay support requested for task
+12,12,RELAY_REQUEST,13,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,20,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,33,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,7,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,49,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,26,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,1,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,11,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,45,,,,,Relay via AGV 2
+12,12,RELAY_REQUEST,2,,,,,Relay via AGV 2
+12,12,WAIT_FOR_AGV_START,1,8,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,2,9,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,7,7,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,11,1,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,13,10,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,20,5,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,26,6,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,33,3,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,45,4,,,,Task starts waiting for AGV
+12,12,WAIT_FOR_AGV_START,49,2,,,,Task starts waiting for AGV
+12,12,RELAY_FALLBACK,11,1,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,11,1,,,,
+12,12,RELAY_FALLBACK,49,2,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,49,2,,,,
+12,12,RELAY_FALLBACK,33,3,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,33,3,,,,
+12,12,LOW_BATTERY,,3,,,,
+12,12,RELAY_FALLBACK,45,4,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,45,4,,,,
+12,12,LOW_BATTERY,,4,,,,
+12,12,RELAY_FALLBACK,20,5,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,20,5,,,,
+12,12,LOW_BATTERY,,5,,,,
+12,12,RELAY_FALLBACK,26,6,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,26,6,,,,
+12,12,RELAY_FALLBACK,7,7,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,7,7,,,,
+12,12,RELAY_FALLBACK,1,8,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,1,8,,,,
+12,12,RELAY_FALLBACK,2,9,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,2,9,,,,
+12,12,RELAY_FALLBACK,13,10,,,,"AGV took too long, falling back to direct delivery"
+12,12,RELAY_FALLBACK_START,13,10,,,,
+13,13,WAIT_FOR_AGV_END,1,8,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,2,9,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,7,7,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,11,1,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,13,10,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,20,5,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,26,6,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,33,3,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,45,4,,,,Task stops waiting for AGV
+13,13,WAIT_FOR_AGV_END,49,2,,,,Task stops waiting for AGV
+13,13,TASK_COMPLETE,11,1,,,,
+13,13,CHARGING_REQUEST,,1,,,,UAV requests charging
+13,13,CHARGING_START,,1,5,1776,249,Charging started
+13,13,TASK_COMPLETE,49,2,,,,
+13,13,LOW_BATTERY,,2,,,,
+13,13,TASK_COMPLETE,33,3,,,,
+13,13,CHARGING_REQUEST,,3,,,,UAV requests charging
+13,13,CHARGING_START,,3,5,1766,257,Charging started
+13,13,TASK_COMPLETE,45,4,,,,
+13,13,CHARGING_REQUEST,,4,,,,UAV requests charging
+13,13,CHARGING_START,,4,5,1731,216,Charging started
+13,13,TASK_COMPLETE,20,5,,,,
+13,13,CHARGING_REQUEST,,5,,,,UAV requests charging
+13,13,CHARGING_START,,5,3,395,772,Charging started
+13,13,TASK_COMPLETE,26,6,,,,
+13,13,LOW_BATTERY,,6,,,,
+13,13,TASK_COMPLETE,7,7,,,,
+13,13,CHARGING_REQUEST,,7,,,,UAV requests charging
+13,13,CHARGING_START,,7,5,1776,212,Charging started
+13,13,TASK_COMPLETE,1,8,,,,
+13,13,CHARGING_REQUEST,,8,,,,UAV requests charging
+13,13,CHARGING_START,,8,3,868,1026,Charging started
+13,13,TASK_COMPLETE,2,9,,,,
+13,13,CHARGING_REQUEST,,9,,,,UAV requests charging
+13,13,CHARGING_START,,9,3,330,780,Charging started
+13,13,TASK_COMPLETE,13,10,,,,
+13,13,LOW_BATTERY,,10,,,,
+14,14,AGV_MOVE_START,36,,3,1210,829,AGV starts moving to relay point
+14,14,TASK_ASSIGNED,36,10,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,36,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,41,4,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,41,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,46,1,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,46,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,38,2,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,38,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,47,7,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,47,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,4,6,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,4,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,40,8,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,40,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,14,5,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,14,,3,,,Relay support requested for task
+14,14,TASK_ASSIGNED,42,9,3,,,Task assigned to UAV
+14,14,RELAY_REQUEST,42,,3,,,Relay support requested for task
+14,14,RELAY_REQUEST,36,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,41,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,46,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,38,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,47,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,4,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,40,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,14,,,,,Relay via AGV 3
+14,14,RELAY_REQUEST,42,,,,,Relay via AGV 3
+14,14,WAIT_FOR_AGV_START,4,6,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,14,5,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,36,10,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,38,2,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,40,8,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,41,4,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,42,9,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,46,1,,,,Task starts waiting for AGV
+14,14,WAIT_FOR_AGV_START,47,7,,,,Task starts waiting for AGV
+14,14,RELAY_FALLBACK,38,2,,,,"AGV took too long, falling back to direct delivery"
+14,14,RELAY_FALLBACK_START,38,2,,,,
+14,14,CHARGING_REQUEST,,2,,,,UAV requests charging
+14,14,CHARGING_START,,2,5,480,572,Charging started
+14,14,RELAY_FALLBACK,4,6,,,,"AGV took too long, falling back to direct delivery"
+14,14,RELAY_FALLBACK_START,4,6,,,,
+14,14,CHARGING_REQUEST,,6,,,,UAV requests charging
+14,14,CHARGING_START,,6,5,377,770,Charging started
+14,14,RELAY_FALLBACK,36,10,,,,"AGV took too long, falling back to direct delivery"
+14,14,RELAY_FALLBACK_START,36,10,,,,
+14,14,CHARGING_REQUEST,,10,,,,UAV requests charging
+14,14,CHARGING_START,,10,5,1771,229,Charging started
+15,15,AGV_MOVE_START,14,,4,1568,1415,AGV starts moving to relay point
+15,15,AGV_MOVE_START,42,,5,1372,667,AGV starts moving to relay point
+15,15,TASK_ASSIGNED,16,3,4,,,Task assigned to UAV
+15,15,RELAY_REQUEST,16,,4,,,Relay support requested for task
+15,15,RELAY_RESELECTED,14,,,,,Reselected relay: low_battery
+15,15,RELAY_RESELECTED,41,,,,,Reselected relay: low_battery
+15,15,RELAY_RESELECTED,42,,,,,Reselected relay: low_battery
+15,15,RELAY_REQUEST,16,,,,,Relay via AGV 4
+15,15,WAIT_FOR_AGV_END,4,6,,,,Task stops waiting for AGV
+15,15,WAIT_FOR_AGV_START,16,3,,,,Task starts waiting for AGV
+15,15,WAIT_FOR_AGV_END,36,10,,,,Task stops waiting for AGV
+15,15,WAIT_FOR_AGV_END,38,2,,,,Task stops waiting for AGV
+16,16,INFEASIBLE_TASK,14,,,,,Infeasible: low_battery
+16,16,INFEASIBLE_TASK,16,,,,,Infeasible: low_battery
+16,16,INFEASIBLE_TASK,41,,,,,Infeasible: low_battery
+25,25,INFEASIBLE_TASK,40,,,,,Infeasible: wait_timeout
+25,25,INFEASIBLE_TASK,46,,,,,Infeasible: wait_timeout
+25,25,INFEASIBLE_TASK,47,,,,,Infeasible: wait_timeout
+26,26,INFEASIBLE_TASK,42,,,,,Infeasible: wait_timeout
+26,26,CHARGING_END,,1,5,1776,249,Charging ended
+26,26,CHARGING_END,,7,5,1776,212,Charging ended
+26,26,CHARGING_END,,8,3,868,1026,Charging ended
+27,27,CHARGING_END,,9,3,330,780,Charging ended
+28,28,CHARGING_END,,4,5,1731,216,Charging ended
+29,29,CHARGING_END,,3,5,1766,257,Charging ended
+29,29,CHARGING_END,,5,3,395,772,Charging ended
+30,30,CHARGING_END,,2,5,480,572,Charging ended
+30,30,CHARGING_END,,6,5,377,770,Charging ended
+30,30,CHARGING_END,,10,5,1771,229,Charging ended
+30,30,TASK_COMPLETE,38,2,,,,
+30,30,TASK_COMPLETE,4,6,,,,
+30,30,TASK_COMPLETE,36,10,,,,
+40,40,AGV_ARRIVE_RELAY,6,,1,797,1053,AGV arrived at relay point
+41,41,AGV_MOVE_START,46,,1,797,1053,AGV starts moving to relay point
+41,41,RELAY_REQUEST,46,,1,,,Relay support requested for task
+41,41,RELAY_REQUEST,40,,1,,,Relay support requested for task
+41,41,RELAY_REQUEST,47,,1,,,Relay support requested for task
+41,41,RELAY_REQUEST,46,,,,,Relay via AGV 1
+41,41,RELAY_REQUEST,40,,,,,Relay via AGV 1
+41,41,RELAY_REQUEST,47,,,,,Relay via AGV 1
+41,41,RELAY_FALLBACK,46,1,,,,"AGV took too long, falling back to direct delivery"
+41,41,RELAY_FALLBACK_START,46,1,,,,
+41,41,RELAY_FALLBACK,40,6,,,,"AGV took too long, falling back to direct delivery"
+41,41,RELAY_FALLBACK_START,40,6,,,,
+41,41,RELAY_FALLBACK,47,7,,,,"AGV took too long, falling back to direct delivery"
+41,41,RELAY_FALLBACK_START,47,7,,,,
+42,42,WAIT_FOR_AGV_END,40,6,,,,Task stops waiting for AGV
+42,42,WAIT_FOR_AGV_END,46,2,,,,Task stops waiting for AGV
+42,42,WAIT_FOR_AGV_END,47,10,,,,Task stops waiting for AGV
+42,42,TASK_COMPLETE,46,1,,,,
+42,42,TASK_COMPLETE,46,2,,,,
+42,42,LOW_BATTERY,,2,,,,
+42,42,TASK_COMPLETE,40,6,,,,
+42,42,LOW_BATTERY,,6,,,,
+42,42,TASK_COMPLETE,47,7,,,,
+42,42,TASK_COMPLETE,40,8,,,,
+42,42,TASK_COMPLETE,47,10,,,,
+42,42,LOW_BATTERY,,10,,,,
+43,43,AGV_ARRIVE_RELAY,47,,1,817,1040,AGV arrived at relay point
+43,43,LOW_BATTERY,,2,,,,
+43,43,LOW_BATTERY,,6,,,,
+43,43,LOW_BATTERY,,10,,,,
+44,44,AGV_MOVE_START,14,,1,817,1040,AGV starts moving to relay point
+44,44,RELAY_REQUEST,14,,1,,,Relay support requested for task
+44,44,TASK_ASSIGNED,17,2,1,,,Task assigned to UAV
+44,44,RELAY_REQUEST,17,,1,,,Relay support requested for task
+44,44,TASK_ASSIGNED,10,7,1,,,Task assigned to UAV
+44,44,RELAY_REQUEST,10,,1,,,Relay support requested for task
+44,44,RELAY_REQUEST,42,,1,,,Relay support requested for task
+44,44,RELAY_REQUEST,41,,1,,,Relay support requested for task
+44,44,RELAY_REQUEST,16,,1,,,Relay support requested for task
+44,44,RELAY_REQUEST,14,,,,,Relay via AGV 1
+44,44,RELAY_REQUEST,17,,,,,Relay via AGV 1
+44,44,RELAY_REQUEST,10,,,,,Relay via AGV 1
+44,44,RELAY_REQUEST,42,,,,,Relay via AGV 1
+44,44,RELAY_REQUEST,41,,,,,Relay via AGV 1
+44,44,RELAY_REQUEST,16,,,,,Relay via AGV 1
+44,44,WAIT_FOR_AGV_START,10,7,,,,Task starts waiting for AGV
+44,44,WAIT_FOR_AGV_START,17,2,,,,Task starts waiting for AGV
+44,44,RELAY_FALLBACK,16,1,,,,"AGV took too long, falling back to direct delivery"
+44,44,RELAY_FALLBACK_START,16,1,,,,
+44,44,CHARGING_REQUEST,,1,,,,UAV requests charging
+44,44,RELAY_FALLBACK,17,2,,,,"AGV took too long, falling back to direct delivery"
+44,44,RELAY_FALLBACK_START,17,2,,,,
+44,44,CHARGING_REQUEST,,2,,,,UAV requests charging
+44,44,RELAY_FALLBACK,41,4,,,,"AGV took too long, falling back to direct delivery"
+44,44,RELAY_FALLBACK_START,41,4,,,,
+44,44,RELAY_FALLBACK,14,5,,,,"AGV took too long, falling back to direct delivery"
+44,44,RELAY_FALLBACK_START,14,5,,,,
+44,44,CHARGING_REQUEST,,6,,,,UAV requests charging
+44,44,RELAY_FALLBACK,10,7,,,,"AGV took too long, falling back to direct delivery"
+44,44,RELAY_FALLBACK_START,10,7,,,,
+44,44,CHARGING_REQUEST,,7,,,,UAV requests charging
+44,44,LOW_BATTERY,,8,,,,
+44,44,RELAY_FALLBACK,42,9,,,,"AGV took too long, falling back to direct delivery"
+44,44,RELAY_FALLBACK_START,42,9,,,,
+44,44,CHARGING_REQUEST,,10,,,,UAV requests charging
+45,45,WAIT_FOR_AGV_END,10,7,,,,Task stops waiting for AGV
+45,45,WAIT_FOR_AGV_END,14,8,,,,Task stops waiting for AGV
+45,45,WAIT_FOR_AGV_END,16,1,,,,Task stops waiting for AGV
+45,45,WAIT_FOR_AGV_END,17,2,,,,Task stops waiting for AGV
+45,45,WAIT_FOR_AGV_END,41,6,,,,Task stops waiting for AGV
+45,45,WAIT_FOR_AGV_END,42,10,,,,Task stops waiting for AGV
+45,45,TASK_COMPLETE,16,1,,,,
+45,45,CHARGING_REQUEST,,1,,,,UAV requests charging
+45,45,TASK_COMPLETE,17,2,,,,
+45,45,CHARGING_REQUEST,,2,,,,UAV requests charging
+45,45,TASK_COMPLETE,16,3,,,,
+45,45,TASK_COMPLETE,41,4,,,,
+45,45,TASK_COMPLETE,14,5,,,,
+45,45,TASK_COMPLETE,41,6,,,,
+45,45,CHARGING_REQUEST,,6,,,,UAV requests charging
+45,45,TASK_COMPLETE,10,7,,,,
+45,45,CHARGING_REQUEST,,7,,,,UAV requests charging
+45,45,TASK_COMPLETE,14,8,,,,
+45,45,CHARGING_REQUEST,,8,,,,UAV requests charging
+45,45,TASK_COMPLETE,42,9,,,,
+45,45,TASK_COMPLETE,42,10,,,,
+45,45,CHARGING_REQUEST,,10,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,1,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,2,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,6,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,7,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,8,,,,UAV requests charging
+46,46,CHARGING_REQUEST,,10,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,1,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,2,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,6,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,7,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,8,,,,UAV requests charging
+47,47,CHARGING_REQUEST,,10,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,1,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,2,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,6,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,7,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,8,,,,UAV requests charging
+48,48,CHARGING_REQUEST,,10,,,,UAV requests charging
+49,49,CHARGING_REQUEST,,1,,,,UAV requests charging
+49,49,CHARGING_REQUEST,,2,,,,UAV requests charging
+49,49,CHARGING_REQUEST,,6,,,,UAV requests charging
+49,49,CHARGING_REQUEST,,7,,,,UAV requests charging
+49,49,CHARGING_REQUEST,,8,,,,UAV requests charging
+49,49,CHARGING_REQUEST,,10,,,,UAV requests charging
+50,50,CHARGING_REQUEST,,1,,,,UAV requests charging
+50,50,CHARGING_REQUEST,,2,,,,UAV requests charging
+50,50,CHARGING_REQUEST,,6,,,,UAV requests charging
+50,50,CHARGING_REQUEST,,7,,,,UAV requests charging
+50,50,CHARGING_REQUEST,,8,,,,UAV requests charging
+50,50,CHARGING_REQUEST,,10,,,,UAV requests charging
+51,51,CHARGING_REQUEST,,1,,,,UAV requests charging
+51,51,CHARGING_REQUEST,,2,,,,UAV requests charging
+51,51,CHARGING_REQUEST,,6,,,,UAV requests charging
+51,51,CHARGING_REQUEST,,7,,,,UAV requests charging
+51,51,CHARGING_REQUEST,,8,,,,UAV requests charging
+51,51,CHARGING_REQUEST,,10,,,,UAV requests charging
+52,52,CHARGING_REQUEST,,1,,,,UAV requests charging
+52,52,CHARGING_REQUEST,,2,,,,UAV requests charging
+52,52,CHARGING_REQUEST,,6,,,,UAV requests charging
+52,52,CHARGING_REQUEST,,7,,,,UAV requests charging
+52,52,CHARGING_REQUEST,,8,,,,UAV requests charging
+52,52,CHARGING_REQUEST,,10,,,,UAV requests charging
+53,53,CHARGING_REQUEST,,1,,,,UAV requests charging
+53,53,CHARGING_REQUEST,,2,,,,UAV requests charging
+53,53,CHARGING_REQUEST,,6,,,,UAV requests charging
+53,53,CHARGING_REQUEST,,7,,,,UAV requests charging
+53,53,CHARGING_REQUEST,,8,,,,UAV requests charging
+53,53,CHARGING_REQUEST,,10,,,,UAV requests charging
+54,54,CHARGING_REQUEST,,1,,,,UAV requests charging
+54,54,CHARGING_REQUEST,,2,,,,UAV requests charging
+54,54,CHARGING_REQUEST,,6,,,,UAV requests charging
+54,54,CHARGING_REQUEST,,7,,,,UAV requests charging
+54,54,CHARGING_REQUEST,,8,,,,UAV requests charging
+54,54,CHARGING_REQUEST,,10,,,,UAV requests charging
+55,55,CHARGING_REQUEST,,1,,,,UAV requests charging
+55,55,CHARGING_REQUEST,,2,,,,UAV requests charging
+55,55,CHARGING_REQUEST,,6,,,,UAV requests charging
+55,55,CHARGING_REQUEST,,7,,,,UAV requests charging
+55,55,CHARGING_REQUEST,,8,,,,UAV requests charging
+55,55,CHARGING_REQUEST,,10,,,,UAV requests charging
+56,56,CHARGING_REQUEST,,1,,,,UAV requests charging
+56,56,CHARGING_REQUEST,,2,,,,UAV requests charging
+56,56,CHARGING_REQUEST,,6,,,,UAV requests charging
+56,56,CHARGING_REQUEST,,7,,,,UAV requests charging
+56,56,CHARGING_REQUEST,,8,,,,UAV requests charging
+56,56,CHARGING_REQUEST,,10,,,,UAV requests charging
+57,57,AGV_ARRIVE_RELAY,42,,3,838.5,1058.5,AGV arrived at relay point
+57,57,CHARGING_REQUEST,,1,,,,UAV requests charging
+57,57,CHARGING_START,,1,3,1108,1397,Charging started
+57,57,CHARGING_REQUEST,,2,,,,UAV requests charging
+57,57,CHARGING_START,,2,3,864,1089,Charging started
+57,57,CHARGING_REQUEST,,6,,,,UAV requests charging
+57,57,CHARGING_START,,6,3,1073,1418,Charging started
+57,57,CHARGING_REQUEST,,7,,,,UAV requests charging
+57,57,CHARGING_START,,7,3,829,1033,Charging started
+57,57,CHARGING_REQUEST,,8,,,,UAV requests charging
+57,57,CHARGING_START,,8,3,1085,1425,Charging started
+57,57,CHARGING_REQUEST,,10,,,,UAV requests charging
+57,57,CHARGING_START,,10,3,810,1084,Charging started
+58,58,AGV_MOVE_START,35,,3,838.5,1058.5,AGV starts moving to relay point
+58,58,TASK_ASSIGNED,35,9,3,,,Task assigned to UAV
+58,58,RELAY_REQUEST,35,,3,,,Relay support requested for task
+58,58,TASK_ASSIGNED,18,4,3,,,Task assigned to UAV
+58,58,RELAY_REQUEST,18,,3,,,Relay support requested for task
+58,58,TASK_ASSIGNED,15,5,3,,,Task assigned to UAV
+58,58,RELAY_REQUEST,15,,3,,,Relay support requested for task
+58,58,TASK_ASSIGNED,8,3,3,,,Task assigned to UAV
+58,58,RELAY_REQUEST,8,,3,,,Relay support requested for task
+58,58,TASK_ASSIGNED,25,8,3,,,Task assigned to UAV
+58,58,RELAY_REQUEST,25,,3,,,Relay support requested for task
+58,58,RELAY_REQUEST,35,,,,,Relay via AGV 3
+58,58,RELAY_REQUEST,18,,,,,Relay via AGV 3
+58,58,RELAY_REQUEST,15,,,,,Relay via AGV 3
+58,58,RELAY_REQUEST,8,,,,,Relay via AGV 3
+58,58,RELAY_REQUEST,25,,,,,Relay via AGV 3
+58,58,WAIT_FOR_AGV_START,8,3,,,,Task starts waiting for AGV
+58,58,WAIT_FOR_AGV_START,15,5,,,,Task starts waiting for AGV
+58,58,WAIT_FOR_AGV_START,18,4,,,,Task starts waiting for AGV
+58,58,WAIT_FOR_AGV_START,25,8,,,,Task starts waiting for AGV
+58,58,WAIT_FOR_AGV_START,35,9,,,,Task starts waiting for AGV
+58,58,RELAY_FALLBACK,8,3,,,,"AGV took too long, falling back to direct delivery"
+58,58,RELAY_FALLBACK_START,8,3,,,,
+58,58,CHARGING_REQUEST,,3,,,,UAV requests charging
+58,58,RELAY_FALLBACK,18,4,,,,"AGV took too long, falling back to direct delivery"
+58,58,RELAY_FALLBACK_START,18,4,,,,
+58,58,CHARGING_REQUEST,,4,,,,UAV requests charging
+58,58,RELAY_FALLBACK,15,5,,,,"AGV took too long, falling back to direct delivery"
+58,58,RELAY_FALLBACK_START,15,5,,,,
+58,58,CHARGING_REQUEST,,5,,,,UAV requests charging
+58,58,RELAY_FALLBACK,35,9,,,,"AGV took too long, falling back to direct delivery"
+58,58,RELAY_FALLBACK_START,35,9,,,,
+58,58,LOW_BATTERY,,9,,,,
+59,59,RELAY_TO_DIRECT_FALLBACK,25,,,,,Fallback to direct: low_battery
+59,59,WAIT_FOR_AGV_END,8,3,,,,Task stops waiting for AGV
+59,59,WAIT_FOR_AGV_END,15,5,,,,Task stops waiting for AGV
+59,59,WAIT_FOR_AGV_END,18,4,,,,Task stops waiting for AGV
+59,59,WAIT_FOR_AGV_END,25,8,,,,Task stops waiting for AGV
+59,59,WAIT_FOR_AGV_END,35,9,,,,Task stops waiting for AGV
+59,59,TASK_COMPLETE,8,3,,,,
+59,59,CHARGING_REQUEST,,3,,,,UAV requests charging
+59,59,TASK_COMPLETE,18,4,,,,
+59,59,CHARGING_REQUEST,,4,,,,UAV requests charging
+59,59,TASK_COMPLETE,15,5,,,,
+59,59,CHARGING_REQUEST,,5,,,,UAV requests charging
+59,59,TASK_COMPLETE,35,9,,,,
+59,59,CHARGING_REQUEST,,9,,,,UAV requests charging
+60,60,CHARGING_REQUEST,,3,,,,UAV requests charging
+60,60,CHARGING_REQUEST,,4,,,,UAV requests charging
+60,60,CHARGING_REQUEST,,5,,,,UAV requests charging
+60,60,CHARGING_REQUEST,,9,,,,UAV requests charging
+61,61,AGV_ARRIVE_RELAY,16,,4,1108,1397,AGV arrived at relay point
+61,61,CHARGING_REQUEST,,3,,,,UAV requests charging
+61,61,CHARGING_START,,3,4,811,1043,Charging started
+61,61,CHARGING_REQUEST,,4,,,,UAV requests charging
+61,61,CHARGING_START,,4,4,1110,1465,Charging started
+61,61,CHARGING_REQUEST,,5,,,,UAV requests charging
+61,61,CHARGING_START,,5,4,1120,1447,Charging started
+61,61,CHARGING_REQUEST,,9,,,,UAV requests charging
+61,61,CHARGING_START,,9,4,820,1087,Charging started
+62,62,AGV_MOVE_START,27,,4,1108,1397,AGV starts moving to relay point
+62,62,TASK_ASSIGNED,27,9,4,,,Task assigned to UAV
+62,62,RELAY_REQUEST,27,,4,,,Relay support requested for task
+62,62,TASK_ASSIGNED,23,10,4,,,Task assigned to UAV
+62,62,RELAY_REQUEST,23,,4,,,Relay support requested for task
+62,62,TASK_ASSIGNED,22,1,4,,,Task assigned to UAV
+62,62,RELAY_REQUEST,22,,4,,,Relay support requested for task
+62,62,TASK_ASSIGNED,34,6,4,,,Task assigned to UAV
+62,62,RELAY_REQUEST,34,,4,,,Relay support requested for task
+62,62,TASK_ASSIGNED,48,7,4,,,Task assigned to UAV
+62,62,RELAY_REQUEST,48,,4,,,Relay support requested for task
+62,62,TASK_ASSIGNED,44,2,4,,,Task assigned to UAV
+62,62,RELAY_REQUEST,44,,4,,,Relay support requested for task
+62,62,RELAY_REQUEST,27,,,,,Relay via AGV 4
+62,62,RELAY_REQUEST,23,,,,,Relay via AGV 4
+62,62,RELAY_REQUEST,22,,,,,Relay via AGV 4
+62,62,RELAY_REQUEST,34,,,,,Relay via AGV 4
+62,62,RELAY_REQUEST,48,,,,,Relay via AGV 4
+62,62,RELAY_REQUEST,44,,,,,Relay via AGV 4
+62,62,WAIT_FOR_AGV_START,22,1,,,,Task starts waiting for AGV
+62,62,WAIT_FOR_AGV_START,23,10,,,,Task starts waiting for AGV
+62,62,WAIT_FOR_AGV_START,27,9,,,,Task starts waiting for AGV
+62,62,WAIT_FOR_AGV_START,34,6,,,,Task starts waiting for AGV
+62,62,WAIT_FOR_AGV_START,44,2,,,,Task starts waiting for AGV
+62,62,WAIT_FOR_AGV_START,48,7,,,,Task starts waiting for AGV
+63,63,INFEASIBLE_TASK,27,,,,,Infeasible: low_battery
+72,72,CHARGING_END,,8,3,1085,1425,Charging ended
+73,73,INFEASIBLE_TASK,22,,,,,Infeasible: wait_timeout
+73,73,INFEASIBLE_TASK,23,,,,,Infeasible: wait_timeout
+73,73,INFEASIBLE_TASK,34,,,,,Infeasible: wait_timeout
+73,73,INFEASIBLE_TASK,44,,,,,Infeasible: wait_timeout
+73,73,RELAY_TO_DIRECT_FALLBACK,48,,,,,Fallback to direct: wait_timeout
+73,73,WAIT_FOR_AGV_END,48,7,,,,Task stops waiting for AGV
+73,73,CHARGING_END,,1,3,1108,1397,Charging ended
+73,73,CHARGING_END,,2,3,864,1089,Charging ended
+73,73,CHARGING_END,,6,3,1073,1418,Charging ended
+73,73,CHARGING_END,,7,3,829,1033,Charging ended
+73,73,CHARGING_END,,10,3,810,1084,Charging ended
+73,73,TASK_COMPLETE,25,8,,,,
+74,74,TASK_COMPLETE,48,7,,,,
+76,76,CHARGING_END,,9,4,820,1087,Charging ended
+77,77,CHARGING_END,,3,4,811,1043,Charging ended
+77,77,CHARGING_END,,4,4,1110,1465,Charging ended
+77,77,CHARGING_END,,5,4,1120,1447,Charging ended
+79,79,AGV_ARRIVE_RELAY,42,,5,848,1050,AGV arrived at relay point
+80,80,AGV_MOVE_START,23,,5,848,1050,AGV starts moving to relay point
+80,80,RELAY_REQUEST,23,,5,,,Relay support requested for task
+80,80,RELAY_REQUEST,22,,5,,,Relay support requested for task
+80,80,RELAY_REQUEST,34,,5,,,Relay support requested for task
+80,80,TASK_ASSIGNED,32,3,5,,,Task assigned to UAV
+80,80,RELAY_REQUEST,32,,5,,,Relay support requested for task
+80,80,TASK_ASSIGNED,5,8,5,,,Task assigned to UAV
+80,80,RELAY_REQUEST,5,,5,,,Relay support requested for task
+80,80,RELAY_REQUEST,23,,,,,Relay via AGV 5
+80,80,RELAY_REQUEST,22,,,,,Relay via AGV 5
+80,80,RELAY_REQUEST,34,,,,,Relay via AGV 5
+80,80,RELAY_REQUEST,32,,,,,Relay via AGV 5
+80,80,RELAY_REQUEST,5,,,,,Relay via AGV 5
+80,80,WAIT_FOR_AGV_START,5,8,,,,Task starts waiting for AGV
+80,80,WAIT_FOR_AGV_START,32,3,,,,Task starts waiting for AGV
+80,80,RELAY_FALLBACK,22,1,,,,"AGV took too long, falling back to direct delivery"
+80,80,RELAY_FALLBACK_START,22,1,,,,
+80,80,RELAY_FALLBACK,32,3,,,,"AGV took too long, falling back to direct delivery"
+80,80,RELAY_FALLBACK_START,32,3,,,,
+80,80,RELAY_FALLBACK,34,4,,,,"AGV took too long, falling back to direct delivery"
+80,80,RELAY_FALLBACK_START,34,4,,,,
+80,80,RELAY_FALLBACK,23,7,,,,"AGV took too long, falling back to direct delivery"
+80,80,RELAY_FALLBACK_START,23,7,,,,
+80,80,LOW_BATTERY,,7,,,,
+80,80,RELAY_FALLBACK,5,8,,,,"AGV took too long, falling back to direct delivery"
+80,80,RELAY_FALLBACK_START,5,8,,,,
+80,80,LOW_BATTERY,,8,,,,
+81,81,WAIT_FOR_AGV_END,5,8,,,,Task stops waiting for AGV
+81,81,WAIT_FOR_AGV_END,22,5,,,,Task stops waiting for AGV
+81,81,WAIT_FOR_AGV_END,23,7,,,,Task stops waiting for AGV
+81,81,WAIT_FOR_AGV_END,32,3,,,,Task stops waiting for AGV
+81,81,WAIT_FOR_AGV_END,34,4,,,,Task stops waiting for AGV
+81,81,TASK_COMPLETE,22,1,,,,
+81,81,TASK_COMPLETE,32,3,,,,
+81,81,TASK_COMPLETE,34,4,,,,
+81,81,TASK_COMPLETE,22,5,,,,
+81,81,TASK_COMPLETE,34,6,,,,
+81,81,TASK_COMPLETE,23,7,,,,
+81,81,CHARGING_REQUEST,,7,,,,UAV requests charging
+81,81,TASK_COMPLETE,5,8,,,,
+81,81,CHARGING_REQUEST,,8,,,,UAV requests charging
+81,81,TASK_COMPLETE,23,10,,,,
+82,82,CHARGING_REQUEST,,7,,,,UAV requests charging
+82,82,CHARGING_REQUEST,,8,,,,UAV requests charging
+83,83,CHARGING_REQUEST,,7,,,,UAV requests charging
+83,83,CHARGING_REQUEST,,8,,,,UAV requests charging
+84,84,CHARGING_REQUEST,,7,,,,UAV requests charging
+84,84,CHARGING_REQUEST,,8,,,,UAV requests charging
+85,85,CHARGING_REQUEST,,7,,,,UAV requests charging
+85,85,CHARGING_REQUEST,,8,,,,UAV requests charging
+86,86,CHARGING_REQUEST,,7,,,,UAV requests charging
+86,86,CHARGING_REQUEST,,8,,,,UAV requests charging
+87,87,CHARGING_REQUEST,,7,,,,UAV requests charging
+87,87,CHARGING_REQUEST,,8,,,,UAV requests charging
+88,88,CHARGING_REQUEST,,7,,,,UAV requests charging
+88,88,CHARGING_REQUEST,,8,,,,UAV requests charging
+89,89,CHARGING_REQUEST,,7,,,,UAV requests charging
+89,89,CHARGING_REQUEST,,8,,,,UAV requests charging
+90,90,AGV_ARRIVE_RELAY,16,,1,1098.25,1407.25,AGV arrived at relay point
+90,90,CHARGING_REQUEST,,7,,,,UAV requests charging
+90,90,CHARGING_START,,7,1,325,771,Charging started
+90,90,CHARGING_REQUEST,,8,,,,UAV requests charging
+90,90,CHARGING_START,,8,1,340,766,Charging started
+91,91,AGV_MOVE_START,43,,1,1098.25,1407.25,AGV starts moving to relay point
+91,91,TASK_ASSIGNED,43,8,1,,,Task assigned to UAV
+91,91,RELAY_REQUEST,43,,1,,,Relay support requested for task
+91,91,RELAY_REQUEST,27,,1,,,Relay support requested for task
+91,91,RELAY_REQUEST,44,,1,,,Relay support requested for task
+91,91,TASK_ASSIGNED,28,4,1,,,Task assigned to UAV
+91,91,RELAY_REQUEST,28,,1,,,Relay support requested for task
+91,91,TASK_ASSIGNED,3,1,1,,,Task assigned to UAV
+91,91,RELAY_REQUEST,3,,1,,,Relay support requested for task
+91,91,TASK_ASSIGNED,31,5,1,,,Task assigned to UAV
+91,91,RELAY_REQUEST,31,,1,,,Relay support requested for task
+91,91,TASK_ASSIGNED,39,6,1,,,Task assigned to UAV
+91,91,RELAY_REQUEST,39,,1,,,Relay support requested for task
+91,91,RELAY_REQUEST,43,,,,,Relay via AGV 1
+91,91,RELAY_REQUEST,27,,,,,Relay via AGV 1
+91,91,RELAY_REQUEST,44,,,,,Relay via AGV 1
+91,91,RELAY_REQUEST,28,,,,,Relay via AGV 1
+91,91,RELAY_REQUEST,3,,,,,Relay via AGV 1
+91,91,RELAY_REQUEST,31,,,,,Relay via AGV 1
+91,91,RELAY_REQUEST,39,,,,,Relay via AGV 1
+91,91,WAIT_FOR_AGV_START,3,1,,,,Task starts waiting for AGV
+91,91,WAIT_FOR_AGV_START,28,4,,,,Task starts waiting for AGV
+91,91,WAIT_FOR_AGV_START,31,5,,,,Task starts waiting for AGV
+91,91,WAIT_FOR_AGV_START,39,6,,,,Task starts waiting for AGV
+91,91,WAIT_FOR_AGV_START,43,8,,,,Task starts waiting for AGV
+91,91,RELAY_FALLBACK,3,1,,,,"AGV took too long, falling back to direct delivery"
+91,91,RELAY_FALLBACK_START,3,1,,,,
+91,91,CHARGING_REQUEST,,1,,,,UAV requests charging
+91,91,RELAY_FALLBACK,44,2,,,,"AGV took too long, falling back to direct delivery"
+91,91,RELAY_FALLBACK_START,44,2,,,,
+91,91,RELAY_FALLBACK,27,3,,,,"AGV took too long, falling back to direct delivery"
+91,91,RELAY_FALLBACK_START,27,3,,,,
+91,91,CHARGING_REQUEST,,3,,,,UAV requests charging
+91,91,RELAY_FALLBACK,28,4,,,,"AGV took too long, falling back to direct delivery"
+91,91,RELAY_FALLBACK_START,28,4,,,,
+91,91,LOW_BATTERY,,4,,,,
+91,91,RELAY_FALLBACK,31,5,,,,"AGV took too long, falling back to direct delivery"
+91,91,RELAY_FALLBACK_START,31,5,,,,
+91,91,CHARGING_REQUEST,,5,,,,UAV requests charging
+91,91,RELAY_FALLBACK,39,6,,,,"AGV took too long, falling back to direct delivery"
+91,91,RELAY_FALLBACK_START,39,6,,,,
+91,91,CHARGING_REQUEST,,6,,,,UAV requests charging
+91,91,CHARGING_REQUEST,,10,,,,UAV requests charging
+92,92,INFEASIBLE_TASK,43,,,,,Infeasible: low_battery
+92,92,WAIT_FOR_AGV_END,3,1,,,,Task stops waiting for AGV
+92,92,WAIT_FOR_AGV_END,27,3,,,,Task stops waiting for AGV
+92,92,WAIT_FOR_AGV_END,28,4,,,,Task stops waiting for AGV
+92,92,WAIT_FOR_AGV_END,31,5,,,,Task stops waiting for AGV
+92,92,WAIT_FOR_AGV_END,39,6,,,,Task stops waiting for AGV
+92,92,WAIT_FOR_AGV_END,44,10,,,,Task stops waiting for AGV
+92,92,TASK_COMPLETE,3,1,,,,
+92,92,CHARGING_REQUEST,,1,,,,UAV requests charging
+92,92,TASK_COMPLETE,44,2,,,,
+92,92,TASK_COMPLETE,27,3,,,,
+92,92,CHARGING_REQUEST,,3,,,,UAV requests charging
+92,92,TASK_COMPLETE,28,4,,,,
+92,92,CHARGING_REQUEST,,4,,,,UAV requests charging
+92,92,TASK_COMPLETE,31,5,,,,
+92,92,CHARGING_REQUEST,,5,,,,UAV requests charging
+92,92,TASK_COMPLETE,39,6,,,,
+92,92,CHARGING_REQUEST,,6,,,,UAV requests charging
+92,92,TASK_COMPLETE,27,9,,,,
+92,92,TASK_COMPLETE,44,10,,,,
+92,92,CHARGING_REQUEST,,10,,,,UAV requests charging
+93,93,CHARGING_REQUEST,,1,,,,UAV requests charging
+93,93,CHARGING_REQUEST,,3,,,,UAV requests charging
+93,93,CHARGING_REQUEST,,4,,,,UAV requests charging
+93,93,CHARGING_REQUEST,,5,,,,UAV requests charging
+93,93,CHARGING_REQUEST,,6,,,,UAV requests charging
+93,93,CHARGING_REQUEST,,10,,,,UAV requests charging
+94,94,CHARGING_REQUEST,,1,,,,UAV requests charging
+94,94,CHARGING_REQUEST,,3,,,,UAV requests charging
+94,94,CHARGING_REQUEST,,4,,,,UAV requests charging
+94,94,CHARGING_REQUEST,,5,,,,UAV requests charging
+94,94,CHARGING_REQUEST,,6,,,,UAV requests charging
+94,94,CHARGING_REQUEST,,10,,,,UAV requests charging
+95,95,CHARGING_REQUEST,,1,,,,UAV requests charging
+95,95,CHARGING_REQUEST,,3,,,,UAV requests charging
+95,95,CHARGING_REQUEST,,4,,,,UAV requests charging
+95,95,CHARGING_REQUEST,,5,,,,UAV requests charging
+95,95,CHARGING_REQUEST,,6,,,,UAV requests charging
+95,95,CHARGING_REQUEST,,10,,,,UAV requests charging
+96,96,CHARGING_REQUEST,,1,,,,UAV requests charging
+96,96,CHARGING_REQUEST,,3,,,,UAV requests charging
+96,96,CHARGING_REQUEST,,4,,,,UAV requests charging
+96,96,CHARGING_REQUEST,,5,,,,UAV requests charging
+96,96,CHARGING_REQUEST,,6,,,,UAV requests charging
+96,96,CHARGING_REQUEST,,10,,,,UAV requests charging
+97,97,CHARGING_REQUEST,,1,,,,UAV requests charging
+97,97,CHARGING_REQUEST,,3,,,,UAV requests charging
+97,97,CHARGING_REQUEST,,4,,,,UAV requests charging
+97,97,CHARGING_REQUEST,,5,,,,UAV requests charging
+97,97,CHARGING_REQUEST,,6,,,,UAV requests charging
+97,97,CHARGING_REQUEST,,10,,,,UAV requests charging
+98,98,CHARGING_REQUEST,,1,,,,UAV requests charging
+98,98,CHARGING_REQUEST,,3,,,,UAV requests charging
+98,98,CHARGING_REQUEST,,4,,,,UAV requests charging
+98,98,CHARGING_REQUEST,,5,,,,UAV requests charging
+98,98,CHARGING_REQUEST,,6,,,,UAV requests charging
+98,98,CHARGING_REQUEST,,10,,,,UAV requests charging
+99,99,CHARGING_REQUEST,,1,,,,UAV requests charging
+99,99,CHARGING_REQUEST,,3,,,,UAV requests charging
+99,99,CHARGING_REQUEST,,4,,,,UAV requests charging
+99,99,CHARGING_REQUEST,,5,,,,UAV requests charging
+99,99,CHARGING_REQUEST,,6,,,,UAV requests charging
+99,99,CHARGING_REQUEST,,10,,,,UAV requests charging
+100,100,CHARGING_REQUEST,,1,,,,UAV requests charging
+100,100,CHARGING_REQUEST,,3,,,,UAV requests charging
+100,100,CHARGING_REQUEST,,4,,,,UAV requests charging
+100,100,CHARGING_REQUEST,,5,,,,UAV requests charging
+100,100,CHARGING_REQUEST,,6,,,,UAV requests charging
+100,100,CHARGING_REQUEST,,10,,,,UAV requests charging
+101,101,CHARGING_REQUEST,,1,,,,UAV requests charging
+101,101,CHARGING_REQUEST,,3,,,,UAV requests charging
+101,101,CHARGING_REQUEST,,4,,,,UAV requests charging
+101,101,CHARGING_REQUEST,,5,,,,UAV requests charging
+101,101,CHARGING_REQUEST,,6,,,,UAV requests charging
+101,101,CHARGING_REQUEST,,10,,,,UAV requests charging
+102,102,CHARGING_REQUEST,,1,,,,UAV requests charging
+102,102,CHARGING_REQUEST,,3,,,,UAV requests charging
+102,102,CHARGING_REQUEST,,4,,,,UAV requests charging
+102,102,CHARGING_REQUEST,,5,,,,UAV requests charging
+102,102,CHARGING_REQUEST,,6,,,,UAV requests charging
+102,102,CHARGING_REQUEST,,10,,,,UAV requests charging
+103,103,CHARGING_REQUEST,,1,,,,UAV requests charging
+103,103,CHARGING_REQUEST,,3,,,,UAV requests charging
+103,103,CHARGING_REQUEST,,4,,,,UAV requests charging
+103,103,CHARGING_REQUEST,,5,,,,UAV requests charging
+103,103,CHARGING_REQUEST,,6,,,,UAV requests charging
+103,103,CHARGING_REQUEST,,10,,,,UAV requests charging
+104,104,CHARGING_REQUEST,,1,,,,UAV requests charging
+104,104,CHARGING_REQUEST,,3,,,,UAV requests charging
+104,104,CHARGING_REQUEST,,4,,,,UAV requests charging
+104,104,CHARGING_REQUEST,,5,,,,UAV requests charging
+104,104,CHARGING_REQUEST,,6,,,,UAV requests charging
+104,104,CHARGING_REQUEST,,10,,,,UAV requests charging
+105,105,AGV_ARRIVE_RELAY,2,,2,362,782,AGV arrived at relay point
+105,105,AGV_ARRIVE_RELAY,25,,3,1123.25,1439.25,AGV arrived at relay point
+105,105,CHARGING_END,,8,1,340,766,Charging ended
+105,105,CHARGING_REQUEST,,1,,,,UAV requests charging
+105,105,CHARGING_START,,1,3,1762,202,Charging started
+105,105,CHARGING_REQUEST,,3,,,,UAV requests charging
+105,105,CHARGING_START,,3,3,867,1068,Charging started
+105,105,CHARGING_REQUEST,,4,,,,UAV requests charging
+105,105,CHARGING_START,,4,2,426,554,Charging started
+105,105,CHARGING_REQUEST,,5,,,,UAV requests charging
+105,105,CHARGING_START,,5,3,1768,208,Charging started
+105,105,CHARGING_REQUEST,,6,,,,UAV requests charging
+105,105,CHARGING_START,,6,2,441,554,Charging started
+105,105,CHARGING_REQUEST,,10,,,,UAV requests charging
+105,105,CHARGING_START,,10,2,423,618,Charging started
+106,106,AGV_MOVE_START,43,,2,362,782,AGV starts moving to relay point
+106,106,RELAY_REQUEST,43,,2,,,Relay support requested for task
+106,106,RELAY_REQUEST,43,,,,,Relay via AGV 2
+106,106,CHARGING_END,,7,1,325,771,Charging ended
+106,106,RELAY_FALLBACK,43,2,,,,"AGV took too long, falling back to direct delivery"
+106,106,RELAY_FALLBACK_START,43,2,,,,
+106,106,CHARGING_REQUEST,,2,,,,UAV requests charging
+106,106,CHARGING_START,,2,3,423,618,Charging started
+107,107,WAIT_FOR_AGV_END,43,2,,,,Task stops waiting for AGV
+107,107,TASK_COMPLETE,43,8,,,,
+121,121,CHARGING_END,,1,3,1762,202,Charging ended
+121,121,CHARGING_END,,3,3,867,1068,Charging ended
+121,121,CHARGING_END,,4,2,426,554,Charging ended
+121,121,CHARGING_END,,5,3,1768,208,Charging ended
+121,121,CHARGING_END,,6,2,441,554,Charging ended
+121,121,CHARGING_END,,10,2,423,618,Charging ended
+122,122,CHARGING_END,,2,3,423,618,Charging ended
+122,122,TASK_COMPLETE,43,2,,,,
+131,131,AGV_ARRIVE_RELAY,5,,5,396,806,AGV arrived at relay point
+165,165,AGV_ARRIVE_RELAY,44,,4,436.0,610.75,AGV arrived at relay point
+192,192,AGV_ARRIVE_RELAY,39,,1,484,597,AGV arrived at relay point
+254,254,AGV_ARRIVE_RELAY,43,,2,1744,238,AGV arrived at relay point

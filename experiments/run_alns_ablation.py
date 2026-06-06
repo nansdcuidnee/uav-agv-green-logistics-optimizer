@@ -312,6 +312,11 @@ def run_single_experiment(
                 dest.unlink()
             shutil.copy2(item, dest)
     
+    # Remove the default output directory to avoid duplication
+    parent_dir = default_output_path.parent
+    if parent_dir.exists() and parent_dir.name.endswith(f"_seed_{seed}"):
+        shutil.rmtree(parent_dir)
+    
     metrics = load_metrics_from_dir(str(correct_output_path))
     
     result = {
@@ -410,7 +415,7 @@ def save_metadata(
         ],
         "command_args": command_args,
         "unsupported_optional_ablations": ["no_fallback", "no_charging_loop"],
-        "note": "This is code for ablation experiments, results summary; no results have been run yet."
+        "note": "This file records the configuration of this ALNS ablation experiment, including scenarios, seeds, max_steps, and variant list."
     }
     
     metadata_file = os.path.join(output_dir, "metadata.json")
@@ -532,6 +537,16 @@ def main():
     save_aggregated_results(aggregated, output_dir)
     save_comparison_results(comparisons, output_dir)
     save_summary(all_results, aggregated, comparisons, output_dir)
+    
+    # 自动生成论文用图
+    print("\nGenerating figures...")
+    try:
+        # 导入绘图模块
+        from scripts.plot_ablation_summary import generate_figures_from_csv
+        generate_figures_from_csv(Path(output_dir))
+    except Exception as e:
+        print(f"Warning: Failed to generate figures: {e}")
+        traceback.print_exc()
     
     print("\n" + "=" * 60)
     print("ALNS ablation experiments complete!")

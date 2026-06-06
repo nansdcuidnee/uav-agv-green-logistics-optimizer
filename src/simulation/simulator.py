@@ -731,8 +731,18 @@ class Simulator:
 
                 if not uav.path and uav.task:
                     task = uav.task
-                    task.complete(self.time_step)
                     task_id = task.id
+                    
+                    # 防止重复计数：检查任务是否已经完成
+                    if self.task_states.get(task_id) == "COMPLETED":
+                        # 任务已完成，跳过重复计数
+                        uav.complete_task()  # 仍然清理 UAV 任务引用
+                        uav.path = []  # 确保路径被清空
+                        continue
+                    
+                    # 标记任务为完成状态
+                    self.task_states[task_id] = "COMPLETED"
+                    task.complete(self.time_step)
                     uav.complete_task()
                     self.completed_tasks += 1
                     self.task_completion_times.append(self.time_step)  # 记录任务完成时间

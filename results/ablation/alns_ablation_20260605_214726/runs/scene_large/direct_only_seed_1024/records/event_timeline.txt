@@ -1,0 +1,3084 @@
+Event Timeline
+================
+Step 0:
+  - Task assignment: UAV 5 assigned task 46
+  - Task assignment: UAV 10 assigned task 28
+  - Task assignment: UAV 6 assigned task 6
+  - Task assignment: UAV 8 assigned task 23
+  - Task assignment: UAV 4 assigned task 47
+  - Task assignment: UAV 7 assigned task 40
+  - Task assignment: UAV 9 assigned task 42
+  - Task assignment: UAV 1 assigned task 38
+  - Task assignment: UAV 2 assigned task 24
+  - Task assignment: UAV 3 assigned task 10
+  - Task start: UAV 6 started task 6
+  - Task start: UAV 3 started task 10
+  - Task start: UAV 8 started task 23
+  - Task start: UAV 2 started task 24
+  - Task start: UAV 10 started task 28
+  - Task start: UAV 1 started task 38
+  - Task start: UAV 7 started task 40
+  - Task start: UAV 9 started task 42
+  - Task start: UAV 5 started task 46
+  - Task start: UAV 4 started task 47
+Step 1:
+  - Task complete: UAV 1 completed task 38
+  - Task complete: UAV 2 completed task 24
+  - Task complete: UAV 3 completed task 10
+  - Task complete: UAV 4 completed task 47
+  - Task complete: UAV 5 completed task 46
+  - Task complete: UAV 6 completed task 6
+  - Task complete: UAV 7 completed task 40
+  - Task complete: UAV 8 completed task 23
+  - Task complete: UAV 9 completed task 42
+  - Task complete: UAV 10 completed task 28
+Step 2:
+  - Task assignment: UAV 7 assigned task 48
+  - Task assignment: UAV 9 assigned task 1
+  - Task assignment: UAV 2 assigned task 36
+  - Task assignment: UAV 1 assigned task 17
+  - Task assignment: UAV 10 assigned task 35
+  - Task assignment: UAV 5 assigned task 27
+  - Task assignment: UAV 4 assigned task 19
+  - Task assignment: UAV 3 assigned task 8
+  - Task assignment: UAV 8 assigned task 9
+  - Task assignment: UAV 6 assigned task 41
+  - Task start: UAV 9 started task 1
+  - Task start: UAV 3 started task 8
+  - Task start: UAV 8 started task 9
+  - Task start: UAV 1 started task 17
+  - Task start: UAV 4 started task 19
+  - Task start: UAV 5 started task 27
+  - Task start: UAV 10 started task 35
+  - Task start: UAV 2 started task 36
+  - Task start: UAV 6 started task 41
+  - Task start: UAV 7 started task 48
+Step 3:
+  - Task complete: UAV 1 completed task 17
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Task complete: UAV 2 completed task 36
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Task complete: UAV 3 completed task 8
+  - Charging request: UAV 3 requests charging (battery: 14.4%)
+  - Charging start: AGV 1 starts charging UAV 3
+  - Task complete: UAV 4 completed task 19
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Task complete: UAV 5 completed task 27
+  - Charging request: UAV 5 requests charging (battery: 17.4%)
+  - Charging start: AGV 3 starts charging UAV 5
+  - Task complete: UAV 6 completed task 41
+  - Charging request: UAV 6 requests charging (battery: 13.2%)
+  - Charging start: AGV 1 starts charging UAV 6
+  - Task complete: UAV 7 completed task 48
+  - Task complete: UAV 8 completed task 9
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Task complete: UAV 9 completed task 1
+  - Low battery alert: UAV 9 battery at 26.8%
+  - Task complete: UAV 10 completed task 35
+  - Charging request: UAV 10 requests charging (battery: 18.2%)
+  - Charging start: AGV 1 starts charging UAV 10
+Step 4:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 5:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 6:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 7:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 8:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 9:
+  - Task assignment: UAV 10 assigned task 16
+  - Task assignment: UAV 5 assigned task 4
+  - Task start: UAV 5 started task 4
+  - Task start: UAV 10 started task 16
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 10:
+  - Task assignment: UAV 3 assigned task 50
+  - Task start: UAV 3 started task 50
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 11:
+  - Task assignment: UAV 6 assigned task 14
+  - Task start: UAV 6 started task 14
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 12:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 13:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 14:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 15:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 16:
+  - Charging end: UAV 5 finished charging
+  - Charging end: UAV 10 finished charging
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 17:
+  - Charging end: UAV 3 finished charging
+  - Charging end: UAV 6 finished charging
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Task complete: UAV 5 completed task 4
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+  - Task complete: UAV 10 completed task 16
+Step 18:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Task complete: UAV 3 completed task 50
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Task complete: UAV 6 completed task 14
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 19:
+  - Task assignment: UAV 3 assigned task 15
+  - Task start: UAV 3 started task 15
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 3 battery at 28.4%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 20:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Task complete: UAV 3 completed task 15
+  - Charging request: UAV 3 requests charging (battery: 10.5%)
+  - Charging start: AGV 4 starts charging UAV 3
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 21:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 22:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 23:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 24:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 25:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 26:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 27:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 28:
+  - Task assignment: UAV 3 assigned task 12
+  - Task start: UAV 3 started task 12
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 29:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 30:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 31:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 32:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 33:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 34:
+  - Charging end: UAV 3 finished charging
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 35:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Task complete: UAV 3 completed task 12
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 36:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 37:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 38:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 39:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 40:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 41:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 42:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 43:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 44:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 45:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 46:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 47:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 48:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 49:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 50:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 51:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 52:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 53:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 54:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 55:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 56:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 57:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 58:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 59:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 60:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 61:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 62:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 63:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 64:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 65:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 66:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 67:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 68:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 69:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 70:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 71:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 72:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 73:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 74:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 75:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 76:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 77:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 78:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 79:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 80:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 81:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 82:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 83:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 84:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 85:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 86:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 87:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 88:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 89:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 90:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 91:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 92:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 93:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 94:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 95:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 96:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 97:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 98:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 99:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 100:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 101:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 102:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 103:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 104:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 105:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 106:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 107:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 108:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 109:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 110:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 111:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 112:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 113:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 114:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 115:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 116:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 117:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 118:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 119:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 120:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 121:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 122:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 123:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 124:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 125:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 126:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 127:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 128:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 129:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 130:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 131:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 132:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 133:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 134:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 135:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 136:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 137:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 138:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 139:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 140:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 141:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 142:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 143:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 144:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 145:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 146:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 147:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 148:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 149:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 150:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 151:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 152:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 153:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 154:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 155:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 156:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 157:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 158:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 159:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 160:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 161:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 162:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 163:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 164:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 165:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 166:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 167:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 168:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 169:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 170:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 171:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 172:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 173:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 174:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 175:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 176:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 177:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 178:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 179:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 180:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 181:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 182:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 183:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 184:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 185:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 186:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 187:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 188:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 189:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 190:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 191:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 192:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 193:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 194:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 195:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 196:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 197:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 198:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 199:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 200:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 201:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 202:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 203:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 204:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 205:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 206:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 207:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 208:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 209:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 210:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 211:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 212:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 213:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 214:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 215:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 216:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 217:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 218:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 219:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 220:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 221:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 222:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 223:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 224:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 225:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 226:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 227:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 228:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 229:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 230:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 231:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 232:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 233:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 234:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 235:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 236:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 237:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 238:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 239:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 240:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 241:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 242:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 243:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 244:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 245:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 246:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 247:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 248:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 249:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 250:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 251:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 252:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 253:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 254:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 255:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 256:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 257:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 258:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 259:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 260:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 261:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 262:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 263:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 264:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 265:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 266:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 267:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 268:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 269:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 270:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 271:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 272:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 273:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 274:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 275:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 276:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 277:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 278:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 279:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 280:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 281:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 282:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 283:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 284:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 285:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 286:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 287:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 288:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 289:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 290:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 291:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 292:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 293:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 294:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 295:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 296:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 297:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 298:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 299:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 300:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 301:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 302:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 303:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 304:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 305:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 306:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 307:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 308:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 309:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 310:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 311:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 312:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 313:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 314:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 315:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 316:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 317:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 318:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 319:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 320:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 321:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 322:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 323:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 324:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 325:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 326:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 327:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 328:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 329:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 330:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 331:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 332:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 333:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 334:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 335:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 336:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 337:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 338:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 339:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 340:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 341:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 342:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 343:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 344:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 345:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 346:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 347:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 348:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 349:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 350:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 351:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 352:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 353:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 354:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 355:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 356:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 357:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 358:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 359:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 360:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 361:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 362:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 363:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 364:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 365:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 366:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 367:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 368:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 369:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 370:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 371:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 372:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 373:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 374:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 375:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 376:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 377:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 378:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 379:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 380:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 381:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 382:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 383:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 384:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 385:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 386:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 387:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 388:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 389:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 390:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 391:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 392:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 393:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 394:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 395:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 396:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 397:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 398:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 399:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 400:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 401:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 402:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 403:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 404:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 405:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 406:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 407:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 408:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 409:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 410:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 411:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 412:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 413:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 414:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 415:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 416:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 417:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 418:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 419:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 420:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 421:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 422:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 423:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 424:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 425:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 426:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 427:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 428:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 429:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 430:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 431:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 432:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 433:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 434:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 435:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 436:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 437:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 438:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 439:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 440:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 441:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 442:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 443:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 444:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 445:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 446:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 447:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 448:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 449:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 450:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 451:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 452:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 453:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 454:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 455:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 456:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 457:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 458:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 459:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 460:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 461:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 462:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 463:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 464:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 465:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 466:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 467:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 468:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 469:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 470:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 471:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 472:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 473:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 474:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 475:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 476:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 477:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 478:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 479:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 480:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 481:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 482:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 483:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 484:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 485:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 486:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 487:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 488:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 489:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 490:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 491:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 492:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 493:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 494:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 495:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 496:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 497:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 498:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+Step 499:
+  - Low battery alert: UAV 1 battery at 26.9%
+  - Low battery alert: UAV 2 battery at 22.5%
+  - Low battery alert: UAV 4 battery at 24.8%
+  - Low battery alert: UAV 8 battery at 20.0%
+  - Low battery alert: UAV 9 battery at 26.8%
+
+Final Statistics:
+- Total tasks completed: 26/50

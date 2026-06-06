@@ -1,0 +1,589 @@
+Event Timeline
+================
+Step 0:
+  - Task assignment: UAV 9 assigned task 10
+  - Task assignment: UAV 1 assigned task 46
+  - Task assignment: UAV 3 assigned task 24
+  - Task assignment: UAV 8 assigned task 6
+  - Task assignment: UAV 10 assigned task 42
+  - Task assignment: UAV 2 assigned task 47
+  - Task assignment: UAV 7 assigned task 38
+  - Task assignment: UAV 4 assigned task 40
+  - Task assignment: UAV 5 assigned task 8
+  - Task assignment: UAV 6 assigned task 36
+  - Task start: UAV 8 started task 6
+  - Task start: UAV 5 started task 8
+  - Task start: UAV 9 started task 10
+  - Task start: UAV 3 started task 24
+  - Task start: UAV 6 started task 36
+  - Task start: UAV 7 started task 38
+  - Task start: UAV 4 started task 40
+  - Task start: UAV 10 started task 42
+  - Task start: UAV 1 started task 46
+  - Task start: UAV 2 started task 47
+Step 1:
+  - Task complete: UAV 1 completed task 46
+  - Task complete: UAV 2 completed task 47
+  - Task complete: UAV 3 completed task 24
+  - Task complete: UAV 4 completed task 40
+  - Task complete: UAV 5 completed task 8
+  - Task complete: UAV 6 completed task 36
+  - Task complete: UAV 7 completed task 38
+  - Task complete: UAV 8 completed task 6
+  - Task complete: UAV 9 completed task 10
+  - Task complete: UAV 10 completed task 42
+Step 2:
+  - Task assignment: UAV 9 assigned task 41
+  - Task assignment: UAV 8 assigned task 9
+  - Task assignment: UAV 4 assigned task 17
+  - Task assignment: UAV 1 assigned task 1
+  - Task assignment: UAV 10 assigned task 35
+  - Task assignment: UAV 5 assigned task 19
+  - Task assignment: UAV 6 assigned task 4
+  - Task assignment: UAV 2 assigned task 27
+  - Task assignment: UAV 3 assigned task 48
+  - Task assignment: UAV 7 assigned task 16
+  - Task start: UAV 1 started task 1
+  - Task start: UAV 6 started task 4
+  - Task start: UAV 8 started task 9
+  - Task start: UAV 7 started task 16
+  - Task start: UAV 4 started task 17
+  - Task start: UAV 5 started task 19
+  - Task start: UAV 2 started task 27
+  - Task start: UAV 10 started task 35
+  - Task start: UAV 9 started task 41
+  - Task start: UAV 3 started task 48
+Step 3:
+  - Task complete: UAV 1 completed task 1
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Task complete: UAV 2 completed task 27
+  - Charging request: UAV 2 requests charging (battery: 19.2%)
+  - Charging start: AGV 3 starts charging UAV 2
+  - Task complete: UAV 3 completed task 48
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Task complete: UAV 4 completed task 17
+  - Task complete: UAV 5 completed task 19
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Task complete: UAV 6 completed task 4
+  - Charging request: UAV 6 requests charging (battery: 12.5%)
+  - Charging start: AGV 4 starts charging UAV 6
+  - Task complete: UAV 7 completed task 16
+  - Charging request: UAV 7 requests charging (battery: 14.7%)
+  - Charging start: AGV 4 starts charging UAV 7
+  - Task complete: UAV 8 completed task 9
+  - Charging request: UAV 8 requests charging (battery: 15.3%)
+  - Charging start: AGV 1 starts charging UAV 8
+  - Task complete: UAV 9 completed task 41
+  - Charging request: UAV 9 requests charging (battery: 13.1%)
+  - Charging start: AGV 1 starts charging UAV 9
+  - Task complete: UAV 10 completed task 35
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 4:
+  - AGV move start: AGV 1 starts moving to relay point for task 2
+  - Task assignment: UAV 3 assigned task 2 with AGV 1
+  - Relay request: Relay support requested for task 2 with AGV 1
+  - Task assignment: UAV 4 assigned task 7 with AGV 1
+  - Relay request: Relay support requested for task 7 with AGV 1
+  - Task assignment: UAV 6 assigned task 49 with AGV 1
+  - Relay request: Relay support requested for task 49 with AGV 1
+  - Task assignment: UAV 10 assigned task 20 with AGV 1
+  - Relay request: Relay support requested for task 20 with AGV 1
+  - Task assignment: UAV 8 assigned task 29 with AGV 1
+  - Relay request: Relay support requested for task 29 with AGV 1
+  - Task assignment: UAV 7 assigned task 50 with AGV 1
+  - Relay request: Relay support requested for task 50 with AGV 1
+  - Task assignment: UAV 2 assigned task 21 with AGV 1
+  - Relay request: Relay support requested for task 21 with AGV 1
+  - Task assignment: UAV 9 assigned task 11 with AGV 1
+  - Relay request: Relay support requested for task 11 with AGV 1
+  - Task assignment: UAV 5 assigned task 33 with AGV 1
+  - Relay request: Relay support requested for task 33 with AGV 1
+  - Task assignment: UAV 1 assigned task 37 with AGV 1
+  - Relay request: Relay support requested for task 37 with AGV 1
+  - Relay request: Relay support requested for task 2 with AGV N/A
+  - Relay request: Relay support requested for task 7 with AGV N/A
+  - Relay request: Relay support requested for task 49 with AGV N/A
+  - Relay request: Relay support requested for task 20 with AGV N/A
+  - Relay request: Relay support requested for task 29 with AGV N/A
+  - Relay request: Relay support requested for task 50 with AGV N/A
+  - Relay request: Relay support requested for task 21 with AGV N/A
+  - Relay request: Relay support requested for task 11 with AGV N/A
+  - Relay request: Relay support requested for task 33 with AGV N/A
+  - Relay request: Relay support requested for task 37 with AGV N/A
+  - Wait for AGV start: Task 2 starts waiting for AGV
+  - Wait for AGV start: Task 7 starts waiting for AGV
+  - Wait for AGV start: Task 11 starts waiting for AGV
+  - Wait for AGV start: Task 20 starts waiting for AGV
+  - Wait for AGV start: Task 21 starts waiting for AGV
+  - Wait for AGV start: Task 29 starts waiting for AGV
+  - Wait for AGV start: Task 33 starts waiting for AGV
+  - Wait for AGV start: Task 37 starts waiting for AGV
+  - Wait for AGV start: Task 49 starts waiting for AGV
+  - Wait for AGV start: Task 50 starts waiting for AGV
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 5:
+  - AGV move start: AGV 5 starts moving to relay point for task 11
+  - AGV move start: AGV 3 starts moving to relay point for task 49
+  - AGV move start: AGV 4 starts moving to relay point for task 50
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 6:
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 7:
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 8:
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 9:
+  - Low battery alert: UAV 1 battery at 29.6%
+  - Low battery alert: UAV 3 battery at 21.0%
+  - Low battery alert: UAV 5 battery at 28.2%
+  - Low battery alert: UAV 10 battery at 26.7%
+Step 10:
+  - Relay fallback: Task 37 falling back to direct delivery
+  - Relay fallback: Task 37 falling back to direct delivery
+  - Charging request: UAV 1 requests charging (battery: 10.1%)
+  - Charging start: AGV 2 starts charging UAV 1
+  - Relay fallback: Task 2 falling back to direct delivery
+  - Relay fallback: Task 2 falling back to direct delivery
+  - Charging request: UAV 3 requests charging (battery: 0.0%)
+  - Charging start: AGV 2 starts charging UAV 3
+  - Relay fallback: Task 7 falling back to direct delivery
+  - Relay fallback: Task 7 falling back to direct delivery
+  - Charging request: UAV 4 requests charging (battery: 7.3%)
+  - Charging start: AGV 2 starts charging UAV 4
+  - Relay fallback: Task 33 falling back to direct delivery
+  - Relay fallback: Task 33 falling back to direct delivery
+  - Charging request: UAV 5 requests charging (battery: 0.0%)
+  - Charging start: AGV 2 starts charging UAV 5
+  - Relay fallback: Task 20 falling back to direct delivery
+  - Relay fallback: Task 20 falling back to direct delivery
+  - Charging request: UAV 10 requests charging (battery: 1.5%)
+  - Charging start: AGV 2 starts charging UAV 10
+Step 11:
+  - Wait for AGV end: Task 2 stops waiting for AGV
+  - Wait for AGV end: Task 7 stops waiting for AGV
+  - Wait for AGV end: Task 20 stops waiting for AGV
+  - Wait for AGV end: Task 33 stops waiting for AGV
+  - Wait for AGV end: Task 37 stops waiting for AGV
+Step 15:
+  - AGV move start: AGV 2 starts moving to relay point for task 21
+Step 16:
+  - Wait for AGV end: Task 49 stops waiting for AGV
+  - Wait for AGV end: Task 50 stops waiting for AGV
+  - Charging end: UAV 2 finished charging
+  - Charging end: UAV 8 finished charging
+Step 17:
+  - Charging end: UAV 6 finished charging
+  - Charging end: UAV 7 finished charging
+  - Charging end: UAV 9 finished charging
+Step 18:
+  - Task complete: UAV 6 completed task 49
+  - Task complete: UAV 7 completed task 50
+Step 19:
+  - Task assignment: UAV 7 assigned task 14
+  - Task start: UAV 7 started task 14
+  - Low battery alert: UAV 7 battery at 28.3%
+Step 20:
+  - Task complete: UAV 7 completed task 14
+  - Charging request: UAV 7 requests charging (battery: 7.3%)
+Step 21:
+  - Charging request: UAV 7 requests charging (battery: 7.3%)
+Step 22:
+  - Relay fallback: Task 21 falling back to direct delivery
+  - Relay fallback: Task 21 falling back to direct delivery
+  - Charging request: UAV 7 requests charging (battery: 7.3%)
+  - Relay fallback: Task 29 falling back to direct delivery
+  - Relay fallback: Task 29 falling back to direct delivery
+Step 23:
+  - Wait for AGV end: Task 21 stops waiting for AGV
+  - Wait for AGV end: Task 29 stops waiting for AGV
+  - Task complete: UAV 2 completed task 21
+  - Charging request: UAV 7 requests charging (battery: 7.3%)
+  - Task complete: UAV 8 completed task 29
+Step 24:
+  - Charging end: UAV 1 finished charging
+  - Task complete: UAV 1 completed task 37
+  - Charging request: UAV 7 requests charging (battery: 7.3%)
+Step 25:
+  - Task assignment: UAV 1 assigned task 12
+  - Task assignment: UAV 2 assigned task 15
+  - Task assignment: UAV 6 assigned task 18
+  - Task assignment: UAV 8 assigned task 30
+  - Task assignment: UAV 7 assigned task 25
+  - Task start: UAV 1 started task 12
+  - Task start: UAV 2 started task 15
+  - Task start: UAV 6 started task 18
+  - Task start: UAV 7 started task 25
+  - Task start: UAV 8 started task 30
+  - Charging end: UAV 4 finished charging
+  - Low battery alert: UAV 2 battery at 28.6%
+  - Task complete: UAV 4 completed task 7
+  - Charging request: UAV 6 requests charging (battery: 13.6%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Low battery alert: UAV 8 battery at 20.7%
+Step 26:
+  - Charging end: UAV 3 finished charging
+  - Charging end: UAV 5 finished charging
+  - Charging end: UAV 10 finished charging
+  - Task complete: UAV 1 completed task 12
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Task complete: UAV 2 completed task 15
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Task complete: UAV 3 completed task 2
+  - Task complete: UAV 5 completed task 33
+  - Task complete: UAV 6 completed task 18
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Task complete: UAV 7 completed task 25
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Task complete: UAV 8 completed task 30
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+  - Task complete: UAV 10 completed task 20
+Step 27:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 28:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 29:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 30:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 31:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 32:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 33:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 34:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 35:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 36:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 37:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 38:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 39:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 40:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 41:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 42:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 43:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 44:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 45:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 46:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 47:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 48:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 49:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 50:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 51:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 52:
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+Step 53:
+  - AGV arrive relay: AGV 4 arrived at relay point for task 50
+  - Low battery alert: UAV 1 battery at 24.6%
+  - Charging request: UAV 2 requests charging (battery: 10.7%)
+  - Charging start: AGV 4 starts charging UAV 2
+  - Charging request: UAV 6 requests charging (battery: 0.0%)
+  - Charging start: AGV 4 starts charging UAV 6
+  - Charging request: UAV 7 requests charging (battery: 0.0%)
+  - Charging start: AGV 4 starts charging UAV 7
+  - Charging request: UAV 8 requests charging (battery: 1.3%)
+  - Charging start: AGV 4 starts charging UAV 8
+Step 54:
+  - AGV move start: AGV 4 starts moving to relay point for task 23
+  - Task assignment: UAV 1 assigned task 23 with AGV 4
+  - Relay request: Relay support requested for task 23 with AGV 4
+  - Task assignment: UAV 5 assigned task 13 with AGV 4
+  - Relay request: Relay support requested for task 13 with AGV 4
+  - Task assignment: UAV 10 assigned task 32 with AGV 4
+  - Relay request: Relay support requested for task 32 with AGV 4
+  - Task assignment: UAV 3 assigned task 34 with AGV 4
+  - Relay request: Relay support requested for task 34 with AGV 4
+  - Relay request: Relay support requested for task 11 with AGV 4
+  - Task assignment: UAV 2 assigned task 26 with AGV 4
+  - Relay request: Relay support requested for task 26 with AGV 4
+  - Relay request: Relay support requested for task 23 with AGV N/A
+  - Relay request: Relay support requested for task 13 with AGV N/A
+  - Relay request: Relay support requested for task 32 with AGV N/A
+  - Relay request: Relay support requested for task 34 with AGV N/A
+  - Relay request: Relay support requested for task 11 with AGV N/A
+  - Relay request: Relay support requested for task 26 with AGV N/A
+  - Wait for AGV start: Task 13 starts waiting for AGV
+  - Wait for AGV start: Task 23 starts waiting for AGV
+  - Wait for AGV start: Task 26 starts waiting for AGV
+  - Wait for AGV start: Task 32 starts waiting for AGV
+  - Wait for AGV start: Task 34 starts waiting for AGV
+  - Relay fallback: Task 23 falling back to direct delivery
+  - Relay fallback: Task 23 falling back to direct delivery
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+  - Relay fallback: Task 34 falling back to direct delivery
+  - Relay fallback: Task 34 falling back to direct delivery
+  - Relay fallback: Task 13 falling back to direct delivery
+  - Relay fallback: Task 13 falling back to direct delivery
+  - Relay fallback: Task 32 falling back to direct delivery
+  - Relay fallback: Task 32 falling back to direct delivery
+Step 55:
+  - Wait for AGV end: Task 13 stops waiting for AGV
+  - Wait for AGV end: Task 23 stops waiting for AGV
+  - Wait for AGV end: Task 32 stops waiting for AGV
+  - Wait for AGV end: Task 34 stops waiting for AGV
+  - Task complete: UAV 1 completed task 23
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+  - Task complete: UAV 3 completed task 34
+  - Low battery alert: UAV 3 battery at 25.1%
+  - Task complete: UAV 5 completed task 13
+  - Low battery alert: UAV 5 battery at 28.8%
+  - Task complete: UAV 10 completed task 32
+  - Low battery alert: UAV 10 battery at 25.5%
+Step 56:
+  - Task assignment: UAV 3 assigned task 5
+  - Task assignment: UAV 10 assigned task 44
+  - Task assignment: UAV 6 assigned task 22
+  - Task assignment: UAV 5 assigned task 39
+  - Task start: UAV 3 started task 5
+  - Task start: UAV 6 started task 22
+  - Wait for AGV end: Task 26 stops waiting for AGV
+  - Task start: UAV 5 started task 39
+  - Task start: UAV 10 started task 44
+  - AGV arrive relay: AGV 1 arrived at relay point for task 37
+  - Charging request: UAV 1 requests charging (battery: 0.0%)
+  - Charging start: AGV 1 starts charging UAV 1
+  - Charging request: UAV 3 requests charging (battery: 6.5%)
+  - Charging start: AGV 1 starts charging UAV 3
+  - Charging request: UAV 5 requests charging (battery: 0.0%)
+  - Charging start: AGV 1 starts charging UAV 5
+  - Charging request: UAV 10 requests charging (battery: 2.8%)
+  - Charging start: AGV 1 starts charging UAV 10
+Step 57:
+  - AGV move start: AGV 1 starts moving to relay point for task 28
+  - Task assignment: UAV 8 assigned task 28 with AGV 1
+  - Relay request: Relay support requested for task 28 with AGV 1
+  - Relay request: Relay support requested for task 28 with AGV N/A
+  - Wait for AGV start: Task 28 starts waiting for AGV
+Step 63:
+  - AGV arrive relay: AGV 5 arrived at relay point for task 11
+Step 64:
+  - AGV move start: AGV 5 starts moving to relay point for task 11
+  - Relay request: Relay support requested for task 11 with AGV 5
+  - Relay request: Relay support requested for task 11 with AGV N/A
+  - AGV arrive relay: AGV 5 arrived at relay point for task 11
+Step 65:
+  - Wait for AGV end: Task 11 stops waiting for AGV
+  - Task complete: UAV 4 completed task 11
+  - Low battery alert: UAV 4 battery at 29.5%
+  - Task complete: UAV 9 completed task 11
+Step 66:
+  - Task assignment: UAV 9 assigned task 31
+  - Task assignment: UAV 4 assigned task 43
+  - Task start: UAV 9 started task 31
+  - Task start: UAV 4 started task 43
+  - Charging request: UAV 4 requests charging (battery: 9.3%)
+  - Charging start: AGV 5 starts charging UAV 4
+  - Low battery alert: UAV 9 battery at 20.1%
+Step 67:
+  - Charging end: UAV 2 finished charging
+  - Task complete: UAV 9 completed task 31
+  - Charging request: UAV 9 requests charging (battery: 0.8%)
+  - Charging start: AGV 5 starts charging UAV 9
+Step 68:
+  - AGV move start: AGV 5 starts moving to relay point for task 28
+  - Task complete: UAV 2 completed task 26
+Step 69:
+  - Task assignment: UAV 2 assigned task 45
+  - Task start: UAV 2 started task 45
+  - Charging end: UAV 6 finished charging
+  - Charging end: UAV 7 finished charging
+  - Charging end: UAV 8 finished charging
+  - Charging request: UAV 2 requests charging (battery: 13.6%)
+  - Relay fallback: Task 28 falling back to direct delivery
+  - Relay fallback: Task 28 falling back to direct delivery
+Step 70:
+  - Task assignment: UAV 9 assigned task 3
+  - Task start: UAV 9 started task 3
+  - Wait for AGV end: Task 28 stops waiting for AGV
+  - Task complete: UAV 2 completed task 45
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+  - Task complete: UAV 6 completed task 22
+  - Task complete: UAV 8 completed task 28
+Step 71:
+  - Charging end: UAV 3 finished charging
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+  - Task complete: UAV 3 completed task 5
+Step 72:
+  - Charging end: UAV 1 finished charging
+  - Charging end: UAV 5 finished charging
+  - Charging end: UAV 10 finished charging
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+  - Task complete: UAV 5 completed task 39
+  - Task complete: UAV 10 completed task 44
+Step 73:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 74:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 75:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 76:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 77:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 78:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 79:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 80:
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+Step 81:
+  - Charging end: UAV 4 finished charging
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+  - Task complete: UAV 4 completed task 43
+Step 82:
+  - AGV arrive relay: AGV 3 arrived at relay point for task 49
+  - Charging request: UAV 2 requests charging (battery: 0.0%)
+  - Charging start: AGV 3 starts charging UAV 2
+Step 83:
+  - Charging end: UAV 9 finished charging
+Step 84:
+  - Task complete: UAV 9 completed task 3
+Step 85:
+  - AGV arrive relay: AGV 2 arrived at relay point for task 29
+Step 98:
+  - Charging end: UAV 2 finished charging
+Step 153:
+  - AGV arrive relay: AGV 4 arrived at relay point for task 26
+Step 166:
+  - AGV arrive relay: AGV 1 arrived at relay point for task 28
+Step 200:
+  - AGV arrive relay: AGV 5 arrived at relay point for task 28
+
+Final Statistics:
+- Total tasks completed: 51/50
