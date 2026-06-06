@@ -1,18 +1,22 @@
 """
 ALNS 消融实验结果可视化脚本
 
-读取实验结果目录下的 metrics.json 文件，生成汇总图表。
+读取实验结果目录下的 metrics.json 文件或已有的 aggregate_by_variant.csv，生成汇总图表。
 
 用法：
     python scripts/plot_ablation_summary.py results/ablation/alns_ablation_<timestamp>
 
-输出：
-    - completion_rate_by_variant.png
-    - total_energy_by_variant.png
-    - avg_delivery_time_by_variant.png
-    - relay_direct_count_by_variant.png
-    - comparison_vs_full_energy_delta.png
-    - comparison_vs_full_completion_delta.png
+输出（旧格式，兼容）：
+    - plots_summary/completion_rate_by_variant.png
+    - plots_summary/total_energy_by_variant.png
+    - plots_summary/avg_delivery_time_by_variant.png
+    - plots_summary/relay_direct_count_by_variant.png
+    - plots_summary/comparison_vs_full_energy_delta.png
+    - plots_summary/comparison_vs_full_completion_delta.png
+
+输出（新格式，论文用）：
+    - figures/ablation_overview.png (主图，2x2 子图)
+    - figures/ablation_vs_full_delta.png (辅助图)
 """
 
 import json
@@ -24,9 +28,28 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-# 设置中文字体
-plt.rcParams['font.sans-serif'] = ['SimHei', 'Microsoft YaHei', 'Arial Unicode MS']
+# 设置字体，优先使用英文避免中文字体兼容问题
+plt.rcParams['font.family'] = ['Arial', 'DejaVu Sans', 'Liberation Sans']
 plt.rcParams['axes.unicode_minus'] = False
+
+# 定义变体顺序
+VARIANT_ORDER = [
+    "unified_full",
+    "direct_only",
+    "relay_only",
+    "greedy_pool",
+    "random_pool",
+    "fixed_weights",
+    "simple_ops"
+]
+
+# 定义场景颜色
+SCENE_COLORS = {
+    "pickup_delivery_generated": "#1f77b4",
+    "scene_small": "#ff7f0e",
+    "scene_medium": "#2ca02c",
+    "scene_large": "#d62728"
+}
 
 
 def load_metrics_from_dir(run_dir: Path) -> Dict[str, Any]:
@@ -514,23 +537,438 @@ def plot_comparison_vs_full_completion_delta(comparison_df: pd.DataFrame, output
     print(f"已保存: {output_path}")
 
 
+def load_data_from_csv(ablation_dir: Path):
+    """从已有的 CSV 文件加载数据，避免重新收集运行结果"""
+    aggregate_df = pd.DataFrame()
+    comparison_df = pd.DataFrame()
+    
+    aggregate_path = ablation_dir / "aggregate_by_variant.csv"
+    comparison_path = ablation_dir / "comparison_vs_full.csv"
+    
+    if aggregate_path.exists():
+        aggregate_df = pd.read_csv(aggregate_path)
+        print(f"已从 {aggregate_path} 加载聚合数据")
+    
+    if comparison_path.exists():
+        comparison_df = pd.read_csv(comparison_path)
+        print(f"已从 {comparison_path} 加载对比数据")
+    
+    return aggregate_df, comparison_df
+
+
+def plot_ablation_overview(aggregate_df: pd.DataFrame, output_dir: Path):
+    """
+    绘制 ALNS 消融实验总览图（2x2 子图）
+    
+    Args:
+        aggregate_df: 聚合后的结果 DataFrame
+        output_dir: 输出目录
+    """
+    if aggregate_df.empty:
+        print("警告：缺少聚合数据，跳过 ablation_overview.png")
+        return
+    
+    # 检查必要的列
+    required_cols = [
+        "scene_name", "variant_name",
+        "completion_rate_mean", "completion_rate_std",
+        "total_energy_mean", "total_energy_std",
+        "avg_delivery_time_mean", "avg_delivery_time_std",
+        "failed_tasks_mean", "failed_tasks_std"
+    ]
+    
+    missing_cols = [col for col in required_cols if col not in aggregate_df.columns]
+    if missing_cols:
+        print(f"警告：缺少必要列 {missing_cols}，跳过 ablation_overview.png")
+        return
+    
+    # 创建 2x2 子图
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+    fig.suptitle("ALNS Ablation Study Overview", fontsize=16, fontweight="bold", y=0.99)
+    
+    # 场景列表和变体顺序
+    scenes = sorted(aggregate_df["scene_name"].unique())
+    variants = [v for v in VARIANT_ORDER if v in aggregate_df["variant_name"].unique()]
+    
+    x = np.arange(len(variants))
+    width = 0.8 / len(scenes) if len(scenes) > 0 else 0.35
+    
+    # 子图 1: Completion Rate
+    ax = axes[0, 0]
+    for i, scene in enumerate(scenes):
+        scene_data = aggregate_df[aggregate_df["scene_name"] == scene]
+        means = []
+        stds = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                means.append(var_data["completion_rate_mean"].values[0] * 100)  # 转为百分比
+                stds.append(var_data["completion_rate_std"].values[0] * 100 if pd.notna(var_data["completion_rate_std"].values[0]) else 0)
+            else:
+                means.append(0)
+                stds.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, means, width, label=scene, yerr=stds, capsize=3, alpha=0.8, color=color)
+    
+    ax.set_ylabel("Completion Rate (%)", fontsize=12)
+    ax.set_title("Completion Rate", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.legend(title="Scene", bbox_to_anchor=(1.02, 1), loc="upper left")
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    ax.axhline(y=100, color="red", linestyle="--", alpha=0.5, linewidth=1)
+    
+    # 子图 2: Total Energy
+    ax = axes[0, 1]
+    for i, scene in enumerate(scenes):
+        scene_data = aggregate_df[aggregate_df["scene_name"] == scene]
+        means = []
+        stds = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                means.append(var_data["total_energy_mean"].values[0])
+                stds.append(var_data["total_energy_std"].values[0] if pd.notna(var_data["total_energy_std"].values[0]) else 0)
+            else:
+                means.append(0)
+                stds.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, means, width, label=scene, yerr=stds, capsize=3, alpha=0.8, color=color)
+    
+    ax.set_ylabel("Total Energy", fontsize=12)
+    ax.set_title("Total Energy", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    
+    # 子图 3: Average Delivery Time
+    ax = axes[1, 0]
+    for i, scene in enumerate(scenes):
+        scene_data = aggregate_df[aggregate_df["scene_name"] == scene]
+        means = []
+        stds = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                means.append(var_data["avg_delivery_time_mean"].values[0])
+                stds.append(var_data["avg_delivery_time_std"].values[0] if pd.notna(var_data["avg_delivery_time_std"].values[0]) else 0)
+            else:
+                means.append(0)
+                stds.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, means, width, label=scene, yerr=stds, capsize=3, alpha=0.8, color=color)
+    
+    ax.set_xlabel("Variant", fontsize=12)
+    ax.set_ylabel("Average Delivery Time", fontsize=12)
+    ax.set_title("Average Delivery Time", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    
+    # 子图 4: Failed Tasks
+    ax = axes[1, 1]
+    for i, scene in enumerate(scenes):
+        scene_data = aggregate_df[aggregate_df["scene_name"] == scene]
+        means = []
+        stds = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                means.append(var_data["failed_tasks_mean"].values[0])
+                stds.append(var_data["failed_tasks_std"].values[0] if pd.notna(var_data["failed_tasks_std"].values[0]) else 0)
+            else:
+                means.append(0)
+                stds.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, means, width, label=scene, yerr=stds, capsize=3, alpha=0.8, color=color)
+    
+    ax.set_xlabel("Variant", fontsize=12)
+    ax.set_ylabel("Failed Tasks", fontsize=12)
+    ax.set_title("Failed Tasks", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    
+    plt.tight_layout()
+    output_path = output_dir / "ablation_overview.png"
+    plt.savefig(output_path, dpi=200, bbox_inches="tight")
+    plt.close()
+    print(f"已保存: {output_path}")
+
+
+def plot_ablation_vs_full_delta(comparison_df: pd.DataFrame, output_dir: Path):
+    """
+    绘制各消融变体相对 unified_full 的差值图（辅助图）
+    
+    Args:
+        comparison_df: 对比结果 DataFrame
+        output_dir: 输出目录
+    """
+    if comparison_df.empty:
+        print("警告：缺少对比数据，跳过 ablation_vs_full_delta.png")
+        return
+    
+    # 检查必要的列
+    required_cols = ["scene_name", "variant_name", "completion_rate_delta", "total_energy_delta", "avg_delivery_time_delta"]
+    missing_cols = [col for col in required_cols if col not in comparison_df.columns]
+    if missing_cols:
+        print(f"警告：缺少必要列 {missing_cols}，跳过 ablation_vs_full_delta.png")
+        return
+    
+    # 场景列表和变体顺序（排除 unified_full）
+    scenes = sorted(comparison_df["scene_name"].unique())
+    variants = [v for v in VARIANT_ORDER if v in comparison_df["variant_name"].unique() and v != "unified_full"]
+    
+    if not variants:
+        print("警告：没有找到消融变体数据，跳过 ablation_vs_full_delta.png")
+        return
+    
+    # 创建 1x3 子图
+    fig, axes = plt.subplots(1, 3, figsize=(18, 5))
+    fig.suptitle("Ablation Study: Delta vs unified_full", fontsize=16, fontweight="bold", y=1.03)
+    
+    x = np.arange(len(variants))
+    width = 0.8 / len(scenes) if len(scenes) > 0 else 0.35
+    
+    # 子图 1: Completion Rate Delta
+    ax = axes[0]
+    for i, scene in enumerate(scenes):
+        scene_data = comparison_df[comparison_df["scene_name"] == scene]
+        deltas = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                delta = var_data["completion_rate_delta"].values[0]
+                deltas.append(delta * 100 if pd.notna(delta) else 0)
+            else:
+                deltas.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, deltas, width, label=scene, alpha=0.8, color=color)
+    
+    ax.axhline(y=0, color="black", linestyle="-", linewidth=1)
+    ax.set_ylabel("Completion Rate Delta (%)", fontsize=12)
+    ax.set_title("Completion Rate Delta", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    
+    # 子图 2: Total Energy Delta
+    ax = axes[1]
+    for i, scene in enumerate(scenes):
+        scene_data = comparison_df[comparison_df["scene_name"] == scene]
+        deltas = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                delta = var_data["total_energy_delta"].values[0]
+                deltas.append(delta if pd.notna(delta) else 0)
+            else:
+                deltas.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, deltas, width, label=scene, alpha=0.8, color=color)
+    
+    ax.axhline(y=0, color="black", linestyle="-", linewidth=1)
+    ax.set_ylabel("Total Energy Delta", fontsize=12)
+    ax.set_title("Total Energy Delta", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    
+    # 子图 3: Average Delivery Time Delta
+    ax = axes[2]
+    for i, scene in enumerate(scenes):
+        scene_data = comparison_df[comparison_df["scene_name"] == scene]
+        deltas = []
+        for variant in variants:
+            var_data = scene_data[scene_data["variant_name"] == variant]
+            if not var_data.empty:
+                delta = var_data["avg_delivery_time_delta"].values[0]
+                deltas.append(delta if pd.notna(delta) else 0)
+            else:
+                deltas.append(0)
+        
+        offset = (i - len(scenes)/2 + 0.5) * width
+        color = SCENE_COLORS.get(scene, None)
+        ax.bar(x + offset, deltas, width, label=scene, alpha=0.8, color=color)
+    
+    ax.axhline(y=0, color="black", linestyle="-", linewidth=1)
+    ax.set_ylabel("Average Delivery Time Delta", fontsize=12)
+    ax.set_title("Average Delivery Time Delta", fontsize=14, fontweight="bold")
+    ax.set_xticks(x)
+    ax.set_xticklabels(variants, rotation=45, ha="right", fontsize=10)
+    ax.legend(title="Scene", bbox_to_anchor=(1.02, 1), loc="upper left")
+    ax.grid(axis="y", alpha=0.3, linestyle="--")
+    
+    plt.tight_layout()
+    output_path = output_dir / "ablation_vs_full_delta.png"
+    plt.savefig(output_path, dpi=200, bbox_inches="tight")
+    plt.close()
+    print(f"已保存: {output_path}")
+
+
+def generate_figures_from_csv(ablation_dir: Path):
+    """
+    从已有的 CSV 文件生成论文用图
+    
+    Args:
+        ablation_dir: 实验结果根目录
+    """
+    print("\n[论文图生成] 从 CSV 文件加载数据...")
+    
+    # 加载数据
+    aggregate_df, comparison_df = load_data_from_csv(ablation_dir)
+    
+    if aggregate_df.empty:
+        print("警告：没有聚合数据，无法生成论文用图")
+        return
+    
+    # 创建 figures 目录
+    figures_dir = ablation_dir / "figures"
+    figures_dir.mkdir(exist_ok=True)
+    
+    print("\n[论文图生成] 生成 ablation_overview.png...")
+    plot_ablation_overview(aggregate_df, figures_dir)
+    
+    print("\n[论文图生成] 生成 ablation_vs_full_delta.png...")
+    plot_ablation_vs_full_delta(comparison_df, figures_dir)
+    
+    print("\n[论文图生成] 完成！")
+    print(f"\n论文用图已保存到: {figures_dir}")
+    for f in sorted(figures_dir.glob("*.png")):
+        print(f"  - {f.name}")
+
+
+def find_latest_ablation_dir() -> Optional[Path]:
+    """查找最新的消融实验目录"""
+    ablation_root = Path("results/ablation")
+    if not ablation_root.exists():
+        return None
+    
+    # 查找所有 alns_ablation_ 开头的目录
+    dirs = []
+    for d in ablation_root.iterdir():
+        if d.is_dir() and d.name.startswith("alns_ablation_"):
+            dirs.append(d)
+    
+    if not dirs:
+        return None
+    
+    # 按修改时间排序，返回最新的
+    return sorted(dirs, key=lambda x: x.stat().st_mtime, reverse=True)[0]
+
+
+def list_ablation_dirs():
+    """列出所有可用的消融实验目录"""
+    ablation_root = Path("results/ablation")
+    if not ablation_root.exists():
+        print("没有找到 results/ablation 目录")
+        return
+    
+    print("\n可用的消融实验目录:")
+    dirs = []
+    for d in ablation_root.iterdir():
+        if d.is_dir() and d.name.startswith("alns_ablation_"):
+            dirs.append(d)
+    
+    if not dirs:
+        print("  没有找到实验目录")
+        return
+    
+    # 按修改时间排序
+    dirs = sorted(dirs, key=lambda x: x.stat().st_mtime, reverse=True)
+    
+    for i, d in enumerate(dirs, 1):
+        has_aggregate = (d / "aggregate_by_variant.csv").exists()
+        has_figures = (d / "figures").exists()
+        status = []
+        if has_aggregate:
+            status.append("data")
+        if has_figures:
+            status.append("figures")
+        status_str = f" ({', '.join(status)})" if status else ""
+        print(f"  {i}. {d.name}{status_str}")
+
+
 def main():
     # 解析命令行参数
     if len(sys.argv) < 2:
         print("用法: python scripts/plot_ablation_summary.py <ablation_result_dir>")
-        print("示例: python scripts/plot_ablation_summary.py results/ablation/alns_ablation_20260605_210233（异常排查记录）")
+        print("\n可用的操作:")
+        print("  1. 指定目录: python scripts/plot_ablation_summary.py results/ablation/alns_ablation_<timestamp>")
+        print("  2. 使用最新实验: python scripts/plot_ablation_summary.py latest")
+        print("  3. 列出所有实验: python scripts/plot_ablation_summary.py list")
+        print("\n示例:")
+        print("  python scripts/plot_ablation_summary.py results/ablation/alns_ablation_20260605_214726")
+        print("  python scripts/plot_ablation_summary.py latest")
+        
+        # 尝试列出可用目录
+        list_ablation_dirs()
         sys.exit(1)
     
-    ablation_dir = Path(sys.argv[1])
+    # 处理参数
+    arg = sys.argv[1]
+    
+    if arg == "list":
+        list_ablation_dirs()
+        sys.exit(0)
+    elif arg == "latest":
+        ablation_dir = find_latest_ablation_dir()
+        if not ablation_dir:
+            print("错误：没有找到可用的消融实验目录")
+            sys.exit(1)
+        print(f"使用最新的实验目录: {ablation_dir.name}")
+    else:
+        ablation_dir = Path(arg)
     
     if not ablation_dir.exists():
         print(f"错误：目录不存在: {ablation_dir}")
+        print("\n可用的实验目录:")
+        list_ablation_dirs()
         sys.exit(1)
     
     print(f"读取实验结果目录: {ablation_dir}")
     
+    # 优先检查是否已有 CSV 文件
+    aggregate_df, comparison_df = load_data_from_csv(ablation_dir)
+    
+    if not aggregate_df.empty:
+        print("\n检测到已有的 CSV 文件，优先使用...")
+        
+        # 直接生成论文用图
+        generate_figures_from_csv(ablation_dir)
+        
+        # 同时也生成兼容旧版本的 plots_summary 图
+        output_dir = ablation_dir / "plots_summary"
+        output_dir.mkdir(exist_ok=True)
+        
+        print("\n[兼容旧版本] 生成 plots_summary 图表...")
+        plot_completion_rate_by_variant(aggregate_df, output_dir)
+        plot_total_energy_by_variant(aggregate_df, output_dir)
+        plot_avg_delivery_time_by_variant(aggregate_df, output_dir)
+        plot_relay_direct_count_by_variant(aggregate_df, output_dir)
+        plot_comparison_vs_full_energy_delta(comparison_df, output_dir)
+        plot_comparison_vs_full_completion_delta(comparison_df, output_dir)
+        
+        print("\n全部完成！")
+        return
+    
+    # 如果没有 CSV 文件，则从 metrics.json 重新收集
+    print("\n未找到已有的 CSV 文件，开始从 metrics.json 收集数据...")
+    
     # 1. 收集所有运行结果
-    print("\n[1/6] 收集运行结果...")
+    print("\n[1/7] 收集运行结果...")
     run_results = collect_run_results(ablation_dir)
     print(f"找到 {len(run_results)} 条运行记录")
     
@@ -539,26 +977,27 @@ def main():
         sys.exit(1)
     
     # 2. 聚合结果
-    print("\n[2/6] 聚合结果...")
+    print("\n[2/7] 聚合结果...")
     aggregate_df = aggregate_results(run_results)
     print(f"聚合后 {len(aggregate_df)} 条记录")
     
     # 3. 构建与 unified_full 的对比
-    print("\n[3/6] 构建对比结果...")
+    print("\n[3/7] 构建对比结果...")
     comparison_df = build_comparison_vs_full(aggregate_df)
     print(f"生成 {len(comparison_df)} 条对比记录")
     
     # 4. 保存 CSV 文件
-    print("\n[4/6] 保存 CSV 文件...")
+    print("\n[4/7] 保存 CSV 文件...")
     save_csv_outputs(ablation_dir, run_results, aggregate_df, comparison_df)
     
-    # 5. 创建输出目录
+    # 5. 创建输出目录并生成论文用图
+    print("\n[5/7] 生成论文用图...")
+    generate_figures_from_csv(ablation_dir)
+    
+    # 6. 生成兼容旧版本的图
     output_dir = ablation_dir / "plots_summary"
     output_dir.mkdir(exist_ok=True)
-    print(f"\n图表将保存到: {output_dir}")
-    
-    # 6. 生成图表
-    print("\n[5/6] 生成图表...")
+    print(f"\n[6/7] 生成 plots_summary 兼容图表...")
     plot_completion_rate_by_variant(aggregate_df, output_dir)
     plot_total_energy_by_variant(aggregate_df, output_dir)
     plot_avg_delivery_time_by_variant(aggregate_df, output_dir)
@@ -566,11 +1005,10 @@ def main():
     plot_comparison_vs_full_energy_delta(comparison_df, output_dir)
     plot_comparison_vs_full_completion_delta(comparison_df, output_dir)
     
-    print("\n[6/6] 完成！")
-    print(f"\n图表已保存到: {output_dir}")
-    print("\n生成的图表文件:")
-    for f in sorted(output_dir.glob("*.png")):
-        print(f"  - {f.name}")
+    print("\n[7/7] 完成！")
+    print(f"\n图表已保存到:")
+    print(f"  - 论文用图: {ablation_dir / 'figures'}")
+    print(f"  - 兼容图: {output_dir}")
 
 
 if __name__ == "__main__":

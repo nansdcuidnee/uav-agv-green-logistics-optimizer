@@ -1,0 +1,29 @@
+{
+  "experiment_name": "relay_only_seed_789",
+  "timestamp": "20260605_215049",
+  "strategy": "alns_unified",
+  "records_granularity": "step",
+  "required_artifacts": [
+    "metrics.json",
+    "records/steps.csv",
+    "records/tasks.csv",
+    "records/event_timeline.txt",
+    "records/coordination_events.csv",
+    "records/communication_log.csv",
+    "plots/chart.png"
+  ],
+  "plots": [
+    "plots\\task_progress.png",
+    "plots\\battery_status.png",
+    "plots\\energy_curve.png",
+    "plots\\trajectory_map.png",
+    "plots\\environment_state.png",
+    "plots\\coordination_events.png",
+    "plots\\kpi_summary.png"
+  ],
+  "summary": {
+    "initial_task_count": 30,
+    "completed_tasks": 30,
+    "time_steps": 136
+  }
+}

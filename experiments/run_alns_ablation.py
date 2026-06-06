@@ -538,6 +538,16 @@ def main():
     save_comparison_results(comparisons, output_dir)
     save_summary(all_results, aggregated, comparisons, output_dir)
     
+    # 自动生成论文用图
+    print("\nGenerating figures...")
+    try:
+        # 导入绘图模块
+        from scripts.plot_ablation_summary import generate_figures_from_csv
+        generate_figures_from_csv(Path(output_dir))
+    except Exception as e:
+        print(f"Warning: Failed to generate figures: {e}")
+        traceback.print_exc()
+    
     print("\n" + "=" * 60)
     print("ALNS ablation experiments complete!")
     print("Results saved to:", output_dir)
