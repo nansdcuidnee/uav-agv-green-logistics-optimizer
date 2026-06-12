@@ -24,8 +24,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="1.0313559"
-     inkscape:cx="896.39277"
-     inkscape:cy="571.57765"
+     inkscape:cx="896.3928"
+     inkscape:cy="571.57767"
      inkscape:window-width="2560"
      inkscape:window-height="1494"
      inkscape:window-x="-11"
@@ -531,10 +531,10 @@
      class="box-text"
      id="text39">中继感知插入</text>
   <line
-     x1="1442"
-     y1="285"
-     x2="1442"
-     y2="315"
+     x1="1444.9088"
+     y1="289.84799"
+     x2="1444.9088"
+     y2="319.84799"
      stroke="#b45309"
      stroke-width="4"
      marker-end="url(#arrow-orange)"
@@ -705,4 +705,20 @@
      text-anchor="middle"
      class="box-text"
      id="text48">执行反馈至环境：车辆位置、电量、任务状态、中继关系与配送完成情况更新</text>
+  <rect
+     style="fill:#000000"
+     id="rect2"
+     width="11.635169"
+     height="11.635169"
+     x="268.57849"
+     y="929.84393"
+     rx="10" />
+  <rect
+     style="fill:#000000"
+     id="rect3"
+     width="0.9695974"
+     height="7.7567792"
+     x="311.24075"
+     y="921.11755"
+     rx="10" />
 </svg>
