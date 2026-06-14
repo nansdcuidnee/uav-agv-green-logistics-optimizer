@@ -13,6 +13,8 @@ pyyaml>=6.0
 
 # 可视化
 streamlit>=1.28.0
+pillow>=8.0
+opencv-python>=4.0
 
 # 开发工具
 pytest>=7.4.0
