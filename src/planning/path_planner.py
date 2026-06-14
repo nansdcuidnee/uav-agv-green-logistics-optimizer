@@ -369,7 +369,7 @@ class PathPlanner:
 
         # 添加超时保护
         start_time = time.time()
-        max_iterations = 10000
+        max_iterations = 220000
         time_limit = 5.0  # 5秒超时
         iteration = 0
         step_size = 1.0  # 步长

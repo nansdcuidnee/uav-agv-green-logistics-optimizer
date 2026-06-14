@@ -1,0 +1,26 @@
+{
+  "name": "uav-agv-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "echarts": "^5.5.0",
+    "element-plus": "^2.6.1",
+    "papaparse": "^5.4.1",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/papaparse": "^5.3.14",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "sass": "^1.71.0",
+    "typescript": "^5.4.5",
+    "vite": "^5.4.11",
+    "vue-tsc": "^2.0.0"
+  }
+}

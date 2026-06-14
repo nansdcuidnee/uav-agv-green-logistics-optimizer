@@ -1,9 +1,0 @@
-timestamp,sender,receiver,message_type,content
-0,Control Center,UAV 2,TASK_ASSIGNMENT,Assign task 3
-0,Control Center,UAV 1,TASK_ASSIGNMENT,Assign task 2
-0,UAV 1,Control Center,TASK_START,Start task 2
-0,UAV 2,Control Center,TASK_START,Start task 3
-1,UAV 1,Control Center,TASK_COMPLETE,Complete task 2
-1,UAV 2,Control Center,TASK_COMPLETE,Complete task 3
-2,Control Center,UAV 1,TASK_ASSIGNMENT,Assign task 1
-2,Control Center,AGV 1,RELAY_REQUEST,Request relay support for task 1

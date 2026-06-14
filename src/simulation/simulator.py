@@ -78,6 +78,9 @@ class Simulator:
         self.uav_energy_history = []
         self.agv_energy_history = []
         self.charge_loss_energy_history = []
+        self.entity_history = []  # 记录每个步骤的实体状态
+        self.entity_history_dense = []  # 记录密集轨迹（分段推进时）
+        self._frame_counter = 0  # dense 轨迹帧计数器
         
         # 初始化状态跟踪
         self.uav_states = {}
@@ -461,6 +464,22 @@ class Simulator:
                             new_y = agv.position[1] + direction_y * step_distance
                             agv.position = (new_x, new_y)
                             
+                            # 记录 AGV dense 轨迹
+                            self._frame_counter += 1
+                            self.entity_history_dense.append({
+                                'frame_id': self._frame_counter,
+                                'step': self.time_step,
+                                'sim_time': self.time_step + 1,
+                                'entity_id': f'AGV_{agv.id}',
+                                'entity_type': 'agv',
+                                'x': float(new_x),
+                                'y': float(new_y),
+                                'status': getattr(agv, 'status', 'idle'),
+                                'battery': float(getattr(agv, 'battery', 100.0)),
+                                'current_task_id': getattr(agv, 'task_id', None),
+                                'mode': getattr(agv, 'delivery_mode', 'relay') if hasattr(agv, 'delivery_mode') else 'relay'
+                            })
+                            
                             # 更新 path_history
                             if not hasattr(agv, 'path_history'):
                                 agv.path_history = []
@@ -592,6 +611,38 @@ class Simulator:
                 charge_amount = self.charge_rate_per_step
                 uav.update_battery(charge_amount)
                 
+                # 记录充电期间的 dense 轨迹（位置不变）
+                self._frame_counter += 1
+                self.entity_history_dense.append({
+                    'frame_id': self._frame_counter,
+                    'step': self.time_step,
+                    'sim_time': self.time_step + 1,
+                    'entity_id': f'UAV_{uav.id}',
+                    'entity_type': 'uav',
+                    'x': float(uav.position[0]),
+                    'y': float(uav.position[1]),
+                    'status': 'charging',
+                    'battery': float(uav.battery),
+                    'current_task_id': None,
+                    'mode': 'charging'
+                })
+                
+                # 同时记录提供充电的 AGV 的 dense 轨迹
+                self._frame_counter += 1
+                self.entity_history_dense.append({
+                    'frame_id': self._frame_counter,
+                    'step': self.time_step,
+                    'sim_time': self.time_step + 1,
+                    'entity_id': f'AGV_{agv.id}',
+                    'entity_type': 'agv',
+                    'x': float(agv.position[0]),
+                    'y': float(agv.position[1]),
+                    'status': 'charging_uav',
+                    'battery': float(getattr(agv, 'battery', 100.0)),
+                    'current_task_id': None,
+                    'mode': 'charging_support'
+                })
+                
                 # 计算充电能耗
                 agv_energy = 2.0  # 每次充电的基础能耗
                 self.total_energy += agv_energy
@@ -631,8 +682,8 @@ class Simulator:
                     else:
                         uav.task.assigned_time = 1
                     
-                    # 如果等待时间超过10步，回退到直接配送
-                    if uav.task.assigned_time > 10:
+                    # 如果等待时间超过20步，回退到直接配送
+                    if uav.task.assigned_time > 20:
                         uav.task.status = "in_progress"
                         # 记录回退事件
                         self.events.append({
@@ -690,30 +741,73 @@ class Simulator:
 
             if uav.path:
                 next_point = uav.path[0]
-                distance = (
+                total_distance = (
                     (uav.position[0] - next_point[0]) ** 2 + (uav.position[1] - next_point[1]) ** 2
                 ) ** 0.5
-                self.total_distance += distance
-                step_uav_distance += distance
+                
+                # UAV 分段推进（类似 AGV）
+                uav_speed = 15.0  # UAV 速度 15 单位/步（比 AGV 快）
+                
+                if total_distance > 0:
+                    # 计算移动方向
+                    dx = next_point[0] - uav.position[0]
+                    dy = next_point[1] - uav.position[1]
+                    direction_x = dx / total_distance
+                    direction_y = dy / total_distance
+                    
+                    # 分段移动
+                    remaining_distance = total_distance
+                    while remaining_distance > 0:
+                        step_distance = min(uav_speed, remaining_distance)
+                        
+                        # 更新位置
+                        new_x = uav.position[0] + direction_x * step_distance
+                        new_y = uav.position[1] + direction_y * step_distance
+                        uav.position = (new_x, new_y)
+                        
+                        # 记录 dense 轨迹
+                        self._frame_counter += 1
+                        self.entity_history_dense.append({
+                            'frame_id': self._frame_counter,
+                            'step': self.time_step,
+                            'sim_time': self.time_step + 1,
+                            'entity_id': f'UAV_{uav.id}',
+                            'entity_type': 'uav',
+                            'x': float(new_x),
+                            'y': float(new_y),
+                            'status': getattr(uav, 'status', 'idle'),
+                            'battery': float(getattr(uav, 'battery', 0.0)),
+                            'current_task_id': getattr(uav.task, 'id', None) if hasattr(uav, 'task') and uav.task else None,
+                            'mode': getattr(uav, 'delivery_mode', 'direct') if hasattr(uav, 'delivery_mode') else 'direct'
+                        })
+                        
+                        remaining_distance -= step_distance
+                    
+                    # 确保到达目标点
+                    uav.position = next_point
+                    uav.path_history.append(next_point)
+                
+                self.total_distance += total_distance
+                step_uav_distance += total_distance
                 
                 # 更新任务的 UAV 移动距离
                 if uav.task:
-                    self._add_task_stat(uav.task, 'uav_distance', distance)
+                    self._add_task_stat(uav.task, 'uav_distance', total_distance)
 
-                uav.update_position(next_point)
                 uav.path.pop(0)
 
                 # 计算能耗，考虑策略差异
                 if self.strategy.name == "energy_priority" and hasattr(uav.task, "estimated_energy"):
                     # 对于能量优先策略，使用预计算的能耗
                     # 这里简化处理，将总能耗分摊到路径的每一步
-                    total_distance = sum(
+                    remaining_path_distance = sum(
                         ((uav.path[i][0] - uav.path[i+1][0])**2 + (uav.path[i][1] - uav.path[i+1][1])**2)**0.5
                         for i in range(len(uav.path)-1)
-                    )
-                    if total_distance > 0:
-                        segment_distance = distance / total_distance
-                        cost = uav.task.estimated_energy * segment_distance
+                    ) if len(uav.path) > 1 else 0
+                    full_path_distance = total_distance + remaining_path_distance
+                    if full_path_distance > 0:
+                        segment_ratio = total_distance / full_path_distance
+                        cost = uav.task.estimated_energy * segment_ratio
                     else:
                         cost = 0
                 else:
@@ -832,6 +926,44 @@ class Simulator:
         self.uav_energy_history.append(step_uav_energy)
         self.agv_energy_history.append(step_agv_energy)
         self.charge_loss_energy_history.append(step_charge_loss_energy)
+        
+        # 记录每个实体的状态
+        for uav in self.environment.uavs:
+            x, y = uav.position if hasattr(uav, 'position') and uav.position else (0.0, 0.0)
+            status = getattr(uav, 'status', 'idle')
+            battery = getattr(uav, 'battery', 0.0)
+            current_task_id = getattr(uav.task, 'id', None) if hasattr(uav, 'task') and uav.task else None
+            mode = getattr(uav, 'delivery_mode', 'direct') if hasattr(uav, 'delivery_mode') else 'direct'
+            self.entity_history.append({
+                'step': self.time_step,
+                'sim_time': self.time_step + 1,
+                'entity_id': f'UAV_{uav.id}',
+                'entity_type': 'uav',
+                'x': float(x),
+                'y': float(y),
+                'status': status,
+                'battery': float(battery),
+                'current_task_id': current_task_id,
+                'mode': mode
+            })
+        for agv in self.environment.agvs:
+            x, y = agv.position if hasattr(agv, 'position') and agv.position else (0.0, 0.0)
+            status = getattr(agv, 'status', 'idle')
+            battery = getattr(agv, 'battery', 100.0)
+            current_task_id = getattr(agv, 'task_id', None) if hasattr(agv, 'task_id') else None
+            mode = getattr(agv, 'delivery_mode', 'relay') if hasattr(agv, 'delivery_mode') else 'relay'
+            self.entity_history.append({
+                'step': self.time_step,
+                'sim_time': self.time_step + 1,
+                'entity_id': f'AGV_{agv.id}',
+                'entity_type': 'agv',
+                'x': float(x),
+                'y': float(y),
+                'status': status,
+                'battery': float(battery),
+                'current_task_id': current_task_id,
+                'mode': mode
+            })
 
         self.time_step += 1
         return step_energy
@@ -1220,6 +1352,48 @@ class Simulator:
                 details = event.get("details", "")
                 
                 writer.writerow([step, sim_time, event_type, task_id, uav_id, agv_id, x, y, details])
+
+        # 保存 entity_timeline.csv 到 records 文件夹
+        entity_timeline_file = layout.record_path("entity_timeline.csv")
+        with open(entity_timeline_file, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["step", "sim_time", "entity_id", "entity_type", "x", "y", "status", "battery", "current_task_id", "mode"])
+            
+            for entity_state in self.entity_history:
+                writer.writerow([
+                    entity_state['step'],
+                    entity_state['sim_time'],
+                    entity_state['entity_id'],
+                    entity_state['entity_type'],
+                    entity_state['x'],
+                    entity_state['y'],
+                    entity_state['status'],
+                    entity_state['battery'],
+                    entity_state['current_task_id'],
+                    entity_state['mode']
+                ])
+
+        # 保存 entity_timeline_dense.csv 到 records 文件夹
+        if self.entity_history_dense:
+            entity_timeline_dense_file = layout.record_path("entity_timeline_dense.csv")
+            with open(entity_timeline_dense_file, "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["frame_id", "step", "sim_time", "entity_id", "entity_type", "x", "y", "status", "battery", "current_task_id", "mode"])
+                
+                for entity_state in self.entity_history_dense:
+                    writer.writerow([
+                        entity_state['frame_id'],
+                        entity_state['step'],
+                        entity_state['sim_time'],
+                        entity_state['entity_id'],
+                        entity_state['entity_type'],
+                        entity_state['x'],
+                        entity_state['y'],
+                        entity_state['status'],
+                        entity_state['battery'],
+                        entity_state['current_task_id'],
+                        entity_state['mode']
+                    ])
 
         # 生成图表
         plot_files = self._generate_plots(layout)

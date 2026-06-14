@@ -1,0 +1,13 @@
+{
+  "experiment_name": "demo_relay_demo",
+  "timestamp": "20260614_112314",
+  "strategy": "alns_unified",
+  "records_granularity": "step",
+  "required_artifacts": ["metrics.json", "records/steps.csv", "records/tasks.csv", "records/coordination_events.csv"],
+  "plots": ["plots/trajectory_map.png", "plots/task_progress.png", "plots/battery_status.png", "plots/energy_curve.png"],
+  "summary": {
+    "initial_task_count": 5,
+    "completed_tasks": 5,
+    "time_steps": 50
+  }
+}
