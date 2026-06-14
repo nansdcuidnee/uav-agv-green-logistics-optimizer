@@ -455,6 +455,10 @@ def main():
     parser.add_argument("--max-steps", type=int, default=500, help="Max simulation steps")
     parser.add_argument("--seeds", type=int, nargs='+', default=[42], help="Random seeds list")
     parser.add_argument("--output-dir", type=str, default="results/ablation", help="Output directory")
+    parser.add_argument("--variants", type=str, nargs='+', default=None,
+                        choices=["unified_full", "direct_only", "relay_only", "fixed_weights",
+                                "greedy_pool", "random_pool", "simple_ops"],
+                        help="Specific variants to run (default: all)")
     
     args = parser.parse_args()
     
@@ -488,6 +492,8 @@ def main():
     os.makedirs(output_dir, exist_ok=True)
     
     variants = get_ablation_variants()
+    if args.variants:
+        variants = [v for v in variants if v.name in args.variants]
     print("Ablation variants:", [v.name for v in variants])
     print("Random seeds:", args.seeds)
     print("Output directory:", output_dir)
