@@ -11,7 +11,7 @@ uav-agv-green-logistics-optimizer/
 ├── config/                   # Python配置代码与常量模块
 ├── configs/                  # YAML场景配置文件
 ├── data/                     # 数据目录
-├── dashboard.py              # Streamlit可视化Dashboard
+├── demo_app.py               # Streamlit可视化演示页面
 ├── experiments/              # 实验脚本
 ├── logs/                     # 日志文件
 ├── pytest.ini                # pytest最小配置文件
@@ -34,6 +34,10 @@ uav-agv-green-logistics-optimizer/
 ```
 
 ## 快速开始
+
+### 环境要求
+
+- Python 3.9+
 
 ### 安装依赖
 
@@ -72,14 +76,28 @@ python -m scripts.self_check --strategy=baseline_direct --seed=42
 python -m pytest -q
 ```
 
-### 运行可视化 Dashboard
+### 运行消融实验
+
+```bash
+# 从仓库根目录运行消融实验（多场景多种子）
+python -m experiments.run_alns_ablation --configs configs/generated/scene_small.yaml configs/generated/scene_medium.yaml configs/generated/scene_large.yaml --seeds 42 123 456 789 1024 --max-steps 500
+```
+
+### 生成演示视频
+
+```bash
+# 根据实验结果生成演示视频
+python scripts/generate_video_presentation.py --run-dir <results_dir> --output final_presentation_video.mp4
+```
+
+### 运行可视化演示页面
 
 ```bash
 # 从仓库根目录运行
-streamlit run dashboard.py
+python -m streamlit run demo_app.py
 ```
 
-Dashboard 启动后可以在浏览器中查看实验结果，包括：
+演示页面启动后可以在浏览器中查看实验结果，包括：
 - 单次实验的 KPI 指标和可视化图表
 - 策略对比结果
 - 鲁棒性实验结果
@@ -100,7 +118,7 @@ Dashboard 启动后可以在浏览器中查看实验结果，包括：
 | **experiments/** | 实验脚本，运行不同参数的实验 |
 | **scripts/** | 辅助脚本，包括自检查脚本、验证脚本等 |
 | **tests/** | 测试文件，包含冒烟测试、功能测试等 |
-| **dashboard.py** | Streamlit可视化Dashboard，展示实验结果 |
+| **demo_app.py** | Streamlit可视化演示页面，展示实验结果 |
 
 ## 配置说明
 

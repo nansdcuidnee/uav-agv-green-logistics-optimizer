@@ -1,4 +1,4 @@
-﻿# Python artifacts
+﻿﻿# Python artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -14,6 +14,15 @@ debug.log
 # Experimental results
 results/tests/
 results/runs_backup_*/
+results/runs/**
+
+# Generated videos
+final_presentation_video.mp4
+
+# Temporary configs
+configs/generated/demo_*.yaml
+configs/generated/final_presentation*.yaml
+configs/generated/smoke_test_dense.yaml
 
 # Virtual environment
 .env
@@ -40,3 +49,6 @@ Thumbs.db
 !results/comparisons/
 !results/robustness/
 !results/finals/
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/

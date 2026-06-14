@@ -24,7 +24,7 @@
 必须使用有 streamlit 环境的 Python 解释器：
 
 ```bash
-"C:\Users\31675\AppData\Local\Programs\Python\Python311\python.exe" -m streamlit run demo_app.py
+python -m streamlit run demo_app.py
 ```
 
 ### 部署到云端

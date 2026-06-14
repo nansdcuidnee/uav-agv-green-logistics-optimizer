@@ -1,0 +1,6 @@
+task_id,status,start_time,end_time,origin_x,origin_y,dest_x,dest_y,priority,assigned_uav,assigned_agv,delivery_type,energy_consumed,distance,wait_time_at_relay
+T1,completed,0,1,0.0,0.0,100.0,0.0,1,UAV_0,AGV_0,direct,36.20,707.56,0.0
+T2,completed,0,1,0.0,0.0,100.0,100.0,1,UAV_1,AGV_1,direct,36.20,707.56,0.0
+T3,completed,2,3,0.0,0.0,150.0,50.0,2,UAV_0,AGV_0,direct,41.06,200.00,0.0
+T4,completed,3,17,0.0,0.0,200.0,150.0,3,UAV_1,AGV_2,relay,21.53,200.00,13.0
+T5,completed,17,21,0.0,0.0,250.0,200.0,1,UAV_1,AGV_2,direct,37.60,460.90,0.0

@@ -1,0 +1,21 @@
+step,sim_time,event_type,task_id,uav_id,agv_id,description
+0,1,TASK_ASSIGNED,T1,UAV_0,AGV_0,T1 assigned to UAV_0 with AGV_0 support
+0,1,TASK_ASSIGNED,T2,UAV_1,AGV_1,T2 assigned to UAV_1 with AGV_1 support
+0,1,TASK_ASSIGNED,T3,UAV_0,AGV_0,T3 assigned to UAV_0 with AGV_0 support
+0,1,TASK_ASSIGNED,T4,UAV_1,AGV_2,T4 assigned to UAV_1 with AGV_2 relay support
+0,1,TASK_ASSIGNED,T5,UAV_1,AGV_2,T5 assigned to UAV_1 with AGV_2 support
+1,2,TASK_START,T1,UAV_0,AGV_0,UAV_0 starts T1 delivery
+1,2,TASK_START,T2,UAV_1,AGV_1,UAV_1 starts T2 delivery
+1,2,TASK_COMPLETE,T1,UAV_0,AGV_0,T1 completed by UAV_0
+1,2,TASK_COMPLETE,T2,UAV_1,AGV_1,T2 completed by UAV_1
+2,3,TASK_START,T3,UAV_0,AGV_0,UAV_0 starts T3 delivery
+2,3,RELAY_REQUEST,T4,UAV_1,AGV_2,UAV_1 requests relay from AGV_2
+2,3,AGV_MOVE_START,,UAV_1,AGV_2,AGV_2 moves to relay point
+3,4,TASK_COMPLETE,T3,UAV_0,AGV_0,T3 completed by UAV_0
+3,4,AGV_ARRIVE,,UAV_1,AGV_2,AGV_2 arrived at relay position
+3,4,TASK_START,T4,UAV_1,AGV_2,UAV_1 starts T4 with relay
+3,4,CHARGING_START,T4,UAV_1,AGV_2,UAV_1 starts charging from AGV_2
+16,17,CHARGING_END,T4,UAV_1,AGV_2,UAV_1 finished charging
+17,18,TASK_COMPLETE,T4,UAV_1,AGV_2,T4 completed by UAV_1 with relay
+17,18,TASK_START,T5,UAV_1,AGV_2,UAV_1 starts T5 delivery
+21,22,TASK_COMPLETE,T5,UAV_1,AGV_2,T5 completed by UAV_1
