@@ -1,7 +1,7 @@
 import { loadJson, loadCsv } from './dataLoader'
 import type { Metrics, Metadata, StepRecord, TaskRecord, CoordinationEvent, RunInfo } from '../types'
 
-const MOCK_BASE = '/mock-results'
+const MOCK_BASE = `${import.meta.env.BASE_URL}mock-results`
 
 export async function getRuns(): Promise<RunInfo[]> {
   const runs: RunInfo[] = []

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const BASE_PATH = '/mock-results/runs/demo_relay_demo/20260614_112314/plots'
+const MOCK_BASE = `${import.meta.env.BASE_URL}mock-results`
+const BASE_PATH = `${MOCK_BASE}/runs/demo_relay_demo/20260614_112314/plots`
 
 const images = ref([
   { name: 'trajectory_map', title: '轨迹图', description: '配送轨迹可视化', src: `${BASE_PATH}/trajectory_map.png` },
