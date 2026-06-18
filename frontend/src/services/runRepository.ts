@@ -6,14 +6,11 @@ const MOCK_BASE = `${import.meta.env.BASE_URL}mock-results`
 export async function getRuns(): Promise<RunInfo[]> {
   const runs: RunInfo[] = []
   const experiments = [
-    'demo_relay_demo',
-    'demo_presentation',
-    'default_experiment',
-    'pickup_delivery_generated'
+    'demo_relay_demo'
   ]
 
   for (const exp of experiments) {
-    const timestamps = ['20260614_112314', '20260614_111633', '20260614_093350', '20260603_214047']
+    const timestamps = ['20260614_112314']
     for (const ts of timestamps) {
       const metrics = await loadJson<Metrics>(`${MOCK_BASE}/runs/${exp}/${ts}/metrics.json`)
       const metadata = await loadJson<Metadata>(`${MOCK_BASE}/runs/${exp}/${ts}/metadata.json`)
