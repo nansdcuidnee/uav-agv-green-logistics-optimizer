@@ -105,6 +105,8 @@ onMounted(async () => {
     currentExp.value = exp
     currentTs.value = ts
     await loadRunDetail(exp, ts)
+  } else {
+    loading.value = false
   }
 })
 
