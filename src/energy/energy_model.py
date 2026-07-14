@@ -1,7 +1,15 @@
 class EnergyModel:
     """能耗模型类
     
-    提供能耗计算函数，考虑距离、负载和风速等因素
+    提供能耗计算函数，考虑距离、负载和风速等因素。
+
+    Role in the system:
+    - Primary source for unit energy parameters (cruise_energy_per_km, agv_energy_per_km)
+    - Used by:
+      1. Simulator: for actual execution energy tracking
+      2. ALNS CostScorer: for evaluation via _get_cruise_energy_per_km() / _get_agv_energy_per_km()
+    - ALNS currently uses simplified energy model: energy = distance_km * unit_energy
+    - Advanced models (takeoff/hover/landing) are NOT currently integrated into ALNS scoring
     """
     
     def __init__(self):
@@ -110,23 +118,46 @@ class EnergyModel:
         return self.agv_energy_per_km * distance_km
     
     def compute(self, uav):
-        """计算无人机能耗
+        """计算无人机能耗（简化估算）
         
         Args:
             uav: 无人机对象
             
         Returns:
             float: 能耗值
+
+        Note:
+            - This is a SIMPLIFIED energy estimation method
+            - Does NOT represent the complete scheduling evaluation formula
+            - Path semantics:
+              1. If task has start_point AND end_point: current -> start -> end
+              2. If task only has end_point: current -> end
+            - For detailed ALNS evaluation, see CostScorer in strategies/alns/scoring.py
         """
         if uav.task:
-            distance = (
-                (uav.position[0] - uav.task.end_point[0]) ** 2
-                + (uav.position[1] - uav.task.end_point[1]) ** 2
-            ) ** 0.5
+            start_point = getattr(uav.task, "start_point", None)
+            end_point = getattr(uav.task, "end_point", None)
+            
+            if start_point and end_point:
+                dist_to_start = (
+                    (uav.position[0] - start_point[0]) ** 2
+                    + (uav.position[1] - start_point[1]) ** 2
+                ) ** 0.5
+                dist_start_to_end = (
+                    (start_point[0] - end_point[0]) ** 2
+                    + (start_point[1] - end_point[1]) ** 2
+                ) ** 0.5
+                distance = dist_to_start + dist_start_to_end
+            elif end_point:
+                distance = (
+                    (uav.position[0] - end_point[0]) ** 2
+                    + (uav.position[1] - end_point[1]) ** 2
+                ) ** 0.5
+            else:
+                distance = 0.0
+                
             payload = float(getattr(uav.task, "payload", 1.0))
-            # 估算飞行时间（分钟）
-            duration = distance / (uav.max_speed * 60)  # 转换为分钟
+            duration = distance / (uav.max_speed * 60) if uav.max_speed > 0 else 0.0
             return self.calculate_total_energy(uav, distance, duration, payload)
         else:
-            # 没有任务时，能耗较低
             return 0.5

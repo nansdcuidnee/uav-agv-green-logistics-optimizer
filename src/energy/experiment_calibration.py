@@ -15,7 +15,18 @@ from src.energy.energy_model import EnergyModel
 
 
 class ExperimentCalibrator:
-    """Experiment calibrator for energy models."""
+    """Experiment calibrator for energy models.
+
+    Note:
+        Current calibration is SIMPLIFIED:
+        - Only calculates a unified energy-per-distance ratio (k)
+        - Cannot separately calibrate UAV cruise_energy_per_km and AGV agv_energy_per_km
+          because experiment data doesn't distinguish between UAV and AGV measurements
+        - Maps the unified k to both parameters as a best-effort approach
+        - For proper separate calibration, experiment data should include:
+          1. Entity type field (uav/agv)
+          2. Separate measurements for UAV and AGV
+    """
     
     def __init__(self, energy_model: EnergyModel):
         """Initialize experiment calibrator.
@@ -44,7 +55,6 @@ class ExperimentCalibrator:
         with open(path, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             for row in reader:
-                # Convert numeric values
                 for key, value in row.items():
                     try:
                         row[key] = float(value)
@@ -70,7 +80,6 @@ class ExperimentCalibrator:
         if not experiment_data:
             raise ValueError("No experiment data available for calibration")
         
-        # Simple calibration: calculate average energy per distance
         total_distance = 0.0
         total_energy = 0.0
         
@@ -81,10 +90,15 @@ class ExperimentCalibrator:
         
         if total_distance > 0:
             calibrated_k = total_energy / total_distance
-            self.calibration_params["k"] = calibrated_k
-            # Update energy model parameter
-            if hasattr(self.energy_model, "k"):
-                self.energy_model.k = calibrated_k
+            
+            self.calibration_params = {
+                "cruise_energy_per_km": calibrated_k * 1000,
+                "agv_energy_per_km": calibrated_k * 1000 * 0.6,
+                "raw_k": calibrated_k,
+            }
+            
+            self.energy_model.cruise_energy_per_km = self.calibration_params["cruise_energy_per_km"]
+            self.energy_model.agv_energy_per_km = self.calibration_params["agv_energy_per_km"]
         
         return self.calibration_params
     

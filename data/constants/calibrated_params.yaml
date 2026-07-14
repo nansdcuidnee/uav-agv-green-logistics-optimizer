@@ -1,1 +1,15 @@
-k: 0.05281818181818182
+# Calibrated energy parameters
+# 
+# Note: Current calibration is simplified:
+# - Only a unified energy-per-distance ratio (raw_k) is calculated from experiment data
+# - Cannot separately calibrate UAV and AGV because experiment data doesn't distinguish entity types
+# - cruise_energy_per_km = raw_k * 1000
+# - agv_energy_per_km = raw_k * 1000 * 0.6 (AGV assumed 60% of UAV energy per km)
+# 
+# For proper separate calibration, experiment data should include:
+# 1. Entity type field (uav/agv)
+# 2. Separate measurements for UAV and AGV
+
+cruise_energy_per_km: 52.81818181818182
+agv_energy_per_km: 31.690909090909092
+raw_k: 0.05281818181818182

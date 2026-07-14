@@ -91,8 +91,10 @@ class TestPickupDeliverySemantic:
         )
 
     def test_relay_includes_start_point(self):
-        """Relay mode MUST include start_point in UAV path: relay -> start -> end -> relay.
+        """Relay mode MUST include start_point in UAV path.
 
+        New semantics: uav_current -> relay -> start -> end -> relay
+        
         This test will FAIL if start_point is removed from relay path.
         """
         scorer = CostScorer()
@@ -107,10 +109,11 @@ class TestPickupDeliverySemantic:
             relay_point=relay_point, agv=agv, depot_pos=depot_pos
         )
 
+        dist_uav_to_relay = math.sqrt((0-50)**2 + (0-0)**2)
         dist_relay_to_start = math.sqrt((50-100)**2 + (0-0)**2)
         dist_start_to_end = math.sqrt((100-200)**2 + (0-0)**2)
         dist_end_to_relay = math.sqrt((200-50)**2 + (0-0)**2)
-        expected_total = dist_relay_to_start + dist_start_to_end + dist_end_to_relay
+        expected_total = dist_uav_to_relay + dist_relay_to_start + dist_start_to_end + dist_end_to_relay
 
         time_cost = option.cost_breakdown["time"]
         expected_time = expected_total / 10 / 60
@@ -123,7 +126,7 @@ class TestPickupDeliverySemantic:
     def test_relay_does_not_include_depot_in_uav_path(self):
         """Relay mode UAV should NOT return to depot, only to relay_point.
 
-        UAV path: relay -> start -> end -> relay (not depot)
+        New semantics: uav_current -> relay -> start -> end -> relay (not depot)
         """
         scorer = CostScorer()
         uav = make_uav(1, (0, 0))
@@ -137,10 +140,11 @@ class TestPickupDeliverySemantic:
             relay_point=relay_point, agv=agv, depot_pos=depot_pos
         )
 
+        dist_uav_to_relay = math.sqrt((0-50)**2 + (0-0)**2)
         dist_relay_to_start = math.sqrt((50-100)**2 + (0-0)**2)
         dist_start_to_end = math.sqrt((100-200)**2 + (0-0)**2)
         dist_end_to_relay = math.sqrt((200-50)**2 + (0-0)**2)
-        expected_total = dist_relay_to_start + dist_start_to_end + dist_end_to_relay
+        expected_total = dist_uav_to_relay + dist_relay_to_start + dist_start_to_end + dist_end_to_relay
 
         time_cost = option.cost_breakdown["time"]
         expected_time = expected_total / 10 / 60
@@ -558,9 +562,13 @@ class TestUnifiedEvaluator:
         assert result.predicted_wait > 0.0
 
     def test_mode_risk_direct_lower_than_relay(self):
-        """Direct mode_risk should be lower than relay."""
-        from src.strategies.alns.scoring import CostScorer
+        """Direct mode should have lower fallback risk than relay mode.
 
+        New semantics: mode_risk is dynamically computed based on energy margin,
+        slack, and sync deviation. Relay mode has higher risk due to:
+        - energy_margin_penalty (UAV must fly to relay first)
+        - sync_penalty (UAV/AGV must arrive at relay simultaneously)
+        """
         scorer = CostScorer()
         uav = make_uav(1, (50, 50), battery=100)
         agv = make_agv(1, (100, 100))
@@ -576,8 +584,8 @@ class TestUnifiedEvaluator:
         )
 
         assert direct_result.mode_risk < relay_result.mode_risk
-        assert direct_result.mode_risk == 0.1
-        assert relay_result.mode_risk == 0.3
+        assert 0 <= direct_result.mode_risk <= 1.0
+        assert 0 <= relay_result.mode_risk <= 1.0
 
     def test_cost_breakdown_in_result(self):
         """EvaluationResult should include cost_breakdown."""
@@ -595,6 +603,159 @@ class TestUnifiedEvaluator:
         assert "uav_energy" in result.cost_breakdown
         assert "agv_energy" in result.cost_breakdown
         assert "carbon" in result.cost_breakdown
+
+
+class TestDirectSemanticConsistency:
+    """Test that direct mode semantics are consistent between unified and delta evaluators."""
+
+    def test_empty_route_unified_delta_start_consistent(self):
+        """When uav_route is empty, unified feasibility and delta cost must use same starting point.
+
+        This verifies that both evaluate_direct_insertion_unified() and
+        evaluate_direct_insertion_delta() use uav.position as starting point,
+        not depot_pos.
+        """
+        from src.strategies.alns.scoring import CostScorer
+
+        scorer = CostScorer()
+        uav = make_uav(1, (100, 100), battery=100)
+        task = make_task(1, start=(200, 200), end=(300, 300))
+        depot_pos = (0, 0)
+
+        unified_result = scorer.evaluate_direct_insertion_unified(
+            uav, task, [], 0, depot_pos
+        )
+
+        delta_cost, _ = scorer.evaluate_direct_insertion_delta(
+            uav, task, [], 0, depot_pos
+        )
+
+        assert unified_result.cost_delta == delta_cost, (
+            f"Unified cost_delta ({unified_result.cost_delta}) should equal delta cost ({delta_cost})"
+        )
+
+    def test_uav_position_changes_affect_both_feasibility_and_cost(self):
+        """When UAV position changes, both feasibility and cost should change in same direction.
+
+        If UAV moves closer to task, both feasibility should improve (or stay same)
+        and cost should decrease.
+        """
+        from src.strategies.alns.scoring import CostScorer
+
+        scorer = CostScorer()
+        task = make_task(1, start=(200, 200), end=(300, 300))
+        depot_pos = (0, 0)
+
+        uav_far = make_uav(1, (0, 0), battery=50)
+        uav_close = make_uav(2, (150, 150), battery=50)
+
+        result_far = scorer.evaluate_direct_insertion_unified(
+            uav_far, task, [], 0, depot_pos
+        )
+        result_close = scorer.evaluate_direct_insertion_unified(
+            uav_close, task, [], 0, depot_pos
+        )
+
+        assert result_close.cost_delta < result_far.cost_delta, (
+            f"UAV closer to task should have lower cost. "
+            f"Close: {result_close.cost_delta}, Far: {result_far.cost_delta}"
+        )
+
+    def test_non_empty_route_respects_route_context(self):
+        """When uav_route is not empty, delta should respect route context for prev/next positions.
+
+        This ensures that insertion semantics are correct: inserting between
+        existing route stops should use those stops as prev/next positions.
+        """
+        from src.strategies.alns.scoring import CostScorer
+        from src.strategies.alns.solution import RouteStop
+        from src.strategies.alns import DeliveryMode
+
+        scorer = CostScorer()
+        uav = make_uav(1, (50, 50), battery=100)
+        task = make_task(1, start=(150, 150), end=(200, 200))
+        depot_pos = (0, 0)
+
+        uav_route = [
+            RouteStop(task_id=None, mode=DeliveryMode.DIRECT, uav_id=1, position=(100, 100)),
+            RouteStop(task_id=None, mode=DeliveryMode.DIRECT, uav_id=1, position=(250, 250))
+        ]
+
+        delta_cost_middle, _ = scorer.evaluate_direct_insertion_delta(
+            uav, task, uav_route, 1, depot_pos
+        )
+
+        delta_cost_start, _ = scorer.evaluate_direct_insertion_delta(
+            uav, task, [], 0, depot_pos
+        )
+
+        assert delta_cost_middle != delta_cost_start, (
+            f"Inserting into non-empty route ({delta_cost_middle}) should have different cost "
+            f"than inserting into empty route ({delta_cost_start})"
+        )
+
+    def test_feasibility_based_on_uav_position_not_depot(self):
+        """Direct feasibility check must be based on uav.position, not depot_pos.
+
+        This test verifies that a UAV that is close to the task (feasible from
+        current position) but far from depot (infeasible from depot) is correctly
+        marked as feasible.
+        """
+        from src.strategies.alns.scoring import CostScorer
+
+        scorer = CostScorer()
+        task = make_task(1, start=(195, 195), end=(205, 205))
+        depot_pos = (0, 0)
+
+        uav_close_to_task = make_uav(1, (190, 190), battery=100)
+        uav_close_to_task.max_range = 50
+
+        result = scorer.evaluate_direct_insertion_unified(
+            uav_close_to_task, task, [], 0, depot_pos
+        )
+
+        assert result.feasibility is True, (
+            f"UAV at (190,190) with range 50 should be feasible to task at (195,195)-(205,205). "
+            f"Required range from uav.position: ~30, from depot: ~424"
+        )
+
+    def test_cost_breakdown_time_and_energy_consistent(self):
+        """cost_breakdown time and uav_energy should be based on same position semantics.
+
+        Both time and uav_energy should use required_range calculated from uav.position,
+        not from depot_pos or delta_distance.
+        """
+        from src.strategies.alns.scoring import CostScorer
+
+        scorer = CostScorer()
+        uav = make_uav(1, (100, 100), battery=100)
+        task = make_task(1, start=(200, 200), end=(300, 300))
+        depot_pos = (0, 0)
+
+        result = scorer.evaluate_direct_insertion_unified(
+            uav, task, [], 0, depot_pos
+        )
+
+        required_range = (
+            scorer._distance(uav.position, task.start_point) +
+            scorer._distance(task.start_point, task.end_point) +
+            scorer._distance(task.end_point, uav.position)
+        )
+
+        expected_time = required_range / uav.max_speed / 60
+        expected_energy = required_range / 1000 * 5.0
+
+        actual_time = result.cost_breakdown["time"] / scorer._cost_weights.get("time", 1.0)
+        actual_energy = result.cost_breakdown["uav_energy"] / scorer._cost_weights.get("uav_energy", 0.8)
+
+        assert abs(actual_time - expected_time) < 0.01, (
+            f"time should be based on required_range from uav.position. "
+            f"Expected: {expected_time}, Actual: {actual_time}"
+        )
+        assert abs(actual_energy - expected_energy) < 0.01, (
+            f"uav_energy should be based on required_range from uav.position. "
+            f"Expected: {expected_energy}, Actual: {actual_energy}"
+        )
 
 
 if __name__ == "__main__":

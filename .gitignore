@@ -1,4 +1,4 @@
-﻿﻿# Python artifacts
+﻿﻿﻿﻿# Python artifacts
 __pycache__/
 *.py[cod]
 *$py.class
@@ -15,6 +15,10 @@ debug.log
 results/tests/
 results/runs_backup_*/
 results/runs/**
+results/ablation/**
+results/comparisons/**
+results/robustness/**
+results/finals/**
 
 # Generated videos
 final_presentation_video.mp4
@@ -44,11 +48,17 @@ venv.bak/
 .DS_Store
 Thumbs.db
 
-# Keep specific results directories
-!results/runs/
-!results/comparisons/
-!results/robustness/
-!results/finals/
+# Temporary files
+tmp_*
+*.bak
+
 # Frontend generated files
 frontend/node_modules/
 frontend/dist/
+frontend/.vite/
+
+# Keep specific results files
+!results/README.md
+
+# Keep frontend mock results (demo data)
+!frontend/public/mock-results/

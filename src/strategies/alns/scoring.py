@@ -51,7 +51,17 @@ class EvaluationResult:
 
 
 class CostScorer:
-    """Cost scorer for delivery options with pickup-delivery semantics."""
+    """Cost scorer for delivery options with pickup-delivery semantics.
+
+    Energy evaluation model:
+    - Uses EnergyModel as the primary source for unit energy parameters
+    - Falls back to default values if EnergyModel is not provided
+    - UAV: cruise_energy_per_km (default: 5.0 kJ/km)
+    - AGV: agv_energy_per_km (default: 3.0 kJ/km)
+    - Implements simplified energy evaluation: energy = distance_km * unit_energy
+    - Note: Takeoff/hover/landing energy models from EnergyModel are NOT currently
+      integrated into ALNS scoring (simplified evaluation)
+    """
 
     def __init__(self, energy_model=None):
         self.energy_model = energy_model
@@ -64,6 +74,18 @@ class CostScorer:
             "timeout_penalty": 5.0,
             "fallback_risk": 3.0,
         }
+
+    def _get_cruise_energy_per_km(self) -> float:
+        """Get UAV cruise energy per km from EnergyModel, with fallback."""
+        if self.energy_model and hasattr(self.energy_model, 'cruise_energy_per_km'):
+            return self.energy_model.cruise_energy_per_km
+        return 5.0
+
+    def _get_agv_energy_per_km(self) -> float:
+        """Get AGV energy per km from EnergyModel, with fallback."""
+        if self.energy_model and hasattr(self.energy_model, 'agv_energy_per_km'):
+            return self.energy_model.agv_energy_per_km
+        return 3.0
 
     def evaluate(
         self,
@@ -105,9 +127,7 @@ class CostScorer:
             total_uav_distance = dist_origin_to_start + dist_start_to_end + dist_end_to_origin
 
             time_cost = total_uav_distance / getattr(uav, 'max_speed', 10) / 60
-            uav_energy = total_uav_distance / 1000 * getattr(
-                self.energy_model, 'cruise_energy_per_km', 5.0
-            ) if self.energy_model else total_uav_distance / 1000 * 5.0
+            uav_energy = total_uav_distance / 1000 * self._get_cruise_energy_per_km()
 
             fallback_risk = 0.1
 
@@ -117,19 +137,17 @@ class CostScorer:
         elif mode == DeliveryMode.RELAY_FIXED:
             if agv:
                 dist_agv_to_relay = self._distance(agv.position, relay_point)
-                agv_energy = dist_agv_to_relay / 1000 * getattr(
-                    self.energy_model, 'agv_energy_per_km', 3.0
-                ) if self.energy_model else dist_agv_to_relay / 1000 * 3.0
+                agv_energy = dist_agv_to_relay / 1000 * self._get_agv_energy_per_km()
 
+            uav_current_pos = uav.position if hasattr(uav, 'position') else depot_pos
+            dist_uav_to_relay = self._distance(uav_current_pos, relay_point)
             dist_relay_to_start = self._distance(relay_point, start_point)
             dist_start_to_end = self._distance(start_point, end_point)
             dist_end_to_relay = self._distance(end_point, relay_point)
-            total_uav_distance = dist_relay_to_start + dist_start_to_end + dist_end_to_relay
+            total_uav_distance = dist_uav_to_relay + dist_relay_to_start + dist_start_to_end + dist_end_to_relay
 
             time_cost = total_uav_distance / getattr(uav, 'max_speed', 10) / 60
-            uav_energy = total_uav_distance / 1000 * getattr(
-                self.energy_model, 'cruise_energy_per_km', 5.0
-            ) if self.energy_model else total_uav_distance / 1000 * 5.0
+            uav_energy = total_uav_distance / 1000 * self._get_cruise_energy_per_km()
 
             wait_penalty = 5.0
             fallback_risk = 0.3
@@ -171,6 +189,49 @@ class CostScorer:
             agv_anchor_position=agv_anchor
         )
 
+    def _resolve_direct_positions(
+        self,
+        uav,
+        uav_route: List[RouteStop],
+        insert_position: int,
+        depot_pos: Tuple[float, float]
+    ) -> Tuple[Tuple[float, float], Tuple[float, float], Tuple[float, float]]:
+        """Resolve prev_pos, next_pos, and uav_current_pos for direct insertion.
+
+        Unified position resolution logic for direct mode:
+        - Returns (prev_pos, next_pos, uav_current_pos)
+
+        Semantic rules:
+        1. uav_current_pos = uav.position (real current) if available, else depot_pos
+        2. prev_pos:
+           - If insert_position > 0 AND uav_route not empty: use previous route stop
+           - Otherwise: use uav_current_pos (not depot_pos!)
+           - Fallback: if route stop position is (0.0, 0.0), use uav_current_pos
+        3. next_pos:
+           - If insert_position < len(uav_route) AND uav_route not empty: use next route stop
+           - Otherwise: use uav_current_pos (not depot_pos!)
+           - Fallback: if route stop position is (0.0, 0.0), use uav_current_pos
+
+        depot_pos role boundary:
+        - NOT used as UAV's real starting point for single-task evaluation
+        - NOT used as UAV's real starting point for delta cost when route is empty
+        - Used ONLY as final fallback when uav.position is not available
+        - Used ONLY as anchor for uav_anchor_position in DeliveryOption
+        """
+        uav_current_pos = uav.position if hasattr(uav, 'position') else depot_pos
+
+        prev_pos = uav_current_pos
+        if insert_position > 0 and uav_route:
+            prev_stop = uav_route[insert_position - 1]
+            prev_pos = prev_stop.position if prev_stop.position != (0.0, 0.0) else uav_current_pos
+
+        next_pos = uav_current_pos
+        if insert_position < len(uav_route) and uav_route:
+            next_stop = uav_route[insert_position]
+            next_pos = next_stop.position if next_stop.position != (0.0, 0.0) else uav_current_pos
+
+        return prev_pos, next_pos, uav_current_pos
+
     def evaluate_direct_insertion_delta(
         self,
         uav,
@@ -182,19 +243,17 @@ class CostScorer:
         """Evaluate the delta cost of inserting a direct task at a specific position.
 
         Returns (delta_cost, delivery_option).
+
+        Start point semantics:
+        - Delegates to _resolve_direct_positions() for position resolution
+        - See _resolve_direct_positions() docstring for semantic rules
         """
         start_point = task.start_point
         end_point = task.end_point
 
-        prev_pos = depot_pos
-        if insert_position > 0 and uav_route:
-            prev_stop = uav_route[insert_position - 1]
-            prev_pos = prev_stop.position if prev_stop.position != (0.0, 0.0) else depot_pos
-
-        next_pos = depot_pos
-        if insert_position < len(uav_route) and uav_route:
-            next_stop = uav_route[insert_position]
-            next_pos = next_stop.position if next_stop.position != (0.0, 0.0) else depot_pos
+        prev_pos, next_pos, uav_current_pos = self._resolve_direct_positions(
+            uav, uav_route, insert_position, depot_pos
+        )
 
         dist_prev_to_next = self._distance(prev_pos, next_pos)
         dist_prev_to_start = self._distance(prev_pos, start_point)
@@ -204,9 +263,7 @@ class CostScorer:
         delta_distance = dist_prev_to_start + dist_start_to_end + dist_end_to_next - dist_prev_to_next
 
         time_delta = delta_distance / getattr(uav, 'max_speed', 10) / 60
-        uav_energy_delta = delta_distance / 1000 * getattr(
-            self.energy_model, 'cruise_energy_per_km', 5.0
-        ) if self.energy_model else delta_distance / 1000 * 5.0
+        uav_energy_delta = delta_distance / 1000 * self._get_cruise_energy_per_km()
 
         fallback_risk = 0.1
         carbon_delta = uav_energy_delta * 0.5
@@ -249,10 +306,13 @@ class CostScorer:
         start_point = task.start_point
         end_point = task.end_point
 
+        uav_current_pos = uav.position if hasattr(uav, 'position') else depot_pos
         uav_prev_pos = relay_point
         if uav_insert_position > 0 and uav_route:
             prev_stop = uav_route[uav_insert_position - 1]
             uav_prev_pos = prev_stop.position if prev_stop.position != (0.0, 0.0) else relay_point
+        else:
+            uav_prev_pos = uav_current_pos
 
         uav_next_pos = relay_point
         if uav_insert_position < len(uav_route) and uav_route:
@@ -260,12 +320,13 @@ class CostScorer:
             uav_next_pos = next_stop.position if next_stop.position != (0.0, 0.0) else relay_point
 
         dist_uav_prev_to_next = self._distance(uav_prev_pos, uav_next_pos)
-        dist_uav_prev_to_start = self._distance(uav_prev_pos, start_point)
+        dist_uav_prev_to_relay = self._distance(uav_prev_pos, relay_point)
+        dist_relay_to_start = self._distance(relay_point, start_point)
         dist_start_to_end = self._distance(start_point, end_point)
         dist_end_to_uav_next = self._distance(end_point, uav_next_pos)
 
         uav_delta_distance = (
-            dist_uav_prev_to_start + dist_start_to_end + dist_end_to_uav_next - dist_uav_prev_to_next
+            dist_uav_prev_to_relay + dist_relay_to_start + dist_start_to_end + dist_end_to_uav_next - dist_uav_prev_to_next
         )
 
         agv_prev_pos = agv.position
@@ -285,13 +346,9 @@ class CostScorer:
         agv_delta_distance = dist_agv_prev_to_relay + dist_relay_to_agv_next - dist_agv_prev_to_next
 
         time_delta = uav_delta_distance / getattr(uav, 'max_speed', 10) / 60
-        uav_energy_delta = uav_delta_distance / 1000 * getattr(
-            self.energy_model, 'cruise_energy_per_km', 5.0
-        ) if self.energy_model else uav_delta_distance / 1000 * 5.0
+        uav_energy_delta = uav_delta_distance / 1000 * self._get_cruise_energy_per_km()
 
-        agv_energy_delta = agv_delta_distance / 1000 * getattr(
-            self.energy_model, 'agv_energy_per_km', 3.0
-        ) if self.energy_model else agv_delta_distance / 1000 * 3.0
+        agv_energy_delta = agv_delta_distance / 1000 * self._get_agv_energy_per_km()
 
         wait_penalty = 5.0
         fallback_risk = 0.3
@@ -340,17 +397,28 @@ class CostScorer:
         - mode_risk (0.1 for direct)
         - option
 
-        Note: predicted_wait and predicted_slack are heuristic approximations,
-        not real-time simulation results.
+        Start point semantics for direct mode:
+        - Single-task evaluation (feasibility check): uses uav.position as starting point
+        - Route insertion delta (cost calculation): delegates to evaluate_direct_insertion_delta()
+          which now also uses uav.position when route is empty
+
+        depot_pos role boundary:
+        - NOT used as UAV's real starting point for feasibility check
+        - NOT used as UAV's real starting point for delta cost when route is empty
+        - Used ONLY when uav.position is not available (fallback)
         """
         start_point = task.start_point
         end_point = task.end_point
         remaining_range = uav.battery * uav.max_range / 100.0
 
+        _, _, uav_current_pos = self._resolve_direct_positions(
+            uav, uav_route, insert_position, depot_pos
+        )
+
         required_range = (
-            self._distance(depot_pos, start_point) +
+            self._distance(uav_current_pos, start_point) +
             self._distance(start_point, end_point) +
-            self._distance(end_point, depot_pos)
+            self._distance(end_point, uav_current_pos)
         )
 
         feasibility = required_range <= remaining_range
@@ -359,9 +427,8 @@ class CostScorer:
             uav, task, uav_route, insert_position, depot_pos
         )
 
-        uav_energy = required_range / 1000 * getattr(
-            self.energy_model, 'cruise_energy_per_km', 5.0
-        ) if self.energy_model else required_range / 1000 * 5.0
+        time_delta = required_range / getattr(uav, 'max_speed', 10) / 60
+        uav_energy = required_range / 1000 * self._get_cruise_energy_per_km()
 
         deadline = getattr(task, 'deadline', None)
         if deadline is not None:
@@ -370,7 +437,7 @@ class CostScorer:
             slack = 100.0
 
         cost_breakdown = {
-            "time": delta_cost * self._cost_weights.get("time", 1.0),
+            "time": time_delta * self._cost_weights.get("time", 1.0),
             "uav_energy": uav_energy * self._cost_weights.get("uav_energy", 0.8),
             "agv_energy": 0.0,
             "carbon": uav_energy * 0.5 * self._cost_weights.get("carbon", 0.3),
@@ -407,7 +474,10 @@ class CostScorer:
         - cost_delta
         - cost_breakdown
         - feasibility (UAV range + energy check)
-        - predicted_wait (heuristic based on AGV travel)
+        - predicted_wait: Time the early-arriving entity (UAV or AGV) waits for
+          the other to reach the relay point before handoff can occur.
+          Defined as: max(agv_arrival_time, uav_arrival_time_to_relay) 
+          - min(agv_arrival_time, uav_arrival_time_to_relay)
         - predicted_slack (time window slack, heuristic)
         - mode_risk (0.3 for relay, higher than direct)
         - option
@@ -415,16 +485,26 @@ class CostScorer:
         Note: predicted_wait and predicted_slack are heuristic approximations.
         Real wait time depends on AGV-UAV synchronization which is not
         modeled in this simplified evaluation.
+
+        cost_breakdown["time"] semantics:
+        - Represents UAV flight time cost only (not total delta cost)
+        - Components: deployment (uav_current -> relay) + delivery (relay -> start -> end -> relay)
+        - AGV travel time is NOT directly included in "time" field
+        - AGV time impact is captured indirectly through:
+          1. predicted_wait (synchronization delay) -> wait_penalty
+          2. agv_energy (AGV energy cost)
         """
         start_point = task.start_point
         end_point = task.end_point
         remaining_range = uav.battery * uav.max_range / 100.0
 
-        required_range = (
-            self._distance(relay_point, start_point) +
-            self._distance(start_point, end_point) +
-            self._distance(end_point, relay_point)
-        )
+        uav_current_pos = uav.position if hasattr(uav, 'position') else depot_pos
+        dist_uav_to_relay = self._distance(uav_current_pos, relay_point)
+        dist_relay_to_start = self._distance(relay_point, start_point)
+        dist_start_to_end = self._distance(start_point, end_point)
+        dist_end_to_relay = self._distance(end_point, relay_point)
+
+        required_range = dist_uav_to_relay + dist_relay_to_start + dist_start_to_end + dist_end_to_relay
 
         feasibility = required_range <= remaining_range
 
@@ -434,17 +514,19 @@ class CostScorer:
             uav_insert_position, agv_insert_position, depot_pos
         )
 
-        uav_energy = required_range / 1000 * getattr(
-            self.energy_model, 'cruise_energy_per_km', 5.0
-        ) if self.energy_model else required_range / 1000 * 5.0
+        uav_energy = required_range / 1000 * self._get_cruise_energy_per_km()
 
         agv_travel = self._distance(agv.position, relay_point)
-        agv_energy = agv_travel / 1000 * getattr(
-            self.energy_model, 'agv_energy_per_km', 3.0
-        ) if self.energy_model else agv_travel / 1000 * 3.0
+        agv_energy = agv_travel / 1000 * self._get_agv_energy_per_km()
 
         agv_speed = getattr(agv, 'max_speed', 5.0)
-        predicted_wait = agv_travel / agv_speed if agv_speed > 0 else 5.0
+        uav_speed = getattr(uav, 'max_speed', 10.0)
+
+        agv_arrival_time = agv_travel / agv_speed if agv_speed > 0 else 10.0
+        uav_arrival_time_to_relay = dist_uav_to_relay / uav_speed if uav_speed > 0 else 10.0
+
+        handoff_time = max(agv_arrival_time, uav_arrival_time_to_relay)
+        predicted_wait = handoff_time - min(agv_arrival_time, uav_arrival_time_to_relay)
 
         deadline = getattr(task, 'deadline', None)
         if deadline is not None:
@@ -452,14 +534,22 @@ class CostScorer:
         else:
             slack = 100.0
 
+        risk_score = self._compute_fallback_risk_score(
+            uav, required_range, slack, predicted_wait
+        )
+        fallback_risk = risk_score * self._cost_weights.get("fallback_risk", 3.0)
+
+        uav_total_distance = dist_uav_to_relay + dist_relay_to_start + dist_start_to_end + dist_end_to_relay
+        uav_time = uav_total_distance / uav_speed / 60
+
         cost_breakdown = {
-            "time": delta_cost * self._cost_weights.get("time", 1.0),
+            "time": uav_time * self._cost_weights.get("time", 1.0),
             "uav_energy": uav_energy * self._cost_weights.get("uav_energy", 0.8),
             "agv_energy": agv_energy * self._cost_weights.get("agv_energy", 0.5),
             "carbon": (uav_energy + agv_energy) * 0.5 * self._cost_weights.get("carbon", 0.3),
             "wait_penalty": predicted_wait * self._cost_weights.get("wait_penalty", 2.0),
             "timeout_penalty": 0.0,
-            "fallback_risk": 0.3 * self._cost_weights.get("fallback_risk", 3.0),
+            "fallback_risk": fallback_risk,
         }
 
         return EvaluationResult(
@@ -468,9 +558,44 @@ class CostScorer:
             feasibility=feasibility,
             predicted_wait=predicted_wait,
             predicted_slack=slack,
-            mode_risk=0.3,
+            mode_risk=risk_score,
             option=option
         )
+
+    def _compute_fallback_risk_score(
+        self,
+        uav,
+        required_range: float,
+        predicted_slack: float,
+        predicted_wait: float
+    ) -> float:
+        """Compute fallback risk score for relay mode.
+
+        risk_score is a value in [0.0, 1.0] computed as the weighted sum of:
+        1. energy_margin_penalty: Penalty when UAV energy margin is low.
+           Computed as: 1.0 - min(remaining_range / required_range, 1.0)
+           High when remaining_range is close to required_range.
+        2. slack_penalty: Penalty when time window slack is small.
+           Computed as: max(0.0, 1.0 - predicted_slack / 100.0)
+           High when slack is small (tight deadline).
+        3. sync_penalty: Penalty when UAV and AGV arrive at relay at different times.
+           Computed as: min(predicted_wait / 20.0, 1.0)
+           High when arrival times are desynchronized.
+
+        Returns a combined risk score in [0.0, 1.0].
+        """
+        remaining_range = uav.battery * uav.max_range / 100.0
+
+        energy_margin_ratio = remaining_range / required_range if required_range > 0 else 1.0
+        energy_margin_penalty = max(0.0, 1.0 - min(energy_margin_ratio, 1.0))
+
+        slack_penalty = max(0.0, 1.0 - predicted_slack / 100.0)
+
+        sync_penalty = min(predicted_wait / 20.0, 1.0)
+
+        risk_score = (energy_margin_penalty * 0.4 + slack_penalty * 0.3 + sync_penalty * 0.3)
+
+        return min(max(risk_score, 0.0), 1.0)
 
     def _distance(self, p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
         return math.sqrt((p1[0] - p2[0])**2 + (p1[1] - p2[1])**2)

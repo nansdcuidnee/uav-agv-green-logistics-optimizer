@@ -267,10 +267,18 @@ class ALNSUnifiedStrategy(BaseStrategy):
         - relay_reselected: uses unified evaluator to compare relay candidates
         - relay_to_direct: uses unified evaluator to check feasibility
 
+        Fallback triggers (in addition to existing conditions):
+        1. UAV deployment to relay point infeasible (energy/range check)
+        2. Sync deviation too large (predicted_wait exceeds threshold)
+        3. Insufficient slack (predicted_slack too small)
+
         Note: predicted_wait, mode_risk, and predicted_slack are heuristic
         approximations, not real-time simulation results.
         """
         uav = getattr(task, 'assigned_uav', None)
+        agv = getattr(task, 'assigned_agv', None)
+        relay_point = getattr(task, 'relay_point', None)
+
         if not uav:
             return {"action": "none", "event_type": "NONE"}
 
@@ -286,7 +294,6 @@ class ALNSUnifiedStrategy(BaseStrategy):
             should_fallback = True
             reason = "wait_timeout"
 
-        relay_point = getattr(task, 'relay_point', None)
         if relay_point and not environment.is_valid_position(relay_point):
             should_fallback = True
             reason = "invalid_relay_point"
@@ -298,6 +305,23 @@ class ALNSUnifiedStrategy(BaseStrategy):
                 should_fallback = True
                 reason = "time_window_urgent"
 
+        if relay_point and agv:
+            relay_eval = self._scorer.evaluate_relay_insertion_unified(
+                uav, task, agv, relay_point, [], [], 0, 0, depot_pos
+            )
+
+            if not relay_eval.feasibility:
+                should_fallback = True
+                reason = "deployment_infeasible"
+
+            if relay_eval.predicted_wait > self.wait_timeout:
+                should_fallback = True
+                reason = "sync_deviation_large"
+
+            if relay_eval.predicted_slack < 5:
+                should_fallback = True
+                reason = "insufficient_slack"
+
         if not should_fallback:
             return {"action": "none", "event_type": "NONE"}
 
@@ -306,13 +330,13 @@ class ALNSUnifiedStrategy(BaseStrategy):
             best_relay_result = None
             best_score = (float('inf'), float('inf'), float('inf'))
 
-            for agv in available_agvs:
+            for candidate_agv in available_agvs:
                 relay_candidates = RelayCandidateGenerator.generate_candidates_for_agv(
-                    uav, task, agv, environment, depot_pos
+                    uav, task, candidate_agv, environment, depot_pos
                 )
                 for relay_pt in relay_candidates:
                     result = self._scorer.evaluate_relay_insertion_unified(
-                        uav, task, agv, relay_pt,
+                        uav, task, candidate_agv, relay_pt,
                         [], [], 0, 0, depot_pos
                     )
                     if not result.feasibility:
@@ -320,12 +344,13 @@ class ALNSUnifiedStrategy(BaseStrategy):
                     score = (result.cost_delta, result.mode_risk, result.predicted_wait)
                     if score < best_score:
                         best_score = score
-                        best_relay_result = (relay_pt, agv, result)
+                        best_relay_result = (relay_pt, candidate_agv, result)
 
             if best_relay_result:
                 relay_pt, best_agv, result = best_relay_result
                 task.relay_point = relay_pt
                 task.assigned_agv = best_agv
+                task.status = "waiting_for_agv"
                 if hasattr(task, 'wait_time_at_relay'):
                     task.wait_time_at_relay = 0
                 return {
@@ -338,6 +363,7 @@ class ALNSUnifiedStrategy(BaseStrategy):
                         "cost_delta": result.cost_delta,
                         "mode_risk": result.mode_risk,
                         "predicted_wait": result.predicted_wait,
+                        "predicted_slack": result.predicted_slack,
                         "feasibility": result.feasibility
                     }
                 }
@@ -357,7 +383,9 @@ class ALNSUnifiedStrategy(BaseStrategy):
                 "reason": f"Fallback to direct: {reason}",
                 "evaluator_result": {
                     "feasibility": direct_result.feasibility,
-                    "mode_risk": direct_result.mode_risk
+                    "mode_risk": direct_result.mode_risk,
+                    "cost_delta": direct_result.cost_delta,
+                    "predicted_slack": direct_result.predicted_slack
                 }
             }
 

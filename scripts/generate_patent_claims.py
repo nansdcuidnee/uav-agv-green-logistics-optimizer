@@ -221,7 +221,12 @@ def main():
     doc = create_patent_document()
     
     # 保存文档
-    output_path = r"D:\uav-agv-green-logistics-optimizer\docs\权利要求书_一种基于ALNS的无人机无人车协同绿色配送优化方法.docx"
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_path = os.path.join(
+        project_root,
+        "docs",
+        "权利要求书_一种基于ALNS的无人机无人车协同绿色配送优化方法.docx",
+    )
     
     # 确保目录存在
     os.makedirs(os.path.dirname(output_path), exist_ok=True)

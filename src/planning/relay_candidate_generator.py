@@ -134,21 +134,49 @@ class RelayCandidateGenerator:
         """Check if a point is a valid relay candidate.
 
         Pickup-delivery model:
-        UAV flies: relay -> start -> end -> relay
+        UAV flies: uav_current -> relay -> start -> end -> relay
+
+        Validation conditions:
+        1. Position is valid (not in obstacle/no-fly zone)
+        2. UAV can fly from current position to relay point
+        3. After reaching relay, UAV still has enough range to complete delivery
+        4. Total range requirement does not exceed remaining battery
+        5. Optional: deadline/slack check if available
         """
         if not environment.is_valid_position(point):
             return False
 
-        required_range = (
-            RelayCandidateGenerator._distance(point, task.start_point) +
-            RelayCandidateGenerator._distance(task.start_point, task.end_point) +
-            RelayCandidateGenerator._distance(task.end_point, point)
-        )
+        start_point = task.start_point
+        end_point = task.end_point
+
+        uav_current_pos = uav.position if hasattr(uav, 'position') else (0.0, 0.0)
+
+        dist_uav_to_relay = RelayCandidateGenerator._distance(uav_current_pos, point)
+        dist_relay_to_start = RelayCandidateGenerator._distance(point, start_point)
+        dist_start_to_end = RelayCandidateGenerator._distance(start_point, end_point)
+        dist_end_to_relay = RelayCandidateGenerator._distance(end_point, point)
+
+        delivery_range = dist_relay_to_start + dist_start_to_end + dist_end_to_relay
+        total_required_range = dist_uav_to_relay + delivery_range
 
         max_range = getattr(uav, 'max_range', 500)
         remaining_range = uav.battery * max_range / 100.0
 
-        return required_range <= remaining_range
+        if total_required_range > remaining_range:
+            return False
+
+        remaining_after_relay = remaining_range - dist_uav_to_relay
+        if remaining_after_relay < delivery_range:
+            return False
+
+        deadline = getattr(task, 'deadline', None)
+        if deadline is not None:
+            uav_speed = getattr(uav, 'max_speed', 10.0)
+            total_time = total_required_range / uav_speed
+            if total_time > deadline:
+                return False
+
+        return True
 
     @staticmethod
     def _distance(p1: Tuple[float, float], p2: Tuple[float, float]) -> float:
